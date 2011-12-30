@@ -1,4 +1,6 @@
 <h1>Shopping Cart:</h1>
+
+<%= form_tag piggybak.cart_update_url do -%>
 <table cellpadding="5" cellspacing="0" width="100%">
 	<tr>
 		<th>Item</th>
@@ -11,15 +13,26 @@
 	<tr>
 		<td><%= item[:product].description %></td>
 		<td><%= number_to_currency item[:product].price %></td>
-		<td><%= item[:quantity] %></td>
+		<td>
+			<% if allow_edit -%>
+			<%= text_field_tag "quantity[#{item[:product].id}]", item[:quantity] %>
+            <% else -%>
+			<%= item[:quantity] %>
+			<% end -%>
+		</td>
 		<td><%= number_to_currency item[:quantity]*item[:product].price %></td>
 		<td>
-			<%= form_tag "/cart/remove/#{item[:product].class.name}-#{item[:product].id}" do |f| %>
-				<%= submit_tag "Remove" %>
+			<% if allow_edit -%>
+			<%= link_to "Remove", "/cart/remove/#{item[:product].id}", :method => :delete %>
 			<% end -%>
 		</td>
 	</tr>
 	<% end -%>
 </table>
+			
+<% if allow_edit -%>
+<%= submit_tag "Update" %>
+<% end -%>
+<% end -%>
 
 <h3>Total: <%= number_to_currency @cart.total %></h3>

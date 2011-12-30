@@ -23,7 +23,7 @@ ID: <%= @order.id %><br />
 
 <h3>Items</h3>
 <% @order.line_items.each do |line_item| %>
-<%= line_item.quantity %>x<%= line_item.product.sku %> = <%= line_item.total %><br />
+<%= line_item.quantity %> x <%= line_item.product.sku %> = <%= number_to_currency line_item.total %><br />
 <% end -%>
 
 <h3>Total</h3>

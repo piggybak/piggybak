@@ -4,7 +4,7 @@ class CreateShipments < ActiveRecord::Migration
       t.references :order, :null => false
       t.references :shipping_method, :null => false
       t.string :status, :null => false, :default => "new"
-      t.total :float
+      t.float :total, :null => false, :default => 0.0
 
       t.timestamps
     end

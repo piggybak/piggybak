@@ -1,4 +1,5 @@
 require 'acts_as_product/base'
+require 'acts_as_orderer/base'
 require 'application_helper'
 require 'active_merchant'
       
@@ -18,11 +19,46 @@ module Piggybak
           object_label_method :admin_label
       
           list do
+            field :status
             field :total
+            field :created_at
+            field :user
+          end
+          edit do
+            field :created_at do
+              visible do
+                !bindings[:object].new_record?
+              end
+              read_only true
+            end
+            field :status do
+              visible do
+                !bindings[:object].new_record?
+              end
+              read_only true
+            end
+            field :total do
+              visible do
+                !bindings[:object].new_record?
+              end
+              read_only true
+            end
+            field :total_due do
+              visible do
+                !bindings[:object].new_record?
+              end
+              read_only true
+            end
+            field :user do
+              read_only do
+                !bindings[:object].new_record?
+              end
+            end
             field :billing_address
             field :shipping_address
-            field :created_at
+            field :line_items
             field :shipments
+            field :payments
           end
         end
       
@@ -40,19 +76,9 @@ module Piggybak
           visible false
 
           edit do
-            field :details do
-              partial "order_detail"
-              help "You may not edit this value"
-              visible do
-                !bindings[:object].new_record?
-              end
-            end
             include_all_fields
-           
             field :order do
-              visible do
-                bindings[:object].new_record?
-              end
+              visible false 
             end
           end
         end
@@ -111,11 +137,10 @@ module Piggybak
               help "This is the label the user sees."
             end
             field :klass
-            field :help do
-              partial "shipping_method"
-              help ""
-            end
             include_all_fields
+            field :shipping_method_values do
+              label "Metadata"
+            end
           end
           list do
             field :description
@@ -138,6 +163,20 @@ module Piggybak
           label "Product"
           parent Piggybak::Order
           object_label_method :admin_label
+          edit do
+            field :item do
+              read_only do
+                !bindings[:object].new_record?
+              end
+            end
+            include_all_fields
+          end
+          list do
+            field :description
+            field :price
+            field :quantity
+            field :active
+          end
         end
       end
     end

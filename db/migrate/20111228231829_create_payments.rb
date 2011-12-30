@@ -3,8 +3,8 @@ class CreatePayments < ActiveRecord::Migration
     create_table :payments do |t|
       t.references :order
       t.references :payment_method
-      t.string :status
-      t.float :total
+      t.string :status, :null => false, :default => 'paid'
+      t.float :total, :null => false, :default => 0.0
 
       t.timestamps
     end

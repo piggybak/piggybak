@@ -1,6 +1,8 @@
 module Piggybak
   class OrdersController < ApplicationController
     def show
+      @user = current_user
+
       @cart = Piggybak::Cart.new(request.cookies["cart"])
       @order = Piggybak::Order.new
       @order.billing_address ||= Piggybak::Address.new
@@ -16,21 +18,32 @@ module Piggybak
     def submit
       begin
         ActiveRecord::Base.transaction do
-          @order = Piggybak::Order.new(params[:piggybak_order].merge({:total => 0.0 }))
+          @order = Piggybak::Order.new(params[:piggybak_order].merge({:total => 0.0, :total_due => 0.0, :created_at => Time.now}))
+
+          if current_user.present?
+            @order.email = current_user.email
+            @order.user_id = current_user.id
+          end
+
           if @order.save
             cart = Piggybak::Cart.new(request.cookies["cart"])
+logger.warn "steph: #{cart.inspect}"
+            cart.update_quantities
+logger.warn "steph: #{cart.inspect}"
             cart.items.each do |item|
-              Piggybak::LineItem.create({ :order_id => @order.id,
-                :product_id => item[:product].id,
+              line_item = Piggybak::LineItem.new({ :product_id => item[:product].id,
                 :total => item[:product].price*item[:quantity],
                 :quantity => item[:quantity] })
+              @order.line_items << line_item
+              item[:product].decrease_quantity(item[:quantity])
             end
 
             shipment = @order.shipments.first
             calculator = shipment.shipping_method.klass.constantize
             shipment.update_attribute(:total, calculator.rate(shipment.shipping_method, cart))
 
-            @order.update_total
+            @order.update_details
+            @order.save
 
             payment = @order.payments.first
             payment_gateway = payment.payment_method.klass.constantize
@@ -61,7 +74,8 @@ module Piggybak
         @cart = Piggybak::Cart.new(request.cookies["cart"])
 
         @shipping_methods = Piggybak::ShippingMethod.lookup_methods(@cart) 
-        @payment_methods = Piggybak::PaymentMethod.find_all_by_active(true).inject([]) { |arr, b| arr << [b.klass, b.id]; arr }
+        @payment_methods = Piggybak::PaymentMethod.find_all_by_active(true).inject([]) { |arr, b| arr << [b.label, b.id]; arr }
+        @user = current_user
 
         render "piggybak/orders/show"
       end
@@ -69,6 +83,11 @@ module Piggybak
   
     def receipt
       @order = Piggybak::Order.find(session[:last_order])
+    end
+
+    def list
+      @user = current_user
+      redirect_to root if @user.nil?
     end
   end
 end

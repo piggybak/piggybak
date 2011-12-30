@@ -4,8 +4,18 @@ module Piggybak
     alias :metadata :shipping_method_values
     validates_presence_of :klass
 
+    accepts_nested_attributes_for :shipping_method_values, :allow_destroy => true
+
+    validates_each :shipping_method_values do |record, attr, value|
+      calculator = record.klass.constantize
+      metadata_keys = value.collect { |v| v.key }.sort
+      if calculator::KEYS.sort != metadata_keys
+        record.errors.add attr, "You must define key values for #{calculator::KEYS.join(', ')} for this shipping method."
+      end
+    end
+
     def klass_enum 
-      Piggybak::Calculator.subclasses
+      ["Piggybak::Calculator::FlatRate", "Piggybak::Calculator::Range"]
     end
 
     def self.available_methods(cart)

@@ -3,6 +3,8 @@ module Piggybak
     belongs_to :order
     belongs_to :shipping_method
 
+    validates_presence_of :status
+    validates_presence_of :total
     validates_presence_of :shipping_method_id
 
     def status_enum

@@ -1,9 +1,0 @@
-<% if !form.object.new_record? %>
-For this shipping method, you are required to have the following keys defined:
-
-<ul>
-<% form.object.klass.constantize.meta_keys.each do |key| -%>
-<li><%= key %></li> 
-<% end -%>
-</ul>
-<% end -%>

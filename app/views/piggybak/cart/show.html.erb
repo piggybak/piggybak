@@ -1,3 +1,7 @@
-<%= render "items" %>
+<% if @cart.errors.any? -%>
+<%= raw @cart.errors.join('<br />') %>
+<% end -%>
+
+<%= render "items", :allow_edit => true %>
 
 <%= link_to "Checkout", piggybak.orders_url %>

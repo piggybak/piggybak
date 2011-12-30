@@ -1,15 +1,12 @@
 module Piggybak
   class Calculator::Range < Calculator
+    KEYS = ["cost", "upper", "lower"]
     def self.description
       "Range"
     end
 
-    def self.meta_keys
-      ["cost", "lower", "upper"]
-    end
-
     def self.available?(method, cart)
-      return false if method.metadata.collect { |t| t.key }.sort != self.meta_keys.sort
+      return false if method.metadata.collect { |t| t.key }.sort != KEYS.sort
 
       low_end = method.shipping_method_values.detect { |m| m.key == "lower" }.value
       high_end = method.shipping_method_values.detect { |m| m.key == "upper" }.value

@@ -1,16 +1,18 @@
 module Piggybak
   class CartController < ApplicationController
     def show
-      @cart = Cart.new(request.cookies["cart"])
+      @cart = Cart.new(cookies["cart"])
+      @cart.update_quantities
+      cookies["cart"] = { :value => @cart.to_cookie, :path => '/' }
     end
   
     def add
-      cookies["cart"] = { :value => Cart.add(request.cookies["cart"], params), :path => '/' }
+      cookies["cart"] = { :value => Cart.add(cookies["cart"], params), :path => '/' }
       redirect_to piggybak.cart_url
     end
   
     def remove
-      response.set_cookie("cart", { :value => Cart.remove(request.cookies["cart"], params[:item]), :path => '/' })
+      response.set_cookie("cart", { :value => Cart.remove(cookies["cart"], params[:item]), :path => '/' })
       redirect_to piggybak.cart_url
     end
   
@@ -19,11 +21,9 @@ module Piggybak
       redirect_to piggybak.cart_url
     end
   
-=begin  
     def update
-      response.set_cookie("cart", { :value => Cart.update(request.cookies["cart"], params), :path => '/' })
-      redirect_to cart_url
+      cookies["cart"] = { :value => Cart.update(cookies["cart"], params), :path => '/' }
+      redirect_to piggybak.cart_url
     end
-=end
   end
 end

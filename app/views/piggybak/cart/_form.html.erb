@@ -1,10 +1,14 @@
 <% if object.reflections.keys.include?(:piggybak_product) -%>
-<% if object.piggybak_product -%>
-<%= form_tag "/checkout/cart/add" do -%>
-<label>Quantity</label>
-<%= text_field_tag :quantity %>
-<%= hidden_field_tag :product_id, object.piggybak_product.id %>
-<%= submit_tag "Add to Cart" %>
-<% end -%>
-<% end -%>
+	<% if object.piggybak_product && object.piggybak_product.active -%>
+		<% if object.piggybak_product.quantity > 0 -%>
+			<%= form_tag piggybak.cart_add_url do -%>
+			<label>Quantity</label>
+			<%= text_field_tag :quantity %>
+			<%= hidden_field_tag :product_id, object.piggybak_product.id %>
+			<%= submit_tag "Add to Cart" %>
+			<% end -%>
+			<% else -%>
+			Sorry, out of stock.
+		<% end -%>
+	<% end -%>
 <% end -%>

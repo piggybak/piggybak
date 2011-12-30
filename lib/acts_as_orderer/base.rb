@@ -1,6 +1,5 @@
 module Piggybak
-  module ActsAsProduct
-    ## Define ModelMethods
+  module ActsAsOrderer
     module Base
       def self.included(klass)
         klass.class_eval do
@@ -9,12 +8,10 @@ module Piggybak
       end
       
       module ClassMethods
-        def acts_as_product
-          has_one :piggybak_product, :as => "item", :class_name => "::Piggybak::Product"
+        def acts_as_orderer
+          has_many :piggybak_orders, :foreign_key => "user_id", :class_name => "::Piggybak::Order"
 
-          accepts_nested_attributes_for :piggybak_product, :allow_destroy => true
-          
-          include Piggybak::ActsAsProduct::Base::InstanceMethods
+          include Piggybak::ActsAsOrderer::Base::InstanceMethods
         end
       end
       
@@ -29,4 +26,4 @@ module Piggybak
   end
 end
 
-::ActiveRecord::Base.send :include, Piggybak::ActsAsProduct::Base
+::ActiveRecord::Base.send :include, Piggybak::ActsAsOrderer::Base

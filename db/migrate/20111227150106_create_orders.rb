@@ -9,6 +9,8 @@ class CreateOrders < ActiveRecord::Migration
       t.string :phone, :null => false
 
       t.float :total, :null => false
+      t.float :total_due, :null => false
+      t.string :status, :null => false
 
       t.timestamps
     end

@@ -1,0 +1,12 @@
+<h1>Your Orders</h1>
+
+<% @user.piggybak_orders.each do |order| -%>
+<h2>Order #<%= order.id %></h2>
+
+<p><%= number_to_currency order.total %></p>
+
+<% order.line_items.each do |line_item| -%>
+<%= debug(line_item) %>
+<% end -%>
+
+<% end -%>

@@ -1,4 +1,4 @@
-<%= render "piggybak/cart/items" %>
+<%= render "piggybak/cart/items", :allow_edit => false %>
 
 <% if @message -%>
 <ul id="errors">
@@ -8,10 +8,14 @@
 </ul>
 <% end -%>
 
-<%= form_for @order, :url => "/checkout/submit", :method => "POST" do |f| %>
+<%= form_for @order, :url => piggybak.order_submit_url, :method => "POST" do |f| %>
 
+<% if @user -%>
+This order will be tied to <%= @user.email %><br />
+<% else -%>
 <%= f.label :email %>
 <%= f.text_field :email %><br />
+<% end -%>
 <%= f.label :phone %>
 <%= f.text_field :phone %><br />
 

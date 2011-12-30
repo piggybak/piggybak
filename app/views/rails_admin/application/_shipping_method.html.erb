@@ -1,3 +1,4 @@
+<% if !form.object.new_record? %>
 For this shipping method, you are required to have the following keys defined:
 
 <ul>
@@ -5,3 +6,4 @@ For this shipping method, you are required to have the following keys defined:
 <li><%= key %></li> 
 <% end -%>
 </ul>
+<% end -%>

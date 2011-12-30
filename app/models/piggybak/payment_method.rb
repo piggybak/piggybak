@@ -2,6 +2,7 @@ module Piggybak
   class PaymentMethod < ActiveRecord::Base
     has_many :payment_method_values
     alias :metadata :payment_method_values
+    attr_accessible :klass, :label, :active
 
     def klass_enum 
       [::ActiveMerchant::Billing::AuthorizeNetGateway,

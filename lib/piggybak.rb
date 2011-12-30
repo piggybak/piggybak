@@ -138,23 +138,6 @@ module Piggybak
           label "Product"
           parent Piggybak::Order
           object_label_method :admin_label
-
-          edit do
-            include_all_fields
-            field :item_id do
-              visible true
-              read_only true
-              help "Linked item id"
-            end
-            field :item_type do
-              visible true
-              read_only true
-              help "Autopopulated"
-            end
-            field :item do
-              visible false
-            end
-          end
         end
       end
     end

@@ -1,0 +1,94 @@
+<%= render "piggybak/cart/items" %>
+
+<% if @message -%>
+<ul id="errors">
+<% @message.each do |error| %>
+<li><%= error %></li>
+<% end -%>
+</ul>
+<% end -%>
+
+<%= form_for @order, :url => "/checkout/submit", :method => "POST" do |f| %>
+
+<%= f.label :email %>
+<%= f.text_field :email %><br />
+<%= f.label :phone %>
+<%= f.text_field :phone %><br />
+
+<%= f.fields_for :shipments, f.object.shipments.build do |shipment| %>
+<%= shipment.label :shipping_method_id %>
+<%= shipment.select :shipping_method_id, @shipping_methods %>
+<% end -%>
+
+<table width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td>
+<h3>Billing Address</h3>
+
+<%= f.fields_for :billing_address do |billing_address| %>
+<%= billing_address.label :firstname %>
+<%= billing_address.text_field :firstname %><br />
+<%= billing_address.label :lastname %>
+<%= billing_address.text_field :lastname %><br />
+
+<%= billing_address.label :address1 %>
+<%= billing_address.text_field :address1 %><br />
+<%= billing_address.label :city %>
+<%= billing_address.text_field :city %><br />
+<%= billing_address.label :state %>
+<%= billing_address.text_field :state %><br />
+<%= billing_address.label :zip %>
+<%= billing_address.text_field :zip %>
+<% end -%>
+
+</td><td>
+<h3>Shipping Address</h3>
+<%= f.fields_for :shipping_address do |billing_address| %>
+<%= billing_address.label :firstname %>
+<%= billing_address.text_field :firstname %><br />
+<%= billing_address.label :lastname %>
+<%= billing_address.text_field :lastname %><br />
+
+<%= billing_address.label :address1 %>
+<%= billing_address.text_field :address1 %><br />
+<%= billing_address.label :city %>
+<%= billing_address.text_field :city %><br />
+<%= billing_address.label :state %>
+<%= billing_address.text_field :state %><br />
+<%= billing_address.label :zip %>
+<%= billing_address.text_field :zip %><br />
+<% end -%>
+</td></tr></table>
+
+<h3>Payment</h3>
+
+<%= f.fields_for :payments, f.object.payments.build do |payment| %>
+<%= payment.label :payment_method_id %>
+<%= payment.select :payment_method_id, @payment_methods %>
+<% end -%>
+<p>
+   <label>card number:</label>
+   <input type="text" name="[credit_card]number" />
+</p>
+<p>
+  <label>card code:</label>
+  <input type="text" name="[credit_card]verification_value" />
+</p>
+<p>
+  <label>expiration date:</label>
+  <select name="[credit_card]month" id="month">
+  <% 1.upto(12) do |a| %>
+  <option value="<%= a %>"><%= a %></option>
+  <% end %>
+  </select>
+  <select name="[credit_card]year" id="year">
+  <% 2011.upto(2020) do |a| %>
+  <option value="<%= a %>"><%= a %></option>
+  <% end %>
+  </select>
+</p>
+
+<%= f.submit %>
+
+<% end -%>
+

@@ -1,0 +1,10 @@
+<% if object.reflections.keys.include?(:piggybak_product) -%>
+<% if object.piggybak_product -%>
+<%= form_tag "/checkout/cart/add" do -%>
+<label>Quantity</label>
+<%= text_field_tag :quantity %>
+<%= hidden_field_tag :product_id, object.piggybak_product.id %>
+<%= submit_tag "Add to Cart" %>
+<% end -%>
+<% end -%>
+<% end -%>

@@ -1,0 +1,25 @@
+<h1>Shopping Cart:</h1>
+<table cellpadding="5" cellspacing="0" width="100%">
+	<tr>
+		<th>Item</th>
+		<th>Price</th>
+		<th>Quantity</th>
+		<th>Subtotal</th>
+		<th></th>
+	</tr>
+	<% @cart.items.each do |item| %>
+	<tr>
+		<td><%= item[:product].description %></td>
+		<td><%= number_to_currency item[:product].price %></td>
+		<td><%= item[:quantity] %></td>
+		<td><%= number_to_currency item[:quantity]*item[:product].price %></td>
+		<td>
+			<%= form_tag "/cart/remove/#{item[:product].class.name}-#{item[:product].id}" do |f| %>
+				<%= submit_tag "Remove" %>
+			<% end -%>
+		</td>
+	</tr>
+	<% end -%>
+</table>
+
+<h3>Total: <%= number_to_currency @cart.total %></h3>

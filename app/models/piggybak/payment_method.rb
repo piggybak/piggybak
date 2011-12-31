@@ -1,9 +1,12 @@
 module Piggybak 
   class PaymentMethod < ActiveRecord::Base
-    has_many :payment_method_values
+    has_many :payment_method_values, :dependent => :destroy
     alias :metadata :payment_method_values
 
     accepts_nested_attributes_for :payment_method_values, :allow_destroy => true
+
+    validates_presence_of :klass
+    validates_presence_of :description
 
     def klass_enum 
       [::ActiveMerchant::Billing::AuthorizeNetGateway,
@@ -23,7 +26,7 @@ module Piggybak
     end
 
     def admin_label
-      "#{self.label}"
+      "#{self.description}"
     end
   end
 end

@@ -113,8 +113,18 @@ module Piggybak
           weight 2
           object_label_method :admin_label
           list do
-            field :label
+            field :description
             field :active
+          end
+          edit do
+            field :description do
+              help "This is the label the user sees."
+            end
+            field :klass
+            include_all_fields
+            field :payment_method_values do
+              label "Metadata"
+            end
           end
         end
 

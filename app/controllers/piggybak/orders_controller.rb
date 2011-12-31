@@ -27,9 +27,7 @@ module Piggybak
 
           if @order.save
             cart = Piggybak::Cart.new(request.cookies["cart"])
-logger.warn "steph: #{cart.inspect}"
             cart.update_quantities
-logger.warn "steph: #{cart.inspect}"
             cart.items.each do |item|
               line_item = Piggybak::LineItem.new({ :product_id => item[:product].id,
                 :total => item[:product].price*item[:quantity],

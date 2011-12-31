@@ -10,7 +10,7 @@ module Piggybak
     initializer "define rails_admin config" do |app|
       # RailsAdmin config file. Generated on December 21, 2011 13:04
       # See github.com/sferik/rails_admin for more informations
-      
+
       RailsAdmin.config do |config|
         config.model Piggybak::Order do
           label "Order"

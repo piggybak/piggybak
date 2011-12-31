@@ -1,6 +1,6 @@
 class CreateProducts < ActiveRecord::Migration
   def change
-    create_table :piggybak_products do |t|
+    create_table :products do |t|
       t.string :sku, :null => false
       t.string :description, :null => false
       t.float :price, :null => false

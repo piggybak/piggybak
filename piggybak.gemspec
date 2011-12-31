@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steph Skardal"]
-  s.date = "2011-12-30"
+  s.date = "2011-12-31"
   s.description = "TODO: longer description of your gem"
   s.email = "steph@endpoint.com"
   s.extra_rdoc_files = [
@@ -41,10 +41,9 @@ Gem::Specification.new do |s|
     "app/views/piggybak/cart/_form.html.erb",
     "app/views/piggybak/cart/_items.html.erb",
     "app/views/piggybak/cart/show.html.erb",
+    "app/views/piggybak/orders/list.html.erb",
     "app/views/piggybak/orders/receipt.html.erb",
     "app/views/piggybak/orders/show.html.erb",
-    "app/views/rails_admin/application/_order_detail.html.erb",
-    "app/views/rails_admin/application/_shipping_method.html.erb",
     "config/routes.rb",
     "db/migrate/20111227150106_create_orders.rb",
     "db/migrate/20111227150322_create_addresses.rb",
@@ -55,6 +54,7 @@ Gem::Specification.new do |s|
     "db/migrate/20111228231829_create_payments.rb",
     "db/migrate/20111228231838_create_shipments.rb",
     "db/migrate/20111228235852_create_shipping_method_values.rb",
+    "lib/acts_as_orderer/base.rb",
     "lib/acts_as_product/base.rb",
     "lib/application_helper.rb",
     "lib/piggybak.rb",

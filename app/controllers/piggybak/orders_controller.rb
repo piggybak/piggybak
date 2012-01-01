@@ -28,6 +28,8 @@ module Piggybak
           @order.add_line_items(cart)
 
           if @order.save
+            Piggybak::Notifier.order_notification(@order)
+
             cookies["cart"] = { :value => '', :path => '/' }
             session[:last_order] = @order.id
             redirect_to piggybak.receipt_url 
@@ -59,6 +61,14 @@ module Piggybak
     def list
       @user = current_user
       redirect_to root if @user.nil?
+    end
+
+    def email
+      order = Order.find(params[:id])
+      Piggybak::Notifier.order_notification(order)
+#rails_admin.edit_path('module~class_names', Module::ClassName.first.id)
+
+      redirect_to rails_admin.edit_path('Piggybak::Order', order.id)
     end
   end
 end

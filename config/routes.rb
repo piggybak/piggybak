@@ -8,5 +8,6 @@ Piggybak::Engine.routes.draw do
     match "/submit" => "orders#submit", :via => :post, :as => :order_submit
     match "/receipt" => "orders#receipt", :as => :receipt
     match "/orders" => "orders#list", :as => :orders_list
+    match "/admin/orders/:id/email" => "orders#email", :as => :orders_email
   end
 end

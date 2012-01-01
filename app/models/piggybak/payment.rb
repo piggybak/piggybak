@@ -13,6 +13,14 @@ module Piggybak
       ["paid"]
     end
 
+    def month_enum
+      1.upto(12)
+    end
+
+    def year_enum
+      Time.now.year.upto(Time.now.year + 10)
+    end
+
     def credit_card
       { "number" => self.number,
         "month" => self.month,
@@ -41,6 +49,14 @@ module Piggybak
       else
         return true
       end
+    end
+
+    def admin_label
+      cost = "$%.2f" % self.total
+      "Payment ##{self.id}<br />" +
+      "#{self.payment_method.description}<br />" +
+      "Status: #{self.status}<br />" +
+      "#{cost}"
     end
 
     validates_each :number do |record, attr, value|

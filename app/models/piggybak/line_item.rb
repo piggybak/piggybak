@@ -11,7 +11,7 @@ module Piggybak
     after_create :decrease_inventory
         
     def admin_label
-      "Line Item: #{self.quantity} x #{self.product.description}"
+      "#{self.quantity} x #{self.product.description}"
     end
 
     def decrease_inventory

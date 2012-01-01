@@ -1,0 +1,11 @@
+Thanks for your order!
+
+Items
+
+<% @order.line_items.each do |line_item| %>
+<%= line_item.product.description %> x <%= line_item.quantity %> = <%= number_to_currency line_item.total %>
+<% end -%>
+
+Total
+
+<%= number_to_currency @order.total %>	

@@ -14,7 +14,6 @@ class Piggybak::Product < ActiveRecord::Base
   end
 
   def decrease_inventory(purchased)
-logger.warn "steph inside decrease inventory"
     self.update_attribute(:quantity, self.quantity - purchased)
   end
 end

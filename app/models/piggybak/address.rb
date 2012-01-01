@@ -8,7 +8,13 @@ module Piggybak
     validates_presence_of :zip
         
     def admin_label
-      "Address: #{self.id}"
+      address = "#{self.firstname} #{self.lastname}<br />"
+      address += "#{self.address1}<br />"
+      if self.address2 && self.address2 != ''
+        address += "#{self.address2}<br />"
+      end
+      address += "#{self.city}, #{self.state} #{self.zip}"
+      address
     end
   end
 end

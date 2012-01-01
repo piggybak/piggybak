@@ -17,7 +17,30 @@ module Piggybak
           navigation_label "Piggybak Orders"
           weight 1
           object_label_method :admin_label
-      
+
+          show do
+            field :email
+            field :phone
+            field :user
+            field :status
+
+            field :line_items
+            field :billing_address
+            field :shipping_address
+            field :shipments
+            field :payments
+
+            field :total do
+              formatted_value do
+                "$%.2f" % value
+              end
+            end
+            field :total_due do
+              formatted_value do
+                "$%.2f" % value
+              end
+            end
+          end
           list do
             field :status
             field :total do
@@ -61,6 +84,10 @@ module Piggybak
             field :line_items
             field :shipments
             field :payments
+            field :actions do
+              partial "actions"
+              help "Click above to resend email with current order details."
+            end
           end
         end
       
@@ -109,6 +136,7 @@ module Piggybak
       
         config.model Piggybak::Payment do
           parent Piggybak::Order
+          object_label_method :admin_label
           visible false
 
           edit do

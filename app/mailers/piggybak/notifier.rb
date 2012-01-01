@@ -3,13 +3,10 @@ module Piggybak
     default :from => "system@example.com"
     
     def order_notification(order)
-      @account = recipient
-  
-      #attachments['an-image.jp'] = File.read("an-image.jpg")
-      #attachments['terms.pdf'] = {:content => generate_your_pdf_here() }
+      @order = order
   
       mail(:to => order.email,
-           :subject => "Complete Order")
+           :subject => "Order ##{@order.id}")
     end
   end
 end

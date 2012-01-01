@@ -21,8 +21,8 @@ module Piggybak
     validates_presence_of :created_at
 
     before_validation :update_details
-    before_save :process_payments
-    after_save :update_details, :update_status
+    before_save :process_payments, :update_details, :update_status
+    after_save :update_details
 
     def process_payments
       update_details
@@ -71,18 +71,18 @@ module Piggybak
     end
 
     def update_status
-      if self.total_due < 0.00
-        self.status = "credit_owed" 
-      elsif self.total_due = 0.00
-        if self.shipments.collect { |s| s.status }.uniq == ["shipped"]
-          self.status = "shipped" 
-        elsif self.total == 0.00
-          self.status = "incomplete"
+      update_details
+
+      if self.total_due > 0.00
+        self.status = "payment owed"
+      elsif self.total_due == 0.00
+        if self.total == 0.00
+          self.status = "new"
         else
-          self.status = "paid" 
+          self.status = "paid"
         end
       else
-        self.status = "incomplete"
+        self.status = "credit_owed" 
       end
     end
 

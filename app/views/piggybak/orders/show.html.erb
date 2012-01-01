@@ -78,7 +78,7 @@
 <%= payment.select :month, 1.upto(12) %>
 
 <%= payment.label :year %>
-<%= payment.select :year, 2012.upto(2020) %><br />
+<%= payment.select :year, Time.now.year.upto(Time.now.year + 10) %><br />
 <% end -%>
 
 <%= f.submit %>

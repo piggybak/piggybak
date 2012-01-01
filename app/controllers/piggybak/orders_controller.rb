@@ -1,10 +1,14 @@
 module Piggybak
   class OrdersController < ApplicationController
     def show
-      @user = current_user
-
       @cart = Piggybak::Cart.new(request.cookies["cart"])
       @order = Piggybak::Order.new
+
+      if current_user
+        @order.user = current_user
+        @order.email = current_user.email 
+      end
+
       @order.billing_address ||= Piggybak::Address.new
       @order.shipping_address ||= Piggybak::Address.new
 
@@ -23,11 +27,6 @@ module Piggybak
           cart = Piggybak::Cart.new(request.cookies["cart"])
           @order.add_line_items(cart)
 
-          if current_user.present?
-            @order.user = current_user.id
-            @order.email = current_user.email
-          end
-
           if @order.save
             cookies["cart"] = { :value => '', :path => '/' }
             session[:last_order] = @order.id
@@ -39,6 +38,11 @@ module Piggybak
       rescue Exception => e
         @message = e.message 
         @cart = Piggybak::Cart.new(request.cookies["cart"])
+
+        if current_user
+          @order.user = current_user
+          @order.email = current_user.email 
+        end
 
         @shipping_methods = Piggybak::ShippingMethod.lookup_methods(@cart) 
         @payment_methods = Piggybak::PaymentMethod.find_all_by_active(true).inject([]) { |arr, b| arr << [b.description, b.id]; arr }

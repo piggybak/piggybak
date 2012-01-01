@@ -2,19 +2,14 @@
 
 <%= form_for @order, :url => piggybak.order_submit_url, :method => "POST" do |f| %>
 
-<%= debug(@message) %>
+<%= debug(@order.errors) %>
+<%= raw @order.errors.full_messages.join("<br />") %>
 
-<% if @order.errors.any? -%>
-There were problems with your order:
-<ul>
-<% @order.errors.each do |key, error| %>
-<li><%= raw error %></li>
-<% end -%>
-</ul>
-<% end -%>
+<br /><br />
 
-<% if @user -%>
-This order will be tied to <%= @user.email %><br />
+<% if current_user -%>
+<%= f.label :email %>
+<%= f.text_field :email, { :readonly => true } %><br />
 <% else -%>
 <%= f.label :email %>
 <%= f.text_field :email %><br />

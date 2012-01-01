@@ -1,14 +1,17 @@
 <%= render "piggybak/cart/items", :allow_edit => false %>
 
-<% if @message -%>
-<ul id="errors">
-<% @message.each do |error| %>
-<li><%= error %></li>
+<%= form_for @order, :url => piggybak.order_submit_url, :method => "POST" do |f| %>
+
+<%= debug(@message) %>
+
+<% if @order.errors.any? -%>
+There were problems with your order:
+<ul>
+<% @order.errors.each do |key, error| %>
+<li><%= raw error %></li>
 <% end -%>
 </ul>
 <% end -%>
-
-<%= form_for @order, :url => piggybak.order_submit_url, :method => "POST" do |f| %>
 
 <% if @user -%>
 This order will be tied to <%= @user.email %><br />
@@ -18,11 +21,6 @@ This order will be tied to <%= @user.email %><br />
 <% end -%>
 <%= f.label :phone %>
 <%= f.text_field :phone %><br />
-
-<%= f.fields_for :shipments, f.object.shipments.build do |shipment| %>
-<%= shipment.label :shipping_method_id %>
-<%= shipment.select :shipping_method_id, @shipping_methods %>
-<% end -%>
 
 <table width="100%" cellpadding="0" cellspacing="0">
 <tr>
@@ -64,33 +62,29 @@ This order will be tied to <%= @user.email %><br />
 <% end -%>
 </td></tr></table>
 
+<%= f.fields_for :shipments, f.object.shipments.build do |shipment| %>
+<%= shipment.label :shipping_method_id %>
+<%= shipment.select :shipping_method_id, @shipping_methods %>
+<% end -%>
+
 <h3>Payment</h3>
 
 <%= f.fields_for :payments, f.object.payments.build do |payment| %>
 <%= payment.label :payment_method_id %>
-<%= payment.select :payment_method_id, @payment_methods %>
+<%= payment.select :payment_method_id, @payment_methods %><br />
+
+<%= payment.label :number %>
+<%= payment.text_field :number %><br />
+
+<%= payment.label :verification_value %>
+<%= payment.text_field :verification_value %><br />
+
+<%= payment.label :month %>
+<%= payment.select :month, 1.upto(12) %>
+
+<%= payment.label :year %>
+<%= payment.select :year, 2012.upto(2020) %><br />
 <% end -%>
-<p>
-   <label>card number:</label>
-   <input type="text" name="[credit_card]number" />
-</p>
-<p>
-  <label>card code:</label>
-  <input type="text" name="[credit_card]verification_value" />
-</p>
-<p>
-  <label>expiration date:</label>
-  <select name="[credit_card]month" id="month">
-  <% 1.upto(12) do |a| %>
-  <option value="<%= a %>"><%= a %></option>
-  <% end %>
-  </select>
-  <select name="[credit_card]year" id="year">
-  <% 2011.upto(2020) do |a| %>
-  <option value="<%= a %>"><%= a %></option>
-  <% end %>
-  </select>
-</p>
 
 <%= f.submit %>
 

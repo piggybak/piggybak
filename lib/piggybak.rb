@@ -20,40 +20,42 @@ module Piggybak
       
           list do
             field :status
-            field :total
-            field :created_at
+            field :total do
+              formatted_value do
+                "$%.2f" % value
+              end
+            end
+            field :created_at do
+              strftime_format "%d-%m-%Y"
+            end
             field :user
           end
           edit do
             field :created_at do
-              visible do
-                !bindings[:object].new_record?
-              end
               read_only true
             end
             field :status do
-              visible do
-                !bindings[:object].new_record?
-              end
               read_only true
             end
             field :total do
-              visible do
-                !bindings[:object].new_record?
-              end
               read_only true
+              formatted_value do
+                "$%.2f" % value.to_f
+              end
             end
             field :total_due do
-              visible do
-                !bindings[:object].new_record?
-              end
               read_only true
+              formatted_value do
+                "$%.2f" % value.to_f
+              end
             end
             field :user do
               read_only do
                 !bindings[:object].new_record?
               end
             end
+            field :email
+            field :phone
             field :billing_address
             field :shipping_address
             field :line_items
@@ -71,14 +73,18 @@ module Piggybak
       
         config.model Piggybak::LineItem do
           label "Line Item"
-          #parent Piggybak::Order
           object_label_method :admin_label
           visible false
 
           edit do
-            include_all_fields
-            field :order do
-              visible false 
+            field :product
+            field :quantity
+            field :total do
+              read_only true
+              formatted_value do
+                "$%.2f" % value.to_f
+              end
+              help "This will automatically be calculated at the time of processing."
             end
           end
         end
@@ -89,9 +95,14 @@ module Piggybak
           visible false
 
           edit do
-            include_all_fields
-            field :order do
-              visible false 
+            field :shipping_method
+            field :status
+            field :total do
+              read_only true
+              formatted_value do
+                "$%.2f" % value
+              end
+              help "This will automatically be calculated at the time of processing."
             end
           end
         end
@@ -101,9 +112,21 @@ module Piggybak
           visible false
 
           edit do
-            include_all_fields
-            field :order do
-              visible false 
+            field :payment_method
+            field :created_at do
+              strftime_format "%d-%m-%Y"
+              read_only true
+            end
+            field :number
+            field :month
+            field :year
+            field :verification_value
+            field :total do
+              help "This will automatically be calculated at the time of processing."
+              read_only true
+              formatted_value do
+                "$%.2f" % value
+              end
             end
           end
         end
@@ -120,8 +143,10 @@ module Piggybak
             field :description do
               help "This is the label the user sees."
             end
-            field :klass
-            include_all_fields
+            field :klass do
+              label "Calculator"
+            end
+            field :active
             field :payment_method_values do
               label "Metadata"
             end
@@ -146,8 +171,10 @@ module Piggybak
             field :description do
               help "This is the label the user sees."
             end
-            field :klass
-            include_all_fields
+            field :klass do
+              label "Calculator"
+            end
+            field :active
             field :shipping_method_values do
               label "Metadata"
             end
@@ -180,6 +207,9 @@ module Piggybak
               end
             end
             include_all_fields
+            field :unlimited_inventory do
+              help "If true, backorders on this product will be allowed, regardless of quantity on hand."
+            end
           end
           list do
             field :description

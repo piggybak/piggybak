@@ -9,15 +9,17 @@ module Piggybak
     validates_presence_of :description
 
     def klass_enum 
-      [::ActiveMerchant::Billing::AuthorizeNetGateway,
-        ::ActiveMerchant::Billing::TrustCommerceGateway,
-        ::ActiveMerchant::Billing::BraintreeGateway]
+      [::Piggybak::PaymentCalculator::AuthorizeNet,
+       ::Piggybak::PaymentCalculator::Fake]
     end
 
     validates_each :payment_method_values do |record, attr, value|
-      metadata_keys = value.collect { |v| v.key }.sort
-      if ["login", "password"] != metadata_keys
-        record.errors.add attr, "You must define metadata for login, password for this payment method."
+      if record.klass
+        payment_method = record.klass.constantize
+        metadata_keys = value.collect { |v| v.key }.sort
+        if payment_method::KEYS.sort != metadata_keys
+          record.errors.add attr, "You must define key values for #{payment_method::KEYS.join(', ')} for this payment method."
+        end
       end
     end
 

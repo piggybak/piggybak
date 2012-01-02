@@ -10,8 +10,8 @@ module Piggybak
 
     def klass_enum 
       #TODO: Troubleshoot use of subclasses here instead
-      [::Piggybak::PaymentCalculator::AuthorizeNet,
-       ::Piggybak::PaymentCalculator::Fake]
+      [Piggybak::PaymentCalculator::AuthorizeNet,
+       Piggybak::PaymentCalculator::Fake]
     end
 
     validates_each :payment_method_values do |record, attr, value|

@@ -67,7 +67,7 @@ module Piggybak
     def email
       order = Order.find(params[:id])
       Piggybak::Notifier.order_notification(order)
-#rails_admin.edit_path('module~class_names', Module::ClassName.first.id)
+      flash[:notice] = "Email notification sent."
 
       redirect_to rails_admin.edit_path('Piggybak::Order', order.id)
     end

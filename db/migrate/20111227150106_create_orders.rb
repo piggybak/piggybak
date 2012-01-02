@@ -10,6 +10,7 @@ class CreateOrders < ActiveRecord::Migration
 
       t.float :total, :null => false
       t.float :total_due, :null => false
+      t.float :tax_charge, :null => false
       t.string :status, :null => false
 
       t.timestamps

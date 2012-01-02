@@ -20,8 +20,8 @@ module Piggybak
 
     def klass_enum 
       #TODO: Troubleshoot use of subclasses here instead
-      [::Piggybak::Calculator::FlatRate,
-       ::Piggybak::Calculator::Range]
+      [Piggybak::ShippingCalculator::FlatRate,
+       Piggybak::ShippingCalculator::Range]
     end
 
     def self.available_methods(cart)

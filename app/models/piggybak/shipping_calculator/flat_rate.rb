@@ -1,5 +1,5 @@
 module Piggybak
-  class Calculator::FlatRate < Calculator
+  class ShippingCalculator::FlatRate < ShippingCalculator
     KEYS = ["rate"]
 
     def self.available?(method, order)
@@ -7,7 +7,7 @@ module Piggybak
     end
 
     def self.rate(method, order)
-      method.shipping_method_values.detect { |m| m.key == "rate" }.value
+      method.metadata.detect { |m| m.key == "rate" }.value
     end
 
     def self.lookup(method, order)

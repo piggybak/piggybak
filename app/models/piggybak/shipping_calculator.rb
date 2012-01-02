@@ -1,5 +1,5 @@
 module Piggybak
-  class Calculator
+  class ShippingCalculator
     def self.available?(*args)
       false
     end

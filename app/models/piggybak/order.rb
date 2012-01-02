@@ -18,6 +18,7 @@ module Piggybak
     validates_presence_of :phone
     validates_presence_of :total
     validates_presence_of :total_due
+    validates_presence_of :tax_charge
     validates_presence_of :created_at
 
     before_validation :set_defaults
@@ -60,9 +61,14 @@ module Piggybak
     end
 
     def update_totals
+      self.total = 0
+
       self.line_items.each do |line_item|
         self.total += line_item.total
       end
+
+      self.tax_charge = TaxMethod.calculate_tax(self)
+      self.total += self.tax_charge
 
       shipments.each do |shipment|
         if shipment.new_record? 

@@ -29,8 +29,12 @@ module Piggybak
             field :shipping_address
             field :shipments
             field :payments
-
             field :total do
+              formatted_value do
+                "$%.2f" % value
+              end
+            end
+            field :tax_charge do
               formatted_value do
                 "$%.2f" % value
               end
@@ -64,6 +68,12 @@ module Piggybak
               read_only true
               formatted_value do
                 "$%.2f" % value.to_f
+              end
+            end
+            field :tax_charge do
+              read_only true
+              formatted_value do
+                "$%.2f" % value
               end
             end
             field :total_due do
@@ -241,6 +251,48 @@ module Piggybak
             field :shipping_method do
               visible false
             end
+          end
+        end
+
+        config.model Piggybak::TaxMethod do
+          parent Piggybak::PaymentMethod
+          object_label_method :admin_label
+          edit do
+            field :description
+            field :klass do
+              label "Calculator"
+            end
+            field :active
+            field :tax_method_values do
+              label "Metadata"
+            end
+          end
+          list do
+            field :description
+            field :active
+          end
+        end
+      
+        config.model Piggybak::TaxMethodValue do
+          object_label_method :admin_label
+          visible false
+          edit do
+            include_all_fields
+            field :tax_method do
+              visible false
+            end
+          end
+        end
+
+        config.model Piggybak::State do
+          parent Piggybak::PaymentMethod
+          list do
+            field :name
+            field :abbr
+          end
+          edit do
+            field :name
+            field :abbr
           end
         end
       

@@ -2,7 +2,6 @@
 
 <%= form_for @order, :url => piggybak.order_submit_url, :method => "POST" do |f| %>
 
-<%= debug(@order.errors) %>
 <%= raw @order.errors.full_messages.join("<br />") %>
 
 <br /><br />

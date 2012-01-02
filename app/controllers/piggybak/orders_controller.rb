@@ -23,6 +23,7 @@ module Piggybak
       begin
         ActiveRecord::Base.transaction do
           @order = Piggybak::Order.new(params[:piggybak_order])
+          @order.user = current_user if current_user
 
           cart = Piggybak::Cart.new(request.cookies["cart"])
           @order.add_line_items(cart)

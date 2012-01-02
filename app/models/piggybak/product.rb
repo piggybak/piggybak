@@ -13,7 +13,7 @@ class Piggybak::Product < ActiveRecord::Base
     "Product: #{self.description}"
   end
 
-  def decrease_inventory(purchased)
-    self.update_attribute(:quantity, self.quantity - purchased)
+  def update_inventory(purchased)
+    self.update_attribute(:quantity, self.quantity + purchased)
   end
 end

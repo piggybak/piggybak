@@ -20,18 +20,21 @@ module Piggybak
     validates_presence_of :total_due
     validates_presence_of :created_at
 
-    before_validation :update_details
-    before_save :process_payments, :update_details, :update_status
-    after_save :update_details
+    before_validation :set_defaults
+    after_validation :update_totals
+    before_save :process_payments, :update_status
 
     def process_payments
-      update_details
-
       has_errors = false
       self.payments.each do |payment|
         if(!payment.process)
           has_errors = true
         end
+      end
+
+      self.total_due = self.total
+      payments.each do |payment|
+        self.total_due -= payment.total
       end
       !has_errors
     end
@@ -46,13 +49,18 @@ module Piggybak
       end
     end
 
-    def update_details
+    def set_defaults
       self.created_at ||= Time.now
       self.status ||= "new"
       self.total = 0
 
       self.line_items.each do |line_item|
         line_item.total = line_item.product.price * line_item.quantity
+      end
+    end
+
+    def update_totals
+      self.line_items.each do |line_item|
         self.total += line_item.total
       end
 
@@ -71,18 +79,16 @@ module Piggybak
     end
 
     def update_status
-      update_details
-
       if self.total_due > 0.00
         self.status = "payment owed"
-      elsif self.total_due == 0.00
+      elsif self.total_due < 0.00
+        self.status = "credit_owed" 
+      else
         if self.total == 0.00
           self.status = "new"
         else
           self.status = "paid"
         end
-      else
-        self.status = "credit_owed" 
       end
     end
 

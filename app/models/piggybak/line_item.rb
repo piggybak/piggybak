@@ -9,13 +9,21 @@ module Piggybak
     validates_numericality_of :quantity, :only_integer => true, :greater_than_or_equal_to => 0
 
     after_create :decrease_inventory
+    after_destroy :increase_inventory
         
     def admin_label
       "#{self.quantity} x #{self.product.description}"
     end
 
     def decrease_inventory
-      self.product.decrease_inventory(self.quantity)
+      self.product.update_inventory(-1 * self.quantity)
+    end
+
+    def increase_inventory
+logger.warn "steph inside increase inventory #{self.order.inspect}"
+      self.product.update_inventory(self.quantity)
+      #self.order.update_details
+      #self.order.save
     end
   end
 end

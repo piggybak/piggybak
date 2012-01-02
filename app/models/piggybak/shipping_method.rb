@@ -2,6 +2,8 @@ module Piggybak
   class ShippingMethod < ActiveRecord::Base
     has_many :shipping_method_values, :dependent => :destroy
     alias :metadata :shipping_method_values
+
+    validates_presence_of :description
     validates_presence_of :klass
 
     accepts_nested_attributes_for :shipping_method_values, :allow_destroy => true
@@ -17,7 +19,9 @@ module Piggybak
     end
 
     def klass_enum 
-      ["Piggybak::Calculator::FlatRate", "Piggybak::Calculator::Range"]
+      #TODO: Troubleshoot use of subclasses here instead
+      [::Piggybak::Calculator::FlatRate,
+       ::Piggybak::Calculator::Range]
     end
 
     def self.available_methods(cart)

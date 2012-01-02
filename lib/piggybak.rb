@@ -169,6 +169,13 @@ module Piggybak
                 !bindings[:object].new_record?
               end 
             end
+            field :total do
+              read_only true
+              formatted_value do
+                "$%.2f" % value.to_f
+              end
+              help "This will automatically be calculated at the time of processing."
+            end
           end
         end
       

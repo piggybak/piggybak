@@ -2,10 +2,6 @@ module Piggybak
   class Calculator::FlatRate < Calculator
     KEYS = ["rate"]
 
-    def self.description
-      "Flat Rate"
-    end
-
     def self.available?(method, order)
       method.metadata.collect { |t| t.key }.sort == KEYS
     end

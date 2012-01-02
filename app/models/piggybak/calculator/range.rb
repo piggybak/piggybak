@@ -1,9 +1,6 @@
 module Piggybak
   class Calculator::Range < Calculator
     KEYS = ["cost", "upper", "lower"]
-    def self.description
-      "Range"
-    end
 
     def self.available?(method, order)
       return false if method.metadata.collect { |t| t.key }.sort != KEYS.sort

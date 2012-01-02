@@ -9,6 +9,7 @@ module Piggybak
     validates_presence_of :description
 
     def klass_enum 
+      #TODO: Troubleshoot use of subclasses here instead
       [::Piggybak::PaymentCalculator::AuthorizeNet,
        ::Piggybak::PaymentCalculator::Fake]
     end

@@ -140,21 +140,34 @@ module Piggybak
           visible false
 
           edit do
-            field :payment_method
-            field :created_at do
-              strftime_format "%d-%m-%Y"
-              read_only true
+            #field :details do
+            #  read_only true
+            #  help "Autopopulated"
+            #end
+            field :payment_method do
+              read_only do 
+                !bindings[:object].new_record?
+              end 
             end
-            field :number
-            field :month
-            field :year
-            field :verification_value
-            field :total do
-              help "This will automatically be calculated at the time of processing."
-              read_only true
-              formatted_value do
-                "$%.2f" % value
-              end
+            field :number do
+              read_only do 
+                !bindings[:object].new_record?
+              end 
+            end
+            field :month do
+              read_only do 
+                !bindings[:object].new_record?
+              end 
+            end
+            field :year do
+              read_only do 
+                !bindings[:object].new_record?
+              end 
+            end
+            field :verification_value do
+              read_only do 
+                !bindings[:object].new_record?
+              end 
             end
           end
         end

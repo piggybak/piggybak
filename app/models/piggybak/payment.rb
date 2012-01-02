@@ -38,8 +38,8 @@ module Piggybak
         gateway_response = gateway.authorize(self.order.total_due*100, credit_card, :address => self.order.avs_address)
         if gateway_response.success?
           self.attributes = { :total => self.order.total_due, 
-                              :number => '-',
-                              :verification_value => '-' }
+                              :number => 'hidden',
+                              :verification_value => 'hidden' }
           gateway.capture(1000, gateway_response.authorization)
           return true
   	    else
@@ -52,19 +52,30 @@ module Piggybak
     end
 
     def admin_label
-      cost = "$%.2f" % self.total
-      "Payment ##{self.id}<br />" +
-      "#{self.payment_method.description}<br />" +
-      "Status: #{self.status}<br />" +
-      "#{cost}"
+      if !self.new_record? 
+        cost = "$%.2f" % self.total
+        return "Payment ##{self.id}<br />" +
+          "#{self.created_at.strftime("%m-%d-%Y")}<br />" + 
+          "Payment Method: #{self.payment_method.description}<br />" +
+          "Status: #{self.status}<br />" +
+          "#{cost}"
+      else
+        return ""
+      end
     end
+    alias :details :admin_label
 
-    validates_each :number do |record, attr, value|
+    validates_each :payment_method_id do |record, attr, value|
       if record.new_record?
   	    credit_card = ActiveMerchant::Billing::CreditCard.new(record.credit_card)
   	 
         if !credit_card.valid?
-          record.errors.add attr, "Your credit card is not valid: #{credit_card.errors.full_messages.join('<br />')}"
+          record.order.errors.add :payment_method_id, "Invalid credit card."
+          credit_card.errors.each do |key, value|
+            if value.any?
+              record.errors.add key.to_sym, value
+            end
+          end
         end
       end
     end

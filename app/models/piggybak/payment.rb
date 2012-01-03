@@ -68,10 +68,9 @@ module Piggybak
   	    credit_card = ActiveMerchant::Billing::CreditCard.new(record.credit_card)
   	 
         if !credit_card.valid?
-          record.order.errors.add :payment_method_id, "Invalid credit card."
           credit_card.errors.each do |key, value|
-            if value.any?
-              record.errors.add key.to_sym, value
+            if value.any? && !["first_name", "last_name", "type"].include?(key)
+              record.errors.add key, value
             end
           end
         end

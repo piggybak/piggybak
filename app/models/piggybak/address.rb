@@ -8,7 +8,7 @@ module Piggybak
     validates_presence_of :city
     validates_presence_of :state_id
     validates_presence_of :zip
-        
+      
     def admin_label
       address = "#{self.firstname} #{self.lastname}<br />"
       address += "#{self.address1}<br />"
@@ -18,5 +18,6 @@ module Piggybak
       address += "#{self.city}, #{self.state.abbr} #{self.zip}"
       address
     end
+    alias :display :admin_label  
   end
 end

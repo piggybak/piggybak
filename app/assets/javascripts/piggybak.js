@@ -14,7 +14,7 @@ var piggybak = {
 		$('#piggybak_order_billing_address_attributes_state_id').change(function() {
 			piggybak.update_tax();
 		});
-		$('#shipments select').change(function() {
+		$('#shipping select').change(function() {
 			piggybak.update_totals();
 		});
 		return;
@@ -64,7 +64,7 @@ var piggybak = {
 	update_totals: function() {
 		var subtotal = $('#subtotal_total').data('total');
 		$('#tax_total').html('$' + tax_total.toFixed(2));
-		var shipping_total = $('#shipments select option:selected').data('rate');
+		var shipping_total = $('#shipping select option:selected').data('rate');
 		$('#shipping_total').html('$' + shipping_total.toFixed(2));
 		var order_total = subtotal + tax_total + shipping_total;
 		$('#order_total').html('$' + order_total.toFixed(2));	

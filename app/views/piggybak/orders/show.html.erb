@@ -3,9 +3,28 @@
 <h1>Checkout</h1>
 <%= form_for @order, :url => piggybak.order_submit_url, :method => "POST" do |f| %>
 
+<% if @order.errors.any? -%>
+<b>You have errors with your submission:</b><br />
 <%= raw @order.errors.full_messages.join("<br />") %>
+<% end -%>
+<div class="clear"></div>
 
-<div id="user_details">
+<div id="billing_address">
+	<h3>Billing Address</h3>
+	<%= f.fields_for :billing_address do |billing_address| %>
+	<%= render "address_form", :address => billing_address %>
+	<% end -%>
+</div>
+<div id="shipping_address">
+	<h3>Shipping Address</h3>
+	<%= f.fields_for :shipping_address do |shipping_address| %>
+	<%= render "address_form", :address => shipping_address %>
+	<% end -%>
+</div>
+
+<div id="add_details">
+	<div id="user_details">
+	<h3>User Details</h3>
 	<p>
 		<% if current_user -%>
 		<%= f.label :email %>
@@ -25,22 +44,8 @@
 		<%= f.label :phone %>
 		<%= f.text_field :phone %>
 	</p>
-</div>
-
-<div id="shipping_address">
-	<h3>Shipping Address</h3>
-	<%= f.fields_for :shipping_address do |shipping_address| %>
-	<%= render "address_form", :address => shipping_address %>
-	<% end -%>
-</div>
-<div id="billing_address">
-	<h3>Billing Address</h3>
-	<%= f.fields_for :billing_address do |billing_address| %>
-	<%= render "address_form", :address => billing_address %>
-	<% end -%>
-</div>
-
-<div id="shipments">
+	</div>
+	<div id="shipping">
 	<h3>Shipping Option</h3>
 	<%= f.fields_for :shipments, f.object.shipments.build do |shipment| %>
 		<p>
@@ -48,33 +53,56 @@
 		<%= shipment.select :shipping_method_id, [] %>
 		</p>
 	<% end -%>
-	<h3>Totals</h3>
-	<%= render "piggybak/cart/items", :page => "checkout" %>
-</div>
-
-<div id="payments">
+	</div>
+	<div id="payment">
 	<h3>Payment</h3>
 	<%= f.fields_for :payments, f.object.payments.build do |payment| %>
 		<p>
 		<%= payment.label :number %>
+		<% if @order.errors.keys.include?("payments.number".to_sym) %>
+		<span class="field_with_errors">
 		<%= payment.text_field :number %>
+		</span>
+		<% else -%>
+		<%= payment.text_field :number %>
+		<% end -%>
 		</p>
 
 		<p>
 		<%= payment.label :verification_value %>
+		<% if @order.errors.keys.include?("payments.verification_value".to_sym) %>
+		<span class="field_with_errors">
 		<%= payment.text_field :verification_value %>
+		</span>
+		<% else -%>
+		<%= payment.text_field :verification_value %>
+		<% end -%>
 		</p>
 
 		<p>
 		<%= payment.label :month %>
+		<% if @order.errors.keys.include?("payments.verification_value".to_sym) %>
+		<span class="field_with_errors">
 		<%= payment.select :month, 1.upto(12) %> /
 		<%= payment.select :year, Time.now.year.upto(Time.now.year + 10) %>
+		</span>
+		<% else -%>
+		<%= payment.select :month, 1.upto(12) %> /
+		<%= payment.select :year, Time.now.year.upto(Time.now.year + 10) %>
+		<% end -%>
 		</p>
 	<% end -%>
+	</div>
+	<div id="submit">
 	<%= f.submit %>
+	</div>
 </div>
-
 <% end -%>
+
+<div id="totals_section">
+	<h3>Totals</h3>
+	<%= render "piggybak/cart/items", :page => "checkout" %>
+</div>
 
 </div>
 

@@ -1,6 +1,8 @@
 module Piggybak
   class OrdersController < ApplicationController
     def show
+      response.headers['Cache-Control'] = 'no-cache'
+
       @cart = Piggybak::Cart.new(request.cookies["cart"])
       @order = Piggybak::Order.new
 
@@ -18,6 +20,8 @@ module Piggybak
     end
   
     def submit
+      response.headers['Cache-Control'] = 'no-cache'
+
       begin
         ActiveRecord::Base.transaction do
           @order = Piggybak::Order.new(params[:piggybak_order])
@@ -53,6 +57,8 @@ module Piggybak
     end
   
     def receipt
+      response.headers['Cache-Control'] = 'no-cache'
+
       @order = Piggybak::Order.find(session[:last_order])
     end
 

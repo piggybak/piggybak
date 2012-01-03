@@ -4,7 +4,7 @@ class CreateLineItems < ActiveRecord::Migration
       t.references :order, :null => false
       t.integer :quantity, :null => false
       t.references :product, :null => false
-      t.float :total
+      t.decimal :total
     end
   end
 end

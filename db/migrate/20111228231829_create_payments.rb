@@ -4,7 +4,7 @@ class CreatePayments < ActiveRecord::Migration
       t.references :order
       t.references :payment_method
       t.string :status, :null => false, :default => 'paid'
-      t.float :total, :null => false, :default => 0.0
+      t.decimal :total, :null => false, :default => 0.0
 
       t.string :number
       t.integer :month

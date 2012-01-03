@@ -3,7 +3,7 @@ class CreateProducts < ActiveRecord::Migration
     create_table :products do |t|
       t.string :sku, :null => false
       t.string :description, :null => false
-      t.float :price, :null => false
+      t.decimal :price, :null => false
       t.integer :quantity, :null => false, :default => 0
       t.integer :item_id, :null => false
       t.string :item_type, :null => false

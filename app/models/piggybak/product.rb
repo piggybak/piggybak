@@ -7,7 +7,7 @@ class Piggybak::Product < ActiveRecord::Base
   validates_uniqueness_of :sku
   validates_presence_of :description
   validates_presence_of :price
-  validates_presence_of :item
+  validates_presence_of :item_type
   validates_numericality_of :quantity, :only_integer => true, :greater_than_or_equal_to => 0
     
   def admin_label

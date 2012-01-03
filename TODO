@@ -1,0 +1,5 @@
+# Fix bug on the backend that's miscalculating amount due (off by $0.01)
+# Finish update inventory handling (adjust quantity on line item update, make sure this works for delete, create, and update)
+# Figure out how to make entire payments section Read Only after it's completed (Discuss with railsadmin ppl)
+# Troubleshoot, make sure checkout/submit is not cached
+# Troubleshoot, figure out why subclasseses isn't working on payment_methods, tax_methods, shipping_methods

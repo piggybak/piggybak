@@ -7,6 +7,7 @@ require 'currency'
 ActiveMerchant::Billing::Base.mode = :test
 
 module Piggybak
+
   class Engine < Rails::Engine
     initializer "define rails_admin config" do |app|
       # RailsAdmin config file. Generated on December 21, 2011 13:04

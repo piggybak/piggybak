@@ -70,7 +70,7 @@ module Piggybak
         if !credit_card.valid?
           credit_card.errors.each do |key, value|
             if value.any? && !["first_name", "last_name", "type"].include?(key)
-              record.errors.add key, value
+              record.errors.add key, (value.is_a?(Array) ? value.join(', ') : value)
             end
           end
         end

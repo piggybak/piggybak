@@ -17,7 +17,7 @@ Modular / mountable ecommerce gem. Features:
 * Next, run rake db:migrate to run migrations
 * Next, mount in your application by adding: "mount Piggybak::Engine => '/checkout', :as => 'piggybak'" to config/routes
 * Update or add app/models/ability.rb to include Piggybak models that admin has access to
-* Add piggybak.js to application.js or to be included in application
+* If you want redirect to redirect users to checkout after login / logout, add to your ApplicationController
 
 == Integration Components
 

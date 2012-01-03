@@ -23,7 +23,8 @@ module Piggybak
       # Piggybak::ShippingCalculator.subclasses
       [Piggybak::ShippingCalculator::FlatRate,
        Piggybak::ShippingCalculator::Range,
-       Piggybak::ShippingCalculator::Pickup]
+       Piggybak::ShippingCalculator::Pickup,
+       Piggybak::ShippingCalculator::Free]
     end
 
     def self.available_methods(cart)

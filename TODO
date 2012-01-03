@@ -4,13 +4,10 @@
 # Add countries: migration, associations, RailsAdmin DSL, add to checkout page, but don't do anything with countries - states toggle yet
 # Add United States to seed data
 # Add states to seed data
-# Figure out how to redirect to /checkout/show after login / logout on checkout page. Try to do this in engine only.
 
 # Nice to have, at some point
-# Add Free shipping method
 # Remove requirement to update app/models/ability.rb to include Piggybak models
 # - check if defined: extend
 # - else not defined: include default
-# Remove requirement to add piggybak.js to application.js (perhaps add inline - a little bleh)
-# Figure out if line items should become read only after they are shipped
+# Decide if line items should become read only after they are shipped
 # Add testing :)

@@ -2,26 +2,15 @@ module Piggybak
   class ShipppingCalculator::Range < ShippingCalculator
     KEYS = ["cost", "upper", "lower"]
 
-    def self.available?(method, order)
-      return false if method.metadata.collect { |t| t.key }.sort != KEYS.sort
-
+    def self.available?(method, object)
       low_end = method.metadata.detect { |m| m.key == "lower" }.value
       high_end = method.metadata.detect { |m| m.key == "upper" }.value
 
-      order.total >= low_end.to_f && order.total <= high_end.to_f
+      object.total >= low_end.to_f && object.total <= high_end.to_f
     end
 
-    def self.rate(method, order)
-      method.metadata.detect { |m| m.key == "cost" }.value
-    end
-
-    def self.lookup(method, order)
-      if self.available?(method, order)
-        { :available => self.available?(method, order),
-          :rate => self.rate(method, order) }
-      else 
-        { :available => self.available?(method, order) }
-      end
+    def self.rate(method, object)
+      method.metadata.detect { |m| m.key == "cost" }.value.to_f.to_c
     end
   end
 end

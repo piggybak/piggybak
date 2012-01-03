@@ -1,86 +1,84 @@
-<%= render "piggybak/cart/items", :allow_edit => false %>
+<div id="checkout">
 
+<h1>Checkout</h1>
 <%= form_for @order, :url => piggybak.order_submit_url, :method => "POST" do |f| %>
 
 <%= raw @order.errors.full_messages.join("<br />") %>
 
-<br /><br />
+<div id="user_details">
+	<p>
+		<% if current_user -%>
+		<%= f.label :email %>
+		<%= f.text_field :email, { :readonly => true, :class => "readonly" } %>
+		<% if false -%>
+		<span>or <%= link_to 'LOGOUT', destroy_user_session_path, :method => :delete, :class => "last" %></span>
+		<% end -%>
+		<% else -%>
+		<%= f.label :email %>
+		<%= f.text_field :email %>
+		<% if false -%>
+		<span>or <%= link_to 'LOG IN', new_user_session_path %></span>
+		<% end -%>
+		<% end -%>
+	</p>
+	<p>
+		<%= f.label :phone %>
+		<%= f.text_field :phone %>
+	</p>
+</div>
 
-<% if current_user -%>
-<%= f.label :email %>
-<%= f.text_field :email, { :readonly => true } %><br />
-<% else -%>
-<%= f.label :email %>
-<%= f.text_field :email %><br />
-<% end -%>
-<%= f.label :phone %>
-<%= f.text_field :phone %><br />
+<div id="shipping_address">
+	<h3>Shipping Address</h3>
+	<%= f.fields_for :shipping_address do |shipping_address| %>
+	<%= render "address_form", :address => shipping_address %>
+	<% end -%>
+</div>
+<div id="billing_address">
+	<h3>Billing Address</h3>
+	<%= f.fields_for :billing_address do |billing_address| %>
+	<%= render "address_form", :address => billing_address %>
+	<% end -%>
+</div>
 
-<table width="100%" cellpadding="0" cellspacing="0">
-<tr>
-<td>
-<h3>Billing Address</h3>
+<div id="shipments">
+	<h3>Shipping Option</h3>
+	<%= f.fields_for :shipments, f.object.shipments.build do |shipment| %>
+		<p>
+		<%= shipment.label :shipping_method_id %>
+		<%= shipment.select :shipping_method_id, [] %>
+		</p>
+	<% end -%>
+	<h3>Totals</h3>
+	<%= render "piggybak/cart/items", :page => "checkout" %>
+</div>
 
-<%= f.fields_for :billing_address do |billing_address| %>
-<%= billing_address.label :firstname %>
-<%= billing_address.text_field :firstname %><br />
-<%= billing_address.label :lastname %>
-<%= billing_address.text_field :lastname %><br />
+<div id="payments">
+	<h3>Payment</h3>
+	<%= f.fields_for :payments, f.object.payments.build do |payment| %>
+		<p>
+		<%= payment.label :number %>
+		<%= payment.text_field :number %>
+		</p>
 
-<%= billing_address.label :address1 %>
-<%= billing_address.text_field :address1 %><br />
-<%= billing_address.label :city %>
-<%= billing_address.text_field :city %><br />
-<%= billing_address.label :state %>
-<%= billing_address.text_field :state %><br />
-<%= billing_address.label :zip %>
-<%= billing_address.text_field :zip %>
-<% end -%>
+		<p>
+		<%= payment.label :verification_value %>
+		<%= payment.text_field :verification_value %>
+		</p>
 
-</td><td>
-<h3>Shipping Address</h3>
-<%= f.fields_for :shipping_address do |billing_address| %>
-<%= billing_address.label :firstname %>
-<%= billing_address.text_field :firstname %><br />
-<%= billing_address.label :lastname %>
-<%= billing_address.text_field :lastname %><br />
-
-<%= billing_address.label :address1 %>
-<%= billing_address.text_field :address1 %><br />
-<%= billing_address.label :city %>
-<%= billing_address.text_field :city %><br />
-<%= billing_address.label :state %>
-<%= billing_address.text_field :state %><br />
-<%= billing_address.label :zip %>
-<%= billing_address.text_field :zip %><br />
-<% end -%>
-</td></tr></table>
-
-<%= f.fields_for :shipments, f.object.shipments.build do |shipment| %>
-<%= shipment.label :shipping_method_id %>
-<%= shipment.select :shipping_method_id, @shipping_methods %>
-<% end -%>
-
-<h3>Payment</h3>
-
-<%= f.fields_for :payments, f.object.payments.build do |payment| %>
-<%= payment.label :payment_method_id %>
-<%= payment.select :payment_method_id, @payment_methods %><br />
-
-<%= payment.label :number %>
-<%= payment.text_field :number %><br />
-
-<%= payment.label :verification_value %>
-<%= payment.text_field :verification_value %><br />
-
-<%= payment.label :month %>
-<%= payment.select :month, 1.upto(12) %>
-
-<%= payment.label :year %>
-<%= payment.select :year, Time.now.year.upto(Time.now.year + 10) %><br />
-<% end -%>
-
-<%= f.submit %>
+		<p>
+		<%= payment.label :month %>
+		<%= payment.select :month, 1.upto(12) %> /
+		<%= payment.select :year, Time.now.year.upto(Time.now.year + 10) %>
+		</p>
+	<% end -%>
+	<%= f.submit %>
+</div>
 
 <% end -%>
 
+</div>
+
+<script type="text/javascript">
+var shipping_lookup = "<%= piggybak.orders_shipping_url %>"; 
+var tax_lookup = "<%= piggybak.orders_tax_url %>"; 
+</script>

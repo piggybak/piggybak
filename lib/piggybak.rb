@@ -2,6 +2,7 @@ require 'acts_as_product/base'
 require 'acts_as_orderer/base'
 require 'application_helper'
 require 'active_merchant'
+require 'currency'
       
 ActiveMerchant::Billing::Base.mode = :test
 
@@ -19,31 +20,20 @@ module Piggybak
           object_label_method :admin_label
 
           show do
+            field :status
+            field :total
+            field :tax_charge
+            field :total_due
+            field :created_at
             field :email
             field :phone
             field :user
-            field :status
 
             field :line_items
             field :billing_address
             field :shipping_address
             field :shipments
             field :payments
-            field :total do
-              formatted_value do
-                "$%.2f" % value
-              end
-            end
-            field :tax_charge do
-              formatted_value do
-                "$%.2f" % value
-              end
-            end
-            field :total_due do
-              formatted_value do
-                "$%.2f" % value
-              end
-            end
           end
           list do
             field :status
@@ -58,29 +48,9 @@ module Piggybak
             field :user
           end
           edit do
-            field :created_at do
+            field :details do
               read_only true
-            end
-            field :status do
-              read_only true
-            end
-            field :total do
-              read_only true
-              formatted_value do
-                "$%.2f" % value.to_f
-              end
-            end
-            field :tax_charge do
-              read_only true
-              formatted_value do
-                "$%.2f" % value
-              end
-            end
-            field :total_due do
-              read_only true
-              formatted_value do
-                "$%.2f" % value.to_f
-              end
+              help "Autopopulated"
             end
             field :user do
               read_only do
@@ -119,7 +89,7 @@ module Piggybak
             field :total do
               read_only true
               formatted_value do
-                "$%.2f" % value.to_f
+                value ? "$%.2f" % value : '-'
               end
               help "This will automatically be calculated at the time of processing."
             end
@@ -182,7 +152,7 @@ module Piggybak
             field :total do
               read_only true
               formatted_value do
-                "$%.2f" % value.to_f
+                "$%.2f" % value
               end
               help "This will automatically be calculated at the time of processing."
             end
@@ -285,6 +255,7 @@ module Piggybak
         end
 
         config.model Piggybak::State do
+          weight 1
           parent Piggybak::PaymentMethod
           list do
             field :name

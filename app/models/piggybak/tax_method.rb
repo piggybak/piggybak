@@ -23,14 +23,13 @@ module Piggybak
       [Piggybak::TaxCalculator::FlatRate]
     end
 
-    def self.calculate_tax(order)
+    def self.calculate_tax(object)
       total_tax = 0
 
       TaxMethod.all.each do |tax_method|
         calculator = tax_method.klass.constantize
-        logger.warn "steph: calc: #{calculator.inspect}"
-        if calculator.available?(tax_method, order)
-          total_tax += calculator.rate(tax_method, order)
+        if calculator.available?(tax_method, object)
+          total_tax += calculator.rate(tax_method, object)
         end 
       end
       

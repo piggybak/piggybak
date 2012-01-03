@@ -9,5 +9,7 @@ Piggybak::Engine.routes.draw do
     match "/receipt" => "orders#receipt", :as => :receipt
     match "/orders" => "orders#list", :as => :orders_list
     match "/admin/orders/:id/email" => "orders#email", :as => :orders_email
+    match "/orders/shipping" => "orders#shipping", :as => :orders_shipping
+    match "/orders/tax" => "orders#tax", :as => :orders_tax
   end
 end

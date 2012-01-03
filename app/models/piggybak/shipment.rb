@@ -12,11 +12,10 @@ module Piggybak
     end
 
     def admin_label
-      cost = "$%.2f" % self.total
       "Shipment ##{self.id}<br />" +
       "#{self.shipping_method.description}<br />" +
       "Status: #{self.status}<br />" +
-      "#{cost}"
+      "$#{"%.2f" % self.total}"
     end
   end
 end

@@ -40,6 +40,21 @@ module Piggybak
       !has_errors
     end
 
+    def details
+      if !self.new_record? 
+        subtotal = self.line_items.inject(0) { |subtotal, li| subtotal + li.total }
+        shipping = self.shipments.inject(0) { |shipping, shipment| shipping + shipment.total }
+        return "Status: #{self.status}<br />" +
+          "Subtotal: $#{"%.2f" % subtotal}<br />" + 
+          "Shipping: $#{"%.2f" % shipping}<br />" + 
+          "Tax: $#{"%.2f" % self.tax_charge}<br />" + 
+          "Due: $#{"%.2f" % self.total_due}<br />" + 
+          "Created at: #{self.created_at.strftime("%m-%d-%Y")}<br />" #details here"
+      else
+        return "New Order"
+      end
+    end
+
     def add_line_items(cart)
       cart.update_quantities
       cart.items.each do |item|
@@ -54,6 +69,8 @@ module Piggybak
       self.created_at ||= Time.now
       self.status ||= "new"
       self.total = 0
+      self.total_due = 0
+      self.tax_charge = 0
 
       self.line_items.each do |line_item|
         line_item.total = line_item.product.price * line_item.quantity
@@ -75,8 +92,11 @@ module Piggybak
           calculator = shipment.shipping_method.klass.constantize
           shipment.total = calculator.rate(shipment.shipping_method, self)
         end
+logger.warn "steph shipment total is #{shipment.total}"
         self.total += shipment.total
       end
+logger.warn "steph: total is #{self.total}"
+      self.total = self.total.to_c
 
       self.total_due = self.total
       payments.each do |payment|
@@ -92,6 +112,8 @@ module Piggybak
       else
         if self.total == 0.00
           self.status = "new"
+        elsif self.shipments.all? { |s| s.status == "shipped" }
+          self.status = "shipped"
         else
           self.status = "paid"
         end

@@ -3,6 +3,7 @@ module Piggybak
     attr_accessor :items
     attr_accessor :total
     attr_accessor :errors
+    attr_accessor :extra_data
   
     def initialize(cookie='')
       self.items = []
@@ -71,6 +72,6 @@ module Piggybak
       end
       self.items = new_items
       self.total = self.items.sum { |item| item[:quantity]*item[:product].price }
-    end 
+    end
   end
 end

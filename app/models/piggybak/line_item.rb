@@ -10,6 +10,7 @@ module Piggybak
 
     after_create :decrease_inventory
     after_destroy :increase_inventory
+    after_update :update_inventory
         
     def admin_label
       "#{self.quantity} x #{self.product.description}"
@@ -20,10 +21,11 @@ module Piggybak
     end
 
     def increase_inventory
-logger.warn "steph inside increase inventory #{self.order.inspect}"
       self.product.update_inventory(self.quantity)
-      #self.order.update_details
-      #self.order.save
+    end
+
+    def update_inventory
+      Rails.logger.warn "steph inside update inventory: #{self.inspect}"
     end
   end
 end

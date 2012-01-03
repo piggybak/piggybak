@@ -12,10 +12,8 @@ module Piggybak
       @order.billing_address ||= Piggybak::Address.new
       @order.shipping_address ||= Piggybak::Address.new
 
-      @shipping_methods = Piggybak::ShippingMethod.lookup_methods(@cart) 
       @order.shipments ||= [Piggybak::Shipment.new] 
 
-      @payment_methods = Piggybak::PaymentMethod.find_all_by_active(true).inject([]) { |arr, b| arr << [b.description, b.id]; arr }
       @order.payments ||= [Piggybak::Payment.new] 
     end
   
@@ -24,6 +22,7 @@ module Piggybak
         ActiveRecord::Base.transaction do
           @order = Piggybak::Order.new(params[:piggybak_order])
           @order.user = current_user if current_user
+          @order.payments.first.payment_method_id = Piggybak::PaymentMethod.find_by_active(true).id
 
           cart = Piggybak::Cart.new(request.cookies["cart"])
           @order.add_line_items(cart)
@@ -47,8 +46,6 @@ module Piggybak
           @order.email = current_user.email 
         end
 
-        @shipping_methods = Piggybak::ShippingMethod.lookup_methods(@cart) 
-        @payment_methods = Piggybak::PaymentMethod.find_all_by_active(true).inject([]) { |arr, b| arr << [b.description, b.id]; arr }
         @user = current_user
 
         render "piggybak/orders/show"
@@ -70,6 +67,20 @@ module Piggybak
       flash[:notice] = "Email notification sent."
 
       redirect_to rails_admin.edit_path('Piggybak::Order', order.id)
+    end
+
+    def shipping
+      cart = Piggybak::Cart.new(request.cookies["cart"])
+      cart.extra_data = params
+      shipping_methods = Piggybak::ShippingMethod.lookup_methods(cart)
+      render :json => shipping_methods
+    end
+
+    def tax
+      cart = Piggybak::Cart.new(request.cookies["cart"])
+      cart.extra_data = params
+      total_tax = Piggybak::TaxMethod.calculate_tax(cart)
+      render :json => { :tax => total_tax }
     end
   end
 end

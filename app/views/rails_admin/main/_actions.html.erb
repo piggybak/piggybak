@@ -1,4 +1,4 @@
-<% if params[:action] != 'new' -%>
+<% if params[:action] == 'edit' -%>
 <%= link_to "Send Email Confirmation", piggybak.orders_email_url(params[:id]) %>
 <% else -%>
 <b>You may not send a confirmation email until you have a saved order.</b>

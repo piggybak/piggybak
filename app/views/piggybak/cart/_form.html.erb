@@ -2,10 +2,14 @@
 	<% if object.piggybak_product && object.piggybak_product.active -%>
 		<% if object.piggybak_product.quantity > 0 -%>
 			<%= form_tag piggybak.cart_add_url do -%>
+			<div id="product_details">
+			<span id="title"><%= object.piggybak_product.description %></span>
+			<span id="price"><%= number_to_currency object.piggybak_product.price %></span>
+			</div>
 			<label>Quantity</label>
 			<%= text_field_tag :quantity %>
 			<%= hidden_field_tag :product_id, object.piggybak_product.id %>
-			<%= submit_tag "Add to Cart" %>
+			<%= submit_tag "Add to Cart", :id => "submit" %>
 			<% end -%>
 			<% else -%>
 			Sorry, out of stock.

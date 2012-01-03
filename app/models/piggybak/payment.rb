@@ -53,11 +53,10 @@ module Piggybak
 
     def admin_label
       if !self.new_record? 
-        cost = "$%.2f" % self.total
         return "Payment ##{self.id} (#{self.created_at.strftime("%m-%d-%Y")})<br />" + 
           "Payment Method: #{self.payment_method.description}<br />" +
           "Status: #{self.status}<br />" +
-          "#{cost}"
+          "$#{"%.2f" % self.total}"
       else
         return ""
       end

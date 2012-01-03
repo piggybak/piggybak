@@ -1,0 +1,24 @@
+<p>
+	<%= address.label :firstname %>
+	<%= address.text_field :firstname %>
+</p>
+<p>
+	<%= address.label :lastname %>
+	<%= address.text_field :lastname %>
+</p>
+<p>
+	<%= address.label :address1 %>
+	<%= address.text_field :address1 %>
+</p>
+<p>
+	<%= address.label :city %>
+	<%= address.text_field :city %>
+</p>
+<p>
+	<%= address.label :state %>
+	<%= address.select :state_id, ::Piggybak::State.all.collect {|p| [ p.name, p.id ] }, {:include_blank => false} %>
+</p>
+<p>
+	<%= address.label :zip %>
+	<%= address.text_field :zip %>
+</p>

@@ -17,3 +17,5 @@ class CreateOrders < ActiveRecord::Migration
     end
   end
 end
+
+# Note: To force precision, alter column type in database console

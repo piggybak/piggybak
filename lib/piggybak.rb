@@ -59,8 +59,12 @@ module Piggybak
             end
             field :email
             field :phone
-            field :billing_address
-            field :shipping_address
+            field :billing_address do 
+             help "Required"
+            end
+            field :shipping_address do
+              help "Required"
+            end
             field :line_items
             field :shipments
             field :payments

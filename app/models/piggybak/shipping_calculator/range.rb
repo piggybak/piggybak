@@ -1,5 +1,5 @@
 module Piggybak
-  class ShipppingCalculator::Range < ShippingCalculator
+  class ShippingCalculator::Range < ShippingCalculator
     KEYS = ["cost", "upper", "lower"]
 
     def self.available?(method, object)

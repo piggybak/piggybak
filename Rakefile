@@ -20,11 +20,12 @@ Jeweler::Tasks.new do |gem|
   gem.summary = %Q{Mountable ecommerce}
   gem.description = %Q{Mountable ecommerce}
   gem.email = "steph@endpoint.com"
-  gem.authors = ["Steph Skardal"]
+  gem.authors = ["Steph Skardal", "Brian Buchalter"]
 
   gem.add_dependency "rails_admin"
   gem.add_dependency "devise"
   gem.add_dependency "activemerchant"
+  gem.add_dependency "countries"
 end
 Jeweler::RubygemsDotOrgTasks.new
 

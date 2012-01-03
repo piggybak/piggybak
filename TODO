@@ -1,5 +1,13 @@
-# Fix bug on the backend that's miscalculating amount due (off by $0.01)
+# MUST / Client Driven
 # Finish update inventory handling (adjust quantity on line item update, make sure this works for delete, create, and update)
+# Update RailsAdmin DSL config to show Shipping and Billing address as required
 # Figure out how to make entire payments section Read Only after it's completed (Discuss with railsadmin ppl)
-# Troubleshoot, make sure checkout/submit is not cached
 # Troubleshoot, figure out why subclasseses isn't working on payment_methods, tax_methods, shipping_methods
+# Add countries: migration, associations, RailsAdmin DSL, add to checkout page, but don't do anything with countries - states toggle yet
+# Add United States to seed data
+# Add states to seed data
+# Remove line items from cart with quantity = 0
+
+# Not necessary
+# Add Free shipping method
+# Troubleshoot, make sure checkout/submit is not cached

@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steph Skardal"]
   s.date = "2012-01-03"
-  s.description = "TODO: longer description of your gem"
+  s.description = "Piggybak - mountable ecommerce"
   s.email = "steph@endpoint.com"
   s.extra_rdoc_files = [
     "README.rdoc"
@@ -83,7 +83,7 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.13"
-  s.summary = "TODO: one-line summary of your gem"
+  s.summary = "Mountable ecommerce"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3

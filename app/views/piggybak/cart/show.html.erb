@@ -1,11 +1,13 @@
 <div id="cart">
 
-<h1>Checkout</h1>
+<h1>Shopping Cart</h1>
 <% if @cart.errors.any? -%>
 <%= raw @cart.errors.join('<br />') %>
 <% end -%>
 
 <%= render "items", :page => "cart" %>
 
+<% if @cart.items.any? -%>
 <%= link_to "Proceed to Checkout", piggybak.orders_url, :id => "checkout" %>
+<% end -%>
 </div>

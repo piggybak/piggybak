@@ -1,3 +1,4 @@
+<% if @cart.items.any? -%>
 <%= form_tag piggybak.cart_update_url do -%>
 <table cellpadding="5" cellspacing="0" width="100%">
 	<tr>
@@ -23,7 +24,7 @@
 		<td><%= number_to_currency item[:quantity]*item[:product].price %></td>
 		<% if page == "cart" -%>
 		<td>
-			<%= link_to "Remove", "/cart/remove/#{item[:product].id}", :method => :delete %>
+			<%= link_to "Remove", piggybak.remove_item_url(item[:product].id), :method => :delete %>
 		</td>
 		<% end -%>
 	</tr>
@@ -59,4 +60,9 @@
 <%= submit_tag "Update", :id => "update" %>
 <% end -%>
 
+<% end -%>
+<% else -%>
+<p id="emtpy">
+Your cart is empty.
+</p>
 <% end -%>

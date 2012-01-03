@@ -65,12 +65,16 @@ module Piggybak
       self.errors = []
       new_items = []
       self.items.each do |item|
-        if item[:product].unlimited_inventory || item[:product].quantity >= item[:quantity]
+        if !item[:product].active
+          self.errors << ["Sorry, #{item[:product].description} is no longer an active product"]
+        elsif item[:product].unlimited_inventory || item[:product].quantity >= item[:quantity]
           new_items << item
+        elsif item[:product].quantity == 0
+          self.errors << ["Sorry, #{item[:product].description} is no longer available"]
         else
-          self.errors << ["Adjusting quantity for #{item[:product].description}"]
+          self.errors << ["Sorry, only #{item[:product].quantity} available for #{item[:product].description}"]
           item[:quantity] = item[:product].quantity
-          new_items << item
+          new_items << item if item[:quantity] > 0
         end
       end
       self.items = new_items

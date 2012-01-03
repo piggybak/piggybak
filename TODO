@@ -5,8 +5,9 @@
 # Add countries: migration, associations, RailsAdmin DSL, add to checkout page, but don't do anything with countries - states toggle yet
 # Add United States to seed data
 # Add states to seed data
-# Remove line items from cart with quantity = 0
 
-# Not necessary
+# Not necessary, but nice to have
 # Add Free shipping method
 # Troubleshoot, make sure checkout/submit is not cached
+# Remove requirement to update app/models/ability.rb to include Piggybak models
+# Remove requirement to add piggybak.js to application.js

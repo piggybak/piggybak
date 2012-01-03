@@ -20,6 +20,7 @@ module Piggybak
 
     def klass_enum 
       #TODO: Troubleshoot use of subclasses here instead
+      # Piggybak::ShippingCalculator.subclasses
       [Piggybak::ShippingCalculator::FlatRate,
        Piggybak::ShippingCalculator::Range,
        Piggybak::ShippingCalculator::Pickup]
@@ -36,10 +37,8 @@ module Piggybak
 
       active_methods.inject([]) do |arr, method|
         klass = method.klass.constantize
-logger.warn "steph: inside here!! #{method.inspect}"
         if klass.available?(method, cart)
           rate = klass.rate(method, cart)
-logger.warn "steph rate is #{rate.inspect}"
           arr << {
             :label => "#{method.description} $#{"%.2f" % rate}",
 			:id => method.id,

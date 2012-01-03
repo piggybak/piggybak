@@ -11,7 +11,7 @@ module Piggybak
     accepts_nested_attributes_for :shipping_address, :allow_destroy => true
     accepts_nested_attributes_for :shipments, :allow_destroy => true
     accepts_nested_attributes_for :line_items, :allow_destroy => true
-    accepts_nested_attributes_for :payments
+    accepts_nested_attributes_for :payments # test :allow_destroy
 
     validates_presence_of :status  
     validates_presence_of :email

@@ -25,6 +25,8 @@ module Piggybak
     end
 
     def update_inventory
+      # .changed
+      # calculate the difference between previous value and submitted 
       Rails.logger.warn "steph inside update inventory: #{self.inspect}"
     end
   end

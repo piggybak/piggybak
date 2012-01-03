@@ -25,7 +25,7 @@
 <div id="add_details">
 	<div id="user_details">
 	<h3>User Details</h3>
-	<p>
+	<div class="item">
 		<% if current_user -%>
 		<%= f.label :email %>
 		<%= f.text_field :email, { :readonly => true, :class => "readonly" } %><br />
@@ -35,25 +35,25 @@
 		<%= f.text_field :email %><br />
 		<span>or <%= link_to 'LOG IN', new_user_session_path %></span>
 		<% end -%>
-	</p>
-	<p>
+	</div>
+	<div class="item">
 		<%= f.label :phone %>
 		<%= f.text_field :phone %>
-	</p>
+	</div>
 	</div>
 	<div id="shipping">
 	<h3>Shipping Option</h3>
 	<%= f.fields_for :shipments, f.object.shipments.build do |shipment| %>
-		<p>
+		<div class="item">
 		<%= shipment.label :shipping_method_id %>
 		<%= shipment.select :shipping_method_id, [] %>
-		</p>
+		</div>
 	<% end -%>
 	</div>
 	<div id="payment">
 	<h3>Payment</h3>
 	<%= f.fields_for :payments, f.object.payments.build do |payment| %>
-		<p>
+		<div class="item">
 		<%= payment.label :number %>
 		<% if @order.errors.keys.include?("payments.number".to_sym) %>
 		<span class="field_with_errors">
@@ -62,9 +62,9 @@
 		<% else -%>
 		<%= payment.text_field :number %>
 		<% end -%>
-		</p>
+		</div>
 
-		<p>
+		<div class="item">
 		<%= payment.label :verification_value %>
 		<% if @order.errors.keys.include?("payments.verification_value".to_sym) %>
 		<span class="field_with_errors">
@@ -73,9 +73,9 @@
 		<% else -%>
 		<%= payment.text_field :verification_value %>
 		<% end -%>
-		</p>
+		</div>
 
-		<p>
+		<div class="item">
 		<%= payment.label :month %>
 		<% if @order.errors.keys.include?("payments.verification_value".to_sym) %>
 		<span class="field_with_errors">
@@ -86,7 +86,7 @@
 		<%= payment.select :month, 1.upto(12) %> /
 		<%= payment.select :year, Time.now.year.upto(Time.now.year + 10) %>
 		<% end -%>
-		</p>
+		</div>
 	<% end -%>
 	</div>
 	<div id="submit">

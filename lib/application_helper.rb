@@ -9,4 +9,9 @@ module ApplicationHelper
       link_to  "#{pluralize(nitems, 'item')}: #{number_to_currency(cart.total)}", piggybak.cart_url
     end
   end
+  def orders_link(text)
+    if current_user
+      link_to text, piggybak.orders_list_url
+    end
+  end
 end

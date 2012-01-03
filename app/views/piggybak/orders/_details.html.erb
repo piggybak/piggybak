@@ -1,0 +1,48 @@
+<table id="items" cellpadding="5" cellspacing="0">
+	<tr>
+		<th>Item</th>
+		<th>Price</th>
+		<th>Quantity</th>
+		<th>Subtotal</th>
+	</tr>
+	<% order.line_items.each do |line_item| %>
+	<tr>
+		<td><%= line_item.product.description %></td>
+		<td><%= line_item.product.price %></td>
+		<td><%= line_item.quantity %></td>
+		<td><%= number_to_currency line_item.total %></td>
+	</tr>
+	<% end -%>
+	<tr>
+		<td colspan="4"></td>
+	</tr>
+	<tr>
+		<td colspan="2"></td>
+		<td>Subtotal</td>
+		<td><%= number_to_currency order.line_items.inject(0) { |subtotal, li| subtotal + li.total } %></td>
+	</tr>
+	<tr>
+		<td colspan="2"></td>
+		<td>Tax</td>
+		<td><%= number_to_currency order.tax_charge %></td>
+	</tr>
+	<tr>
+		<td colspan="2"></td>
+		<td>Shipping</td>
+		<td><%= number_to_currency order.shipments.inject(0) { |shipping, shipment| shipping + shipment.total } %></td>
+	</tr>
+	<tr>
+		<td colspan="2"></td>
+		<td>Total</td>
+		<td><%= number_to_currency order.total %></td>
+	</tr>
+</table>
+
+Email: <%= order.email %><br />
+Phone: <%= order.phone %>
+
+<h3>Billing Information</h3>
+<%= raw order.billing_address.display %>
+
+<h3>Shipping Information</h3>
+<%= raw order.shipping_address.display %>

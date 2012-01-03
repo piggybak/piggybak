@@ -6,9 +6,10 @@
 # Add states to seed data
 # Figure out how to redirect to /checkout/show after login / logout on checkout page. Try to do this in engine only.
 
-# Not necessary, but nice to have
+# Nice to have, at some point
 # Add Free shipping method
 # Troubleshoot, make sure checkout/submit is not cached
 # Remove requirement to update app/models/ability.rb to include Piggybak models
 # Remove requirement to add piggybak.js to application.js
 # Figure out if line items should become read only after they are shipped
+# Add testing :)

@@ -25,6 +25,7 @@ Modular / mountable ecommerce gem. Features:
 * Add add_as_orderer to user model (or model that devise hooks into as authenticated user)
 * Add <%= cart_form(@some_item) %> to view to display cart form
 * Add <%= cart_link %> to display link to cart
+* Add <%= orders_link %> to display link to user orders
 
 == Road Map
 

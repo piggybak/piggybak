@@ -8,8 +8,9 @@
 
 # Nice to have, at some point
 # Add Free shipping method
-# Troubleshoot, make sure checkout/submit is not cached
 # Remove requirement to update app/models/ability.rb to include Piggybak models
-# Remove requirement to add piggybak.js to application.js
+# - check if defined: extend
+# - else not defined: include default
+# Remove requirement to add piggybak.js to application.js (perhaps add inline - a little bleh)
 # Figure out if line items should become read only after they are shipped
 # Add testing :)

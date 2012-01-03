@@ -10,7 +10,10 @@ module Piggybak
       self.errors = []
       cookie ||= ''
       cookie.split(';').each do |item|
-        self.items << { :product => Piggybak::Product.find(item.split(':')[0]), :quantity => (item.split(':')[1]).to_i }
+	    item_product = Piggybak::Product.find_by_id(item.split(':')[0])
+		if item_product.present?
+	      self.items << { :product => item_product, :quantity => (item.split(':')[1]).to_i }
+        end
       end
       self.total = self.items.sum { |item| item[:quantity]*item[:product].price }
     end

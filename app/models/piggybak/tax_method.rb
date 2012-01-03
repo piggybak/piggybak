@@ -20,7 +20,7 @@ module Piggybak
 
     def klass_enum 
       #TODO: Troubleshoot use of subclasses here instead
-      [Piggybak::TaxCalculator::FlatRate]
+      [Piggybak::TaxCalculator::Percent]
     end
 
     def self.calculate_tax(object)

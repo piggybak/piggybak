@@ -25,9 +25,14 @@ module Piggybak
     end
 
     def update_inventory
-      # .changed
-      # calculate the difference between previous value and submitted 
-      Rails.logger.warn "steph inside update inventory: #{self.inspect}"
+      if self.product_id != self.product_id_was
+        old_product = Product.find(self.product_id_was)
+        old_product.update_inventory(self.quantity_was)
+        self.product.update_inventory(-1*self.quantity)
+      else
+        quantity_diff = self.quantity_was - self.quantity
+        self.product.update_inventory(quantity_diff)
+      end
     end
   end
 end

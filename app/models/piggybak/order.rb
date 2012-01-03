@@ -92,10 +92,8 @@ module Piggybak
           calculator = shipment.shipping_method.klass.constantize
           shipment.total = calculator.rate(shipment.shipping_method, self)
         end
-logger.warn "steph shipment total is #{shipment.total}"
         self.total += shipment.total
       end
-logger.warn "steph: total is #{self.total}"
       self.total = self.total.to_c
 
       self.total_due = self.total

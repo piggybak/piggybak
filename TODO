@@ -1,13 +1,14 @@
 # MUST / Client Driven
-# Finish update inventory handling (adjust quantity on line item update, make sure this works for delete, create, and update)
 # Figure out how to make entire payments section Read Only after it's completed (Discuss with railsadmin ppl)
 # Troubleshoot, figure out why subclasseses isn't working on payment_methods, tax_methods, shipping_methods
 # Add countries: migration, associations, RailsAdmin DSL, add to checkout page, but don't do anything with countries - states toggle yet
 # Add United States to seed data
 # Add states to seed data
+# Figure out how to redirect to /checkout/show after login / logout on checkout page. Try to do this in engine only.
 
 # Not necessary, but nice to have
 # Add Free shipping method
 # Troubleshoot, make sure checkout/submit is not cached
 # Remove requirement to update app/models/ability.rb to include Piggybak models
 # Remove requirement to add piggybak.js to application.js
+# Figure out if line items should become read only after they are shipped

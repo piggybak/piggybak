@@ -28,16 +28,12 @@
 	<p>
 		<% if current_user -%>
 		<%= f.label :email %>
-		<%= f.text_field :email, { :readonly => true, :class => "readonly" } %>
-		<% if false -%>
+		<%= f.text_field :email, { :readonly => true, :class => "readonly" } %><br />
 		<span>or <%= link_to 'LOGOUT', destroy_user_session_path, :method => :delete, :class => "last" %></span>
-		<% end -%>
 		<% else -%>
 		<%= f.label :email %>
-		<%= f.text_field :email %>
-		<% if false -%>
+		<%= f.text_field :email %><br />
 		<span>or <%= link_to 'LOG IN', new_user_session_path %></span>
-		<% end -%>
 		<% end -%>
 	</p>
 	<p>

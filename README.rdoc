@@ -17,7 +17,10 @@ Modular / mountable ecommerce gem. Features:
 * Next, run rake db:migrate to run migrations
 * Next, mount in your application by adding: "mount Piggybak::Engine => '/checkout', :as => 'piggybak'" to config/routes
 * Update or add app/models/ability.rb to include Piggybak models that admin has access to
-* If you want redirect to redirect users to checkout after login / logout, add to your ApplicationController
+
+== Recipes
+
+* Redirect after login / logout
 
 == Integration Components
 
@@ -29,14 +32,7 @@ Modular / mountable ecommerce gem. Features:
 
 == Road Map
 
-* Engine Cleanup: Remove requirement to update ability.rb
-* Engine Cleanup: Remove requirement to include piggybak.js
-* Fix visibility issue on payments / orders to be read only
-* Expand several payment gateways to show proof of concept
-* Expand several shipping calculators to show proof of concept
-* Downloadable order receipt from backend
-* SSL Handling: Maybe
-* Stored user addresses: Maybe
+* Maybe features: stored user addresses, coupons, gift certificates
 
 == Contributing to piggybak
  

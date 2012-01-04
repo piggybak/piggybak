@@ -1,8 +1,6 @@
 # MUST / Client Driven
 # Figure out how to make entire payments section Read Only after it's completed (Discuss with railsadmin ppl)
-# Add countries: migration, associations, RailsAdmin DSL, add to checkout page, but don't do anything with countries - states toggle yet
-# Add United States to seed data
-# Add states to seed data
+# Setup country/state dropdowns in admin/piggybak~orders/new
 # Remove requirement to update app/models/ability.rb to include Piggybak models
 # - check if defined: extend
 # - else not defined: include default

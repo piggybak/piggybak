@@ -3,7 +3,6 @@ require 'acts_as_orderer/base'
 require 'application_helper'
 require 'active_merchant'
 require 'currency'
-require 'countries'
 
 ActiveMerchant::Billing::Base.mode = :test
 
@@ -45,7 +44,7 @@ module Piggybak
               end
             end
             field :created_at do
-              strftime_format "%d-%m-%Y"
+              #strftime_format "%d-%m-%Y"
             end
             field :user
           end
@@ -260,9 +259,8 @@ module Piggybak
           end
         end
 
-        config.model Piggybak::State do
-          weight 1
-          parent Piggybak::PaymentMethod
+
+        config.model Piggybak::Country do
           list do
             field :name
             field :abbr
@@ -270,6 +268,19 @@ module Piggybak
           edit do
             field :name
             field :abbr
+          end
+        end
+
+        config.model Piggybak::State do
+          list do
+            field :name
+            field :abbr
+            field :country
+          end
+          edit do
+            field :name
+            field :abbr
+            field :country
           end
         end
       

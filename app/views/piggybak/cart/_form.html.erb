@@ -1,6 +1,6 @@
 <% if object.reflections.keys.include?(:piggybak_product) -%>
 	<% if object.piggybak_product && object.piggybak_product.active -%>
-		<% if object.piggybak_product.quantity > 0 -%>
+		<% if object.piggybak_product.quantity > 0 || object.piggybak_product.unlimited_inventory -%>
 			<%= form_tag piggybak.cart_add_url do -%>
 			<div id="product_details">
 			<span id="title"><%= object.piggybak_product.description %></span>

@@ -1,5 +1,12 @@
 module Piggybak
   class ShippingMethod < ActiveRecord::Base
+    
+    # klass_enum requires the ShippingCalculator subclasses to be loaded
+    shipping_calcs_path = File.expand_path("../shipping_calculator", __FILE__)
+    Dir.glob(shipping_calcs_path + "**/*.rb").each do |subclass|
+      ActiveSupport::Dependencies.require_or_load subclass
+    end 
+    
     has_many :shipping_method_values, :dependent => :destroy
     alias :metadata :shipping_method_values
 
@@ -18,13 +25,8 @@ module Piggybak
       end
     end
 
-    def klass_enum 
-      #TODO: Troubleshoot use of subclasses here instead
-      # Piggybak::ShippingCalculator.subclasses
-      [Piggybak::ShippingCalculator::FlatRate,
-       Piggybak::ShippingCalculator::Range,
-       Piggybak::ShippingCalculator::Pickup,
-       Piggybak::ShippingCalculator::Free]
+    def klass_enum
+      Piggybak::ShippingCalculator.subclasses
     end
 
     def self.available_methods(cart)

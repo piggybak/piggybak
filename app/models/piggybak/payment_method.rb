@@ -1,5 +1,12 @@
 module Piggybak 
   class PaymentMethod < ActiveRecord::Base
+    
+    # klass_enum requires the ShippingCalculator subclasses to be loaded
+    shipping_calcs_path = File.expand_path("../payment_calculator", __FILE__)
+    Dir.glob(shipping_calcs_path + "**/*.rb").each do |subclass|
+      ActiveSupport::Dependencies.require_or_load subclass
+    end 
+    
     has_many :payment_method_values, :dependent => :destroy
     alias :metadata :payment_method_values
 
@@ -9,9 +16,7 @@ module Piggybak
     validates_presence_of :description
 
     def klass_enum 
-      #TODO: Troubleshoot use of subclasses here instead
-      [Piggybak::PaymentCalculator::AuthorizeNet,
-       Piggybak::PaymentCalculator::Fake]
+       Piggybak::PaymentCalculator.subclasses
     end
 
     validates_each :payment_method_values do |record, attr, value|

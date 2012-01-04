@@ -1,5 +1,12 @@
 module Piggybak
   class TaxMethod < ActiveRecord::Base
+    
+    # klass_enum requires the ShippingCalculator subclasses to be loaded
+    shipping_calcs_path = File.expand_path("../tax_calculator", __FILE__)
+    Dir.glob(shipping_calcs_path + "**/*.rb").each do |subclass|
+      ActiveSupport::Dependencies.require_or_load subclass
+    end 
+    
     has_many :tax_method_values, :dependent => :destroy
     alias :metadata :tax_method_values
 
@@ -19,8 +26,7 @@ module Piggybak
     end
 
     def klass_enum 
-      #TODO: Troubleshoot use of subclasses here instead
-      [Piggybak::TaxCalculator::Percent]
+      Piggybak::TaxCalculator.subclasses
     end
 
     def self.calculate_tax(object)

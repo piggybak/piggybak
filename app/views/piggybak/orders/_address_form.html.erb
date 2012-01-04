@@ -15,8 +15,12 @@
 	<%= address.text_field :city %>
 </div>
 <div class="item">
+  <%= address.label :country %>
+  <%= address.select :country_id, ::Country.all, :selected => "US" %>
+</div>
+<div class="item">
 	<%= address.label :state %>
-	<%= address.select :state_id, ::Piggybak::State.all.collect {|p| [ p.name, p.id ] }, {:include_blank => false} %>
+	<%= address.select :state_id, ::Country.new("US").states.collect {|key,value| [ value["name"], key ] }, {:include_blank => false} %>
 </div>
 <div class="item">
 	<%= address.label :zip %>

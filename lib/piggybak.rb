@@ -3,7 +3,8 @@ require 'acts_as_orderer/base'
 require 'application_helper'
 require 'active_merchant'
 require 'currency'
-      
+require 'countries'
+
 ActiveMerchant::Billing::Base.mode = :test
 
 module Piggybak

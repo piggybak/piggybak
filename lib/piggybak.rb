@@ -4,8 +4,6 @@ require 'application_helper'
 require 'active_merchant'
 require 'currency'
 
-ActiveMerchant::Billing::Base.mode = :test
-
 module Piggybak
 
   class Engine < Rails::Engine

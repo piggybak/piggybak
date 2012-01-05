@@ -1,7 +1,7 @@
 <div id="list_orders">
 	<h1>Your Orders</h1>
 	
-	<% @user.piggybak_orders.each do |order| -%>
+	<% current_user.piggybak_orders.each do |order| -%>
 	
 	<h2>Order #<%= order.id %></h2>
 	Status: <%= order.status %><br />

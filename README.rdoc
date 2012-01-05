@@ -1,4 +1,4 @@
-= piggybak
+== Piggybak Gem (Engine)
 
 Modular / mountable ecommerce gem. Features:
 * Configurable tax methods, shipping methods, payment methods
@@ -6,13 +6,18 @@ Modular / mountable ecommerce gem. Features:
 * Order processing completed in transaction, minimizing orphan data created 
 * Fully defined backend RailsAdmin interface for adding orders on the backend
 
-== Dependencies
+This engine explicitly excludes:
+* SSL configuration (to be handled in your parent application)
+* Redirects on login / logout (see recipe below)
+* Coupons and Gift cerficates (May be added later)
+* Per unit inventory tracking
+* Downloadable products
 
-* This gem is highly dependent on:
-	Rails 3.1 (Assets, Engines)
-	RailsAdmin (Admin UI)
-	Devise (User Authentication)
-	CanCan (User Authorization)
+This engine is highly dependent on:
+* Rails 3.1 (Assets, Engines)
+* RailsAdmin (Admin UI)
+* Devise (User Authentication)
+* CanCan (User Authorization)
 
 == Installation
 
@@ -73,7 +78,7 @@ Modular / mountable ecommerce gem. Features:
 							::Piggybak::Country]
 
 			# can't delete orders
-			can [:read, :create, :update, :history, :export], ::Piggybak::Order
+			can [:download, :email, :read, :create, :update, :history, :export], ::Piggybak::Order
 			end
 		end
 	end

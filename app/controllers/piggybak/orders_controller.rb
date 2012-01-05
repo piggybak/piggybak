@@ -66,8 +66,7 @@ logger.warn "steph here!!"
     end
 
     def list
-      @user = current_user
-      redirect_to root if @user.nil?
+      redirect_to root if current_user.nil?
     end
 
     def download

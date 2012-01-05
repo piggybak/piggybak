@@ -24,12 +24,16 @@ module Piggybak
 
       begin
         ActiveRecord::Base.transaction do
+logger.warn "steph here!!"
           @order = Piggybak::Order.new(params[:piggybak_order])
+logger.warn "steph here!!"
           @order.user = current_user if current_user
           @order.payments.first.payment_method_id = Piggybak::PaymentMethod.find_by_active(true).id
+logger.warn "steph here!!"
 
           cart = Piggybak::Cart.new(request.cookies["cart"])
           @order.add_line_items(cart)
+logger.warn "steph here!!"
 
           if @order.save
             Piggybak::Notifier.order_notification(@order)
@@ -42,7 +46,6 @@ module Piggybak
           end
         end
       rescue Exception => e
-        @message = e.message 
         @cart = Piggybak::Cart.new(request.cookies["cart"])
 
         if current_user
@@ -67,6 +70,12 @@ module Piggybak
       redirect_to root if @user.nil?
     end
 
+    def download
+      @order = Piggybak::Order.find(params[:id])
+
+      render :layout => false
+    end
+
     def email
       order = Order.find(params[:id])
       Piggybak::Notifier.order_notification(order)
@@ -75,6 +84,7 @@ module Piggybak
       redirect_to rails_admin.edit_path('Piggybak::Order', order.id)
     end
 
+    # AJAX Actions from checkout
     def shipping
       cart = Piggybak::Cart.new(request.cookies["cart"])
       cart.extra_data = params
@@ -87,6 +97,15 @@ module Piggybak
       cart.extra_data = params
       total_tax = Piggybak::TaxMethod.calculate_tax(cart)
       render :json => { :tax => total_tax }
+    end
+
+    def geodata
+      countries = ::Piggybak::Country.find(:all, :include => :states)
+      data = countries.inject({}) do |h, country|
+        h["country_#{country.id}"] = country.states
+        h
+      end
+      render :json => { :countries => data }
     end
   end
 end

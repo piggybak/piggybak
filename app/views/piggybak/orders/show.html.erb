@@ -4,26 +4,14 @@
 <%= form_for @order, :url => piggybak.order_submit_url, :method => "POST" do |f| %>
 
 <% if @order.errors.any? -%>
+<div id="checkout_error">
 <b>You have errors with your submission:</b><br />
 <%= raw @order.errors.full_messages.join("<br />") %>
+</div>
 <% end -%>
 <div class="clear"></div>
-
-<div id="billing_address">
-	<h3>Billing Address</h3>
-	<%= f.fields_for :billing_address do |billing_address| %>
-	<%= render "address_form", :address => billing_address %>
-	<% end -%>
-</div>
-<div id="shipping_address">
-	<h3>Shipping Address</h3>
-	<%= f.fields_for :shipping_address do |shipping_address| %>
-	<%= render "address_form", :address => shipping_address %>
-	<% end -%>
-</div>
-
-<div id="add_details">
-	<div id="user_details">
+	
+<div id="user_details">
 	<h3>User Details</h3>
 	<div class="item">
 		<% if current_user -%>
@@ -40,7 +28,26 @@
 		<%= f.label :phone %>
 		<%= f.text_field :phone %>
 	</div>
-	</div>
+</div>
+
+<div id="billing_address">
+	<h3>Billing Address</h3>
+	<%= f.fields_for :billing_address do |billing_address| %>
+	<%= render "address_form", :address => billing_address %>
+	<% end -%>
+</div>
+<div id="shipping_address">
+	<h3>
+		Shipping Address
+		<a href="#" id="copy">copy from billing</a>
+	</h3>
+
+	<%= f.fields_for :shipping_address do |shipping_address| %>
+	<%= render "address_form", :address => shipping_address %>
+	<% end -%>
+</div>
+
+<div id="add_details">
 	<div id="shipping">
 	<h3>Shipping Option</h3>
 	<%= f.fields_for :shipments, f.object.shipments.build do |shipment| %>
@@ -106,4 +113,5 @@
 <script type="text/javascript">
 var shipping_lookup = "<%= piggybak.orders_shipping_url %>"; 
 var tax_lookup = "<%= piggybak.orders_tax_url %>"; 
+var geodata_lookup = "<%= piggybak.orders_geodata_url %>"; 
 </script>

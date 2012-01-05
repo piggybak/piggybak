@@ -14,7 +14,7 @@ module Piggybak
     after_initialize :set_default_country
 
     def set_default_country
-      self.country = Address.DEFAULT_COUNTRY
+      self.country ||= Address.DEFAULT_COUNTRY
     end
 
     def self.DEFAULT_COUNTRY
@@ -27,7 +27,8 @@ module Piggybak
       if self.address2 && self.address2 != ''
         address += "#{self.address2}<br />"
       end
-      address += "#{self.city}, #{self.state.abbr} #{self.zip}"
+      address += "#{self.city}, #{self.state ? self.state.name : self.state_id} #{self.zip}<br />"
+      address += "#{self.country.name}"
       address
     end
     alias :display :admin_label  

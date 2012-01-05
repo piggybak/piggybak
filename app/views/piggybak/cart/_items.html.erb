@@ -2,29 +2,29 @@
 <%= form_tag piggybak.cart_update_url do -%>
 <table cellpadding="5" cellspacing="0" width="100%">
 	<tr>
-		<th>Item</th>
-		<th>Price</th>
-		<th>Quantity</th>
-		<th>Subtotal</th>
+		<th id="item_col">Item</th>
+		<th id="price_col">Price</th>
+		<th id="quantity_col">Quantity</th>
+		<th id="subtotal_col">Subtotal</th>
 		<% if page == "cart" -%>
 		<th></th>
 		<% end -%>
 	</tr>
 	<% @cart.items.each do |item| %>
 	<tr>
-		<td><%= item[:product].description %></td>
-		<td><%= number_to_currency item[:product].price %></td>
+		<td><%= item[:variant].description %></td>
+		<td><%= number_to_currency item[:variant].price %></td>
 		<td>
 			<% if page == "cart" -%>
-			<%= text_field_tag "quantity[#{item[:product].id}]", item[:quantity] %>
+			<%= text_field_tag "quantity[#{item[:variant].id}]", item[:quantity] %>
             <% else -%>
 			<%= item[:quantity] %>
 			<% end -%>
 		</td>
-		<td><%= number_to_currency item[:quantity]*item[:product].price %></td>
+		<td><%= number_to_currency item[:quantity]*item[:variant].price %></td>
 		<% if page == "cart" -%>
 		<td>
-			<%= link_to "Remove", piggybak.remove_item_url(item[:product].id), :method => :delete %>
+			<%= link_to "Remove", piggybak.remove_item_url(item[:variant].id), :method => :delete %>
 		</td>
 		<% end -%>
 	</tr>

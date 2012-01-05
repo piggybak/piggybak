@@ -1,5 +1,12 @@
+<ul>
 <% if params[:action] == 'edit' -%>
-<%= link_to "Send Email Confirmation", piggybak.orders_email_url(params[:id]) %>
+<li><%= link_to "Send Email Confirmation", piggybak.orders_email_url(params[:id]) %></li>
 <% else -%>
-<b>You may not send a confirmation email until you have a saved order.</b>
+<li><b>You may not send a confirmation email until you have a saved order.</b></li>
 <% end -%>
+<% if params[:action] == 'edit' -%>
+<li><%= link_to "View as Text", piggybak.orders_download_url(params[:id]) %></li>
+<% else -%>
+<li><b>You may not download until you have a saved order.</b></li>
+<% end -%>
+</ul>

@@ -15,12 +15,12 @@
 	<%= address.text_field :city %>
 </div>
 <div class="item">
-  <%= address.label :country %>
-  <%= address.collection_select :country_id, Piggybak::Country.all, :id, :name %>
+  <%= address.label :country_id %>
+  <%= address.collection_select :country_id, Piggybak::Country.all, :id, :name, { :selected => address.object.country_id.to_s } %>
 </div>
 <div class="item">
-	<%= address.label :state %>
-	<%= address.collection_select :state_id, Piggybak::Address.DEFAULT_COUNTRY.states, :id, :name, {:include_blank => true} %>
+	<%= address.label :state_id %>
+	<%= address.collection_select :state_id, address.object.country.states, :id, :name, { :selected => address.object.state_id.to_s } %>
 </div>
 <div class="item">
 	<%= address.label :zip %>

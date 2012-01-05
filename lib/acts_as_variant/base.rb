@@ -1,5 +1,5 @@
 module Piggybak
-  module ActsAsProduct
+  module ActsAsVariant
     ## Define ModelMethods
     module Base
       def self.included(klass)
@@ -9,12 +9,12 @@ module Piggybak
       end
       
       module ClassMethods
-        def acts_as_product
-          has_one :piggybak_product, :as => "item", :class_name => "::Piggybak::Product"
+        def acts_as_variant
+          has_one :piggybak_variant, :as => "item", :class_name => "::Piggybak::Variant"
 
-          accepts_nested_attributes_for :piggybak_product, :allow_destroy => true
+          accepts_nested_attributes_for :piggybak_variant, :allow_destroy => true
           
-          include Piggybak::ActsAsProduct::Base::InstanceMethods
+          include Piggybak::ActsAsVariant::Base::InstanceMethods
         end
       end
       
@@ -29,4 +29,4 @@ module Piggybak
   end
 end
 
-::ActiveRecord::Base.send :include, Piggybak::ActsAsProduct::Base
+::ActiveRecord::Base.send :include, Piggybak::ActsAsVariant::Base

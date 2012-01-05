@@ -1,8 +1,3 @@
-# MUST / Client Driven
 # Figure out how to make entire payments section Read Only after it's completed (Discuss with railsadmin ppl)
-# Setup country/state dropdowns in admin/piggybak~orders/new
-# Remove requirement to update app/models/ability.rb to include Piggybak models
-# - check if defined: extend
-# - else not defined: include default
-# Add downloadable receipt from backend, similar to email method, except download instead of redirect
-# Add testing :)
+
+# Handle state options in admin: allow selected state, or free text

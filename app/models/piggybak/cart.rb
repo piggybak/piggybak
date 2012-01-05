@@ -10,12 +10,12 @@ module Piggybak
       self.errors = []
       cookie ||= ''
       cookie.split(';').each do |item|
-	    item_product = Piggybak::Product.find_by_id(item.split(':')[0])
-		if item_product.present?
-	      self.items << { :product => item_product, :quantity => (item.split(':')[1]).to_i }
+	    item_variant = Piggybak::Variant.find_by_id(item.split(':')[0])
+		if item_variant.present?
+	      self.items << { :variant => item_variant, :quantity => (item.split(':')[1]).to_i }
         end
       end
-      self.total = self.items.sum { |item| item[:quantity]*item[:product].price }
+      self.total = self.items.sum { |item| item[:quantity]*item[:variant].price }
     end
   
     def self.to_hash(cookie)
@@ -36,14 +36,14 @@ module Piggybak
 
     def self.add(cookie, params)
       cart = to_hash(cookie)
-      cart["#{params[:product_id]}"] ||= 0
-      cart["#{params[:product_id]}"] += params[:quantity].to_i
+      cart["#{params[:variant_id]}"] ||= 0
+      cart["#{params[:variant_id]}"] += params[:quantity].to_i
       to_string(cart)
     end
   
-    def self.remove(cookie, product_id)
+    def self.remove(cookie, variant_id)
       cart = to_hash(cookie)
-      cart[product_id] = 0
+      cart[variant_id] = 0
       to_string(cart)
     end
   
@@ -56,7 +56,7 @@ module Piggybak
     def to_cookie
       cookie = ''
       self.items.each do |item|
-        cookie += "#{item[:product].id.to_s}:#{item[:quantity].to_s};" if item[:quantity].to_i > 0
+        cookie += "#{item[:variant].id.to_s}:#{item[:quantity].to_s};" if item[:quantity].to_i > 0
       end
       cookie
     end
@@ -65,20 +65,20 @@ module Piggybak
       self.errors = []
       new_items = []
       self.items.each do |item|
-        if !item[:product].active
-          self.errors << ["Sorry, #{item[:product].description} is no longer an active product"]
-        elsif item[:product].unlimited_inventory || item[:product].quantity >= item[:quantity]
+        if !item[:variant].active
+          self.errors << ["Sorry, #{item[:variant].description} is no longer for sale"]
+        elsif item[:variant].unlimited_inventory || item[:variant].quantity >= item[:quantity]
           new_items << item
-        elsif item[:product].quantity == 0
-          self.errors << ["Sorry, #{item[:product].description} is no longer available"]
+        elsif item[:variant].quantity == 0
+          self.errors << ["Sorry, #{item[:variant].description} is no longer available"]
         else
-          self.errors << ["Sorry, only #{item[:product].quantity} available for #{item[:product].description}"]
-          item[:quantity] = item[:product].quantity
+          self.errors << ["Sorry, only #{item[:variant].quantity} available for #{item[:variant].description}"]
+          item[:quantity] = item[:variant].quantity
           new_items << item if item[:quantity] > 0
         end
       end
       self.items = new_items
-      self.total = self.items.sum { |item| item[:quantity]*item[:product].price }
+      self.total = self.items.sum { |item| item[:quantity]*item[:variant].price }
     end
   end
 end

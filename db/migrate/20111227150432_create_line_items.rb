@@ -3,7 +3,7 @@ class CreateLineItems < ActiveRecord::Migration
     create_table :line_items do |t|
       t.references :order, :null => false
       t.integer :quantity, :null => false
-      t.references :product, :null => false
+      t.references :variant, :null => false
       t.decimal :total
     end
   end

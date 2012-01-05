@@ -7,7 +7,7 @@ module Piggybak
 
       if object.is_a?(Cart)
         state = State.find(object.extra_data["state_id"])
-        return true if state.abbr == abbr
+        return true if state && state.abbr == abbr
       else
         if object.billing_address && object.billing_address.state 
           return object.billing_address.state.abbr == abbr

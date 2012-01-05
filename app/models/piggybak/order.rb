@@ -58,8 +58,8 @@ module Piggybak
     def add_line_items(cart)
       cart.update_quantities
       cart.items.each do |item|
-        line_item = Piggybak::LineItem.new({ :product_id => item[:product].id,
-          :total => item[:product].price*item[:quantity],
+        line_item = Piggybak::LineItem.new({ :variant_id => item[:variant].id,
+          :total => item[:variant].price*item[:quantity],
           :quantity => item[:quantity] })
         self.line_items << line_item
       end
@@ -73,7 +73,7 @@ module Piggybak
       self.tax_charge = 0
 
       self.line_items.each do |line_item|
-        line_item.total = line_item.product.price * line_item.quantity
+        line_item.total = line_item.variant.price * line_item.quantity
       end
     end
 

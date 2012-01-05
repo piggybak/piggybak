@@ -6,7 +6,7 @@ class CreateAddresses < ActiveRecord::Migration
       t.string :address1, :null => false
       t.string :address2
       t.string :city, :null => false
-      t.references :state, :null => false
+      t.string :state_id, :null => false # because both text states and ids are allowed
       t.references :country, :null => false
       t.string :zip, :null => false
 

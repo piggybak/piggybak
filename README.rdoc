@@ -8,44 +8,83 @@ Modular / mountable ecommerce gem. Features:
 
 == Dependencies
 
-* This gem is highly dependent on: using Rails 3.1, RailsAdmin, Devise, and CanCan
+* This gem is highly dependent on:
+	Rails 3.1 (Assets, Engines)
+	RailsAdmin (Admin UI)
+	Devise (User Authentication)
+	CanCan (User Authorization)
 
 == Installation
 
-* First, add to Gemfile: gem "piggybak", :git => "git://github.com/stephskardal/demo.git"
-* Next, run rake piggybak_engine:install:migrations to copy migrations to your existing app
-* Next, run rake db:migrate to run migrations
-* Next, mount in your application by adding: "mount Piggybak::Engine => '/checkout', :as => 'piggybak'" to config/routes
-* Update or add app/models/ability.rb to include Piggybak models that admin has access to
+* First, add to Gemfile:
+	
+	gem "piggybak", :git => "git://github.com/stephskardal/demo.git"
+
+* Next, run rake task to copy migrations:
+
+	rake piggybak_engine:install:migrations
+
+* Next, run rake task to run migrations:
+
+	rake db:migrate
+
+* Next, mount in your application by adding:
+
+	mount Piggybak::Engine => '/checkout', :as => 'piggybak'" to config/routes
+
+== Integration Components
+
+* Add acts_as_variant to models that will be sellable
+* Add acts_as_orderer to user model (or model that devise hooks into as authenticated user)
+* Add <%= cart_form(@some_item) %> to view to display cart form
+* Add <%= cart_link %> to display link to cart
+* Add <%= orders_link %> to display link to user orders
 
 == Recipes
 
 * Redirect after login / logout
 
-== Integration Components
+	before_filter :set_last_page
+		
+	def set_last_page
+		if !request.xhr? && !request.url.match(/users\/sign_in/) && !request.url.match(/users\/sign_out/)
+		session[:return_to] = request.url
+		end 
+	end 
+	def after_sign_in_path_for(resource_or_scope)
+		session[:return_to] || root_url
+	end 
+	def after_sign_out_path_for(resource_or_scope)
+		session[:return_to] || root_url
+	end
 
-* Add add_as_product to models that will be sellable
-* Add add_as_orderer to user model (or model that devise hooks into as authenticated user)
-* Add <%= cart_form(@some_item) %> to view to display cart form
-* Add <%= cart_link %> to display link to cart
-* Add <%= orders_link %> to display link to user orders
+* Cancan access control
+	class Ability
+		include CanCan::Ability
+		def initialize(user)
+			if user && user.roles.include?(Role.find_by_name("admin"))
+			can :access, :rails_admin
+			can :manage, [ #Insert your app models here
+							::Piggybak::Variant,
+							::Piggybak::ShippingMethod,
+							::Piggybak::PaymentMethod,
+							::Piggybak::TaxMethod,
+							::Piggybak::State,
+							::Piggybak::Country]
+
+			# can't delete orders
+			can [:read, :create, :update, :history, :export], ::Piggybak::Order
+			end
+		end
+	end
 
 == Road Map
 
-* Maybe features: stored user addresses, coupons, gift certificates
-
-== Contributing to piggybak
- 
-* Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
-* Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
-* Fork the project
-* Start a feature/bugfix branch
-* Commit and push until you are happy with your contribution
-* Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
-* Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+* Potential features:
+** Stored user addresses
+** API / Interface for handling order credits, to be included inside Order ActiveRecord callbacks
 
 == Copyright
 
 Copyright (c) 2011 Steph Skardal. See LICENSE.txt for
 further details.
-

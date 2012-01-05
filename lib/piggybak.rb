@@ -1,4 +1,4 @@
-require 'acts_as_product/base'
+require 'acts_as_variant/base'
 require 'acts_as_orderer/base'
 require 'application_helper'
 require 'active_merchant'
@@ -22,9 +22,21 @@ module Piggybak
 
           show do
             field :status
-            field :total
-            field :tax_charge
-            field :total_due
+            field :total do
+              formatted_value do
+                "$%.2f" % value
+              end
+            end
+            field :tax_charge do
+              formatted_value do
+                "$%.2f" % value
+              end
+            end
+            field :total_due do
+              formatted_value do
+                "$%.2f" % value
+              end
+            end
             field :created_at
             field :email
             field :phone
@@ -89,7 +101,7 @@ module Piggybak
           visible false
 
           edit do
-            field :product
+            field :variant
             field :quantity
             field :total do
               read_only true
@@ -259,8 +271,10 @@ module Piggybak
           end
         end
 
-
         config.model Piggybak::Country do
+          label "Countries"
+          navigation_label "Piggybak Geodata"
+          weight 3
           list do
             field :name
             field :abbr
@@ -272,6 +286,8 @@ module Piggybak
         end
 
         config.model Piggybak::State do
+          parent Piggybak::Country
+          label "States"
           list do
             field :name
             field :abbr
@@ -284,8 +300,8 @@ module Piggybak
           end
         end
       
-        config.model Piggybak::Product do
-          label "Product"
+        config.model Piggybak::Variant do
+          label "Variant"
           parent Piggybak::Order
           object_label_method :admin_label
           edit do
@@ -296,7 +312,7 @@ module Piggybak
             end
             include_all_fields
             field :unlimited_inventory do
-              help "If true, backorders on this product will be allowed, regardless of quantity on hand."
+              help "If true, backorders on this variant will be allowed, regardless of quantity on hand."
             end
           end
           list do

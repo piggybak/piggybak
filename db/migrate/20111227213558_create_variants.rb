@@ -1,6 +1,6 @@
-class CreateProducts < ActiveRecord::Migration
+class CreateVariants < ActiveRecord::Migration
   def change
-    create_table :products do |t|
+    create_table :variants do |t|
       t.string :sku, :null => false
       t.string :description, :null => false
       t.decimal :price, :null => false

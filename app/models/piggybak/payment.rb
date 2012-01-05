@@ -39,7 +39,8 @@ module Piggybak
         if gateway_response.success?
           self.attributes = { :total => self.order.total_due, 
                               :number => 'hidden',
-                              :verification_value => 'hidden' }
+                              :verification_value => 'hidden',
+                              :transaction_id => payment_gateway.transaction_id(gateway_response) } 
           gateway.capture(1000, gateway_response.authorization)
           return true
   	    else
@@ -56,6 +57,7 @@ module Piggybak
         return "Payment ##{self.id} (#{self.created_at.strftime("%m-%d-%Y")})<br />" + 
           "Payment Method: #{self.payment_method.description}<br />" +
           "Status: #{self.status}<br />" +
+          "Transaction ID: #{self.transaction_id}<br />" + 
           "$#{"%.2f" % self.total}"
       else
         return ""

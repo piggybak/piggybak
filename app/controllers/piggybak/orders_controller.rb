@@ -24,12 +24,9 @@ module Piggybak
 
       begin
         ActiveRecord::Base.transaction do
-logger.warn "steph here!!"
           @order = Piggybak::Order.new(params[:piggybak_order])
-logger.warn "steph here!!"
           @order.user = current_user if current_user
           @order.payments.first.payment_method_id = Piggybak::PaymentMethod.find_by_active(true).id
-logger.warn "steph here!!"
 
           cart = Piggybak::Cart.new(request.cookies["cart"])
           @order.add_line_items(cart)

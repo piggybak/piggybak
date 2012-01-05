@@ -20,5 +20,9 @@ module Piggybak
 
     def self.capture(*args)
     end
+
+    def self.transaction_id(*args)
+      "N/A"
+    end
   end
 end

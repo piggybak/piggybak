@@ -103,13 +103,14 @@ Roadmap / TODOs
 ========
 
 * Figure out how to make entire payments section read only, except for ability to refund
+* Add refunds: Add actionable link under payments
+* Add hookup to import credits
 * Handle state options in admin: selected state or free text
+
+* Check accessibility of email, download actions on individual orders
 * Test email send functionality
 * Test a different mount point (verify no URLs are hardcoded)
 * Test a different user model
-* Add refunds: first, add original transaction ID to payment. Then allow refund of individual payments.
-* Add API / spot for adding credits to order -- investigate how to add this
-* Check accessibility of email, download actions on individual orders
 * Add unit testing
 
 Copyright

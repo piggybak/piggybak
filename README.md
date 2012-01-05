@@ -104,9 +104,8 @@ Roadmap / TODOs
 
 * Figure out how to make entire payments section read only, except for ability to refund
 * Handle state options in admin: selected state or free text
-* Check email send functionality
-* Discuss & fix name / abbr switch on state import
-* Test a different mount point (ensure no URLs are hardcoded)
+* Test email send functionality
+* Test a different mount point (verify no URLs are hardcoded)
 * Test a different user model
 * Add refunds: first, add original transaction ID to payment. Then allow refund of individual payments.
 * Add API / spot for adding credits to order -- investigate how to add this

@@ -9,8 +9,8 @@ class PopulateCountriesAndStates < ActiveRecord::Migration
 
       iso3166_country = ISO3166::Country.new(abbr)
       iso3166_country.states.each do |key, value|
-        name = key
-        abbr = value["name"]
+        abbr = key
+        name = value["name"]
         Piggybak::State.create! :name => name, :abbr => abbr, :country => country
       end
     end

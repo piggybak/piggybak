@@ -11,6 +11,8 @@ class CreatePayments < ActiveRecord::Migration
       t.integer :year
       t.string :verification_value
 
+      t.string :transaction_id
+
       t.timestamps
     end
   end

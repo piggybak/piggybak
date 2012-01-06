@@ -5,7 +5,7 @@ module PiggybakHelper
   def cart_link
     cart = Piggybak::Cart.new(request.cookies["cart"]) 
     nitems = cart.items.inject(0) { |nitems, item| nitems + item[:quantity] }
-    if nitems > 0
+    if nitems > 0 && !["piggybak/orders", "piggybak/cart"].include?(params[:controller])
       link_to  "#{pluralize(nitems, 'item')}: #{number_to_currency(cart.total)}", piggybak.cart_url
     end
   end

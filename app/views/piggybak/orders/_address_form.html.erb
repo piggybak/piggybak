@@ -7,8 +7,12 @@
 	<%= address.text_field :lastname %>
 </div>
 <div class="item">
-	<%= address.label :address1 %>
+	<%= address.label :address1, "Address" %>
 	<%= address.text_field :address1 %>
+</div>
+<div class="item">
+	<%= address.label :address2, "Address cont." %>
+	<%= address.text_field :address2 %>
 </div>
 <div class="item">
 	<%= address.label :city %>

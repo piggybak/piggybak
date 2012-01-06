@@ -14,7 +14,7 @@ module Piggybak
       RailsAdmin.config do |config|
         config.model Piggybak::Order do
           label "Order"
-          navigation_label "Piggybak Orders"
+          navigation_label "Orders"
           weight 1
           object_label_method :admin_label
 
@@ -63,6 +63,10 @@ module Piggybak
               read_only true
               help "Autopopulated"
             end
+            field :actions do
+              partial "actions"
+              help ""
+            end
             field :user do
               read_only do
                 !bindings[:object].new_record?
@@ -79,10 +83,6 @@ module Piggybak
             field :line_items
             field :shipments
             field :payments
-            field :actions do
-              partial "actions"
-              help "Click above to resend email with current order details."
-            end
           end
         end
       
@@ -175,7 +175,7 @@ module Piggybak
         end
       
         config.model Piggybak::PaymentMethod do
-          navigation_label "Piggybak Configuration"
+          navigation_label "Configuration"
           weight 2
           object_label_method :admin_label
           list do
@@ -271,7 +271,7 @@ module Piggybak
 
         config.model Piggybak::Country do
           label "Countries"
-          navigation_label "Piggybak Geodata"
+          navigation_label "Geodata"
           weight 3
           list do
             field :name

@@ -106,9 +106,8 @@ Roadmap / TODOs
 * Add refunds: Add actionable link under payments
 * Handle state options in admin: selected state or free text
 
-* Check accessibility of email, download actions on individual orders
+* Create rake task for copying over views, and make sure app views will override gems
 * Test email send functionality
-* Test a different mount point (verify no URLs are hardcoded)
 * Test a different user model
 * Add unit testing
 

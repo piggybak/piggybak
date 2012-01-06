@@ -68,13 +68,20 @@ module Piggybak
     def download
       @order = Piggybak::Order.find(params[:id])
 
-      render :layout => false
+      if can?(:download, @order)
+        render :layout => false
+      else
+        render "no_access"
+      end
     end
 
     def email
       order = Order.find(params[:id])
-      Piggybak::Notifier.order_notification(order)
-      flash[:notice] = "Email notification sent."
+
+      if can?(:email, order)
+        Piggybak::Notifier.order_notification(order)
+        flash[:notice] = "Email notification sent."
+      end
 
       redirect_to rails_admin.edit_path('Piggybak::Order', order.id)
     end

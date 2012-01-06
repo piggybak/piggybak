@@ -5,31 +5,32 @@
 
 Gem::Specification.new do |s|
   s.name = "piggybak"
-  s.version = "0.1.2"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steph Skardal", "Brian Buchalter"]
-  s.date = "2012-01-03"
+  s.date = "2012-01-06"
   s.description = "Mountable ecommerce"
   s.email = "steph@endpoint.com"
   s.extra_rdoc_files = [
-    "README.rdoc",
-    "TODO"
+    "README.md"
   ]
   s.files = [
     ".document",
     "Gemfile",
     "Gemfile.lock",
-    "README.rdoc",
+    "README.md",
     "Rakefile",
-    "TODO",
     "VERSION",
     "app/assets/javascripts/piggybak.js",
     "app/controllers/piggybak/cart_controller.rb",
     "app/controllers/piggybak/orders_controller.rb",
+    "app/helpers/piggybak_helper.rb",
     "app/mailers/piggybak/notifier.rb",
     "app/models/piggybak/address.rb",
     "app/models/piggybak/cart.rb",
+    "app/models/piggybak/country.rb",
+    "app/models/piggybak/credit.rb",
     "app/models/piggybak/line_item.rb",
     "app/models/piggybak/order.rb",
     "app/models/piggybak/payment.rb",
@@ -38,25 +39,29 @@ Gem::Specification.new do |s|
     "app/models/piggybak/payment_calculator/fake.rb",
     "app/models/piggybak/payment_method.rb",
     "app/models/piggybak/payment_method_value.rb",
-    "app/models/piggybak/variant.rb",
     "app/models/piggybak/shipment.rb",
     "app/models/piggybak/shipping_calculator.rb",
     "app/models/piggybak/shipping_calculator/flat_rate.rb",
+    "app/models/piggybak/shipping_calculator/free.rb",
     "app/models/piggybak/shipping_calculator/pickup.rb",
     "app/models/piggybak/shipping_calculator/range.rb",
     "app/models/piggybak/shipping_method.rb",
     "app/models/piggybak/shipping_method_value.rb",
     "app/models/piggybak/state.rb",
     "app/models/piggybak/tax_calculator.rb",
-    "app/models/piggybak/tax_calculator/flat_rate.rb",
+    "app/models/piggybak/tax_calculator/percent.rb",
     "app/models/piggybak/tax_method.rb",
     "app/models/piggybak/tax_method_value.rb",
+    "app/models/piggybak/variant.rb",
     "app/views/piggybak/cart/_form.html.erb",
     "app/views/piggybak/cart/_items.html.erb",
     "app/views/piggybak/cart/show.html.erb",
     "app/views/piggybak/notifier/order_notification.text.erb",
     "app/views/piggybak/orders/_address_form.html.erb",
+    "app/views/piggybak/orders/_details.html.erb",
+    "app/views/piggybak/orders/download.text.erb",
     "app/views/piggybak/orders/list.html.erb",
+    "app/views/piggybak/orders/no_access.text.erb",
     "app/views/piggybak/orders/receipt.html.erb",
     "app/views/piggybak/orders/show.html.erb",
     "app/views/rails_admin/main/_actions.html.erb",
@@ -72,11 +77,13 @@ Gem::Specification.new do |s|
     "db/migrate/20111228235852_create_shipping_method_values.rb",
     "db/migrate/20111228235853_create_payment_method_values.rb",
     "db/migrate/20120102154050_create_tax_methods.rb",
+    "db/migrate/20120102162414_create_countries.rb",
     "db/migrate/20120102162415_create_states.rb",
     "db/migrate/20120102162703_create_tax_method_values.rb",
+    "db/migrate/20120104020930_populate_countries_and_states.rb",
+    "db/migrate/20120106010412_create_credits.rb",
     "lib/acts_as_orderer/base.rb",
     "lib/acts_as_variant/base.rb",
-    "lib/application_helper.rb",
     "lib/currency.rb",
     "lib/piggybak.rb",
     "piggybak.gemspec"

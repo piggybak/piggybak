@@ -1,4 +1,4 @@
-module ApplicationHelper
+module PiggybakHelper
   def cart_form(object)
     render "piggybak/cart/form", :object => object
   end

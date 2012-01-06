@@ -1,13 +1,18 @@
 require 'acts_as_variant/base'
 require 'acts_as_orderer/base'
-require 'application_helper'
 require 'active_merchant'
 require 'currency'
 
 module Piggybak
 
   class Engine < Rails::Engine
-    initializer "define rails_admin config" do |app|
+    initializer "piggybak.add_helper" do |app|
+      ApplicationController.class_eval do
+        helper :piggybak
+      end
+    end
+
+    initializer "piggybak.rails_admin_config" do |app|
       # RailsAdmin config file. Generated on December 21, 2011 13:04
       # See github.com/sferik/rails_admin for more informations
 

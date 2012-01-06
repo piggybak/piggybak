@@ -10,7 +10,7 @@ module Piggybak
     validates_presence_of :year
 
     def status_enum
-      ["paid"]
+      ["paid", "refunded"]
     end
 
     def month_enum

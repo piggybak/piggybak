@@ -104,7 +104,6 @@ Roadmap / TODOs
 
 * Figure out how to make entire payments section read only, except for ability to refund
 * Add refunds: Add actionable link under payments
-* Add hookup to import credits
 * Handle state options in admin: selected state or free text
 
 * Check accessibility of email, download actions on individual orders

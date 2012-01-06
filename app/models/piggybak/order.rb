@@ -3,6 +3,8 @@ module Piggybak
     has_many :line_items, :inverse_of => :order
     has_many :payments, :inverse_of => :order
     has_many :shipments, :inverse_of => :order
+    has_many :credits, :inverse_of => :order
+
     belongs_to :billing_address, :class_name => "Piggybak::Address"
     belongs_to :shipping_address, :class_name => "Piggybak::Address"
     belongs_to :user
@@ -94,6 +96,12 @@ module Piggybak
         end
         self.total += shipment.total
       end
+
+      # Hook in credits, TBD
+      credits.each do |credit|
+        self.total -= credit.total
+      end
+
       self.total = self.total.to_c
 
       self.total_due = self.total

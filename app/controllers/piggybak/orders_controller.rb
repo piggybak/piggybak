@@ -30,7 +30,6 @@ module Piggybak
 
           cart = Piggybak::Cart.new(request.cookies["cart"])
           @order.add_line_items(cart)
-logger.warn "steph here!!"
 
           if @order.save
             Piggybak::Notifier.order_notification(@order)

@@ -1,5 +1,5 @@
 module Piggybak
-  class PaymentCalculator::AuthorizeNet < PaymentCalculator
+  class PaymentCalculator::AuthorizeNet
     KEYS = ["login", "password"]
     KLASS = ::ActiveMerchant::Billing::AuthorizeNetGateway
 

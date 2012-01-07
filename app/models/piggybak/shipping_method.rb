@@ -1,12 +1,5 @@
 module Piggybak
   class ShippingMethod < ActiveRecord::Base
-    
-    # klass_enum requires the ShippingCalculator subclasses to be loaded
-    shipping_calcs_path = File.expand_path("../shipping_calculator", __FILE__)
-    Dir.glob(shipping_calcs_path + "**/*.rb").each do |subclass|
-      ActiveSupport::Dependencies.require_or_load subclass
-    end 
-    
     has_many :shipping_method_values, :dependent => :destroy
     alias :metadata :shipping_method_values
 
@@ -20,13 +13,17 @@ module Piggybak
         calculator = record.klass.constantize
         metadata_keys = value.collect { |v| v.key }.sort
         if calculator::KEYS.sort != metadata_keys
-          record.errors.add attr, "You must define key values for #{calculator::KEYS.join(', ')} for this shipping method."
+          if calculator::KEYS.empty?
+            record.errors.add attr, "You don't need any metadata for this method."
+          else
+            record.errors.add attr, "You must define key values for #{calculator::KEYS.join(', ')} for this shipping method."
+          end
         end
       end
     end
 
     def klass_enum
-      Piggybak::ShippingCalculator.subclasses
+      Piggybak.config.shipping_calculators
     end
 
     def self.available_methods(cart)

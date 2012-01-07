@@ -1,12 +1,5 @@
 module Piggybak 
   class PaymentMethod < ActiveRecord::Base
-    
-    # klass_enum requires the ShippingCalculator subclasses to be loaded
-    shipping_calcs_path = File.expand_path("../payment_calculator", __FILE__)
-    Dir.glob(shipping_calcs_path + "**/*.rb").each do |subclass|
-      ActiveSupport::Dependencies.require_or_load subclass
-    end 
-    
     has_many :payment_method_values, :dependent => :destroy
     alias :metadata :payment_method_values
 
@@ -16,7 +9,7 @@ module Piggybak
     validates_presence_of :description
 
     def klass_enum 
-       Piggybak::PaymentCalculator.subclasses
+      Piggybak.config.payment_calculators
     end
 
     validates_each :payment_method_values do |record, attr, value|
@@ -24,7 +17,11 @@ module Piggybak
         payment_method = record.klass.constantize
         metadata_keys = value.collect { |v| v.key }.sort
         if payment_method::KEYS.sort != metadata_keys
-          record.errors.add attr, "You must define key values for #{payment_method::KEYS.join(', ')} for this payment method."
+          if payment_method::KEYS.empty?
+            record.errors.add attr, "You don't need any metadata for this method."
+          else
+            record.errors.add attr, "You must define key values for #{payment_method::KEYS.join(', ')} for this payment method."
+          end
         end
       end
     end

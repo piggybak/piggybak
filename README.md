@@ -105,7 +105,6 @@ TODOs
 * Bug: Handle state options in admin: selected state or free text
 * Feature: Figure out how to make entire payments section read only, except for ability to refund
 * Feature: Add refunds: Add actionable link under payments
-* Feature: Figure out how to make various calculators extensible, without overriding klass_enum
 * Feature: Create rake task for copying over views, and make sure app views will override gems
 * Test: Test email send functionality
 * Test: Test a different user model

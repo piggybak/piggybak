@@ -1,5 +1,5 @@
 module Piggybak
-  class ShippingCalculator::FlatRate < ShippingCalculator
+  class ShippingCalculator::FlatRate
     KEYS = ["rate"]
 
     def self.available?(*args)

@@ -1,5 +1,5 @@
 module Piggybak
-  class TaxCalculator::Percent < TaxCalculator
+  class TaxCalculator::Percent
     KEYS = ["state_abbr", "rate"]
 
     def self.available?(method, object)

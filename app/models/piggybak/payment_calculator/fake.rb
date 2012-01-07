@@ -1,5 +1,5 @@
 module Piggybak
-  class PaymentCalculator::Fake < PaymentCalculator
+  class PaymentCalculator::Fake
     KEYS = []
     KLASS = ::Piggybak::PaymentCalculator::Fake
 

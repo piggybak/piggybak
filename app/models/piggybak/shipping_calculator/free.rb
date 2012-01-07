@@ -1,5 +1,5 @@
 module Piggybak
-  class ShippingCalculator::Free < ShippingCalculator
+  class ShippingCalculator::Free
     KEYS = []
 
     def self.available?(method, object)

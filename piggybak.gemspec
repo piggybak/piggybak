@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "piggybak"
-  s.version = "0.2.0"
+  s.version = "0.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steph Skardal", "Brian Buchalter"]
-  s.date = "2012-01-06"
+  s.date = "2012-01-07"
   s.description = "Mountable ecommerce"
   s.email = "steph@endpoint.com"
   s.extra_rdoc_files = [
@@ -34,21 +34,17 @@ Gem::Specification.new do |s|
     "app/models/piggybak/line_item.rb",
     "app/models/piggybak/order.rb",
     "app/models/piggybak/payment.rb",
-    "app/models/piggybak/payment_calculator.rb",
     "app/models/piggybak/payment_calculator/authorize_net.rb",
     "app/models/piggybak/payment_calculator/fake.rb",
     "app/models/piggybak/payment_method.rb",
     "app/models/piggybak/payment_method_value.rb",
     "app/models/piggybak/shipment.rb",
-    "app/models/piggybak/shipping_calculator.rb",
     "app/models/piggybak/shipping_calculator/flat_rate.rb",
     "app/models/piggybak/shipping_calculator/free.rb",
-    "app/models/piggybak/shipping_calculator/pickup.rb",
     "app/models/piggybak/shipping_calculator/range.rb",
     "app/models/piggybak/shipping_method.rb",
     "app/models/piggybak/shipping_method_value.rb",
     "app/models/piggybak/state.rb",
-    "app/models/piggybak/tax_calculator.rb",
     "app/models/piggybak/tax_calculator/percent.rb",
     "app/models/piggybak/tax_method.rb",
     "app/models/piggybak/tax_method_value.rb",
@@ -86,6 +82,7 @@ Gem::Specification.new do |s|
     "lib/acts_as_variant/base.rb",
     "lib/currency.rb",
     "lib/piggybak.rb",
+    "lib/piggybak/config.rb",
     "piggybak.gemspec"
   ]
   s.homepage = "http://github.com/stephskardal/piggybak"

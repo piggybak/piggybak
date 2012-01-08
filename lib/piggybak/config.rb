@@ -4,6 +4,7 @@ module Piggybak
       attr_accessor :payment_calculators
       attr_accessor :shipping_calculators
       attr_accessor :tax_calculators
+      attr_accessor :default_country
 
       def reset
         @payment_calculators = ["::Piggybak::PaymentCalculator::Fake",
@@ -12,6 +13,8 @@ module Piggybak
                                  "::Piggybak::ShippingCalculator::Free",
                                  "::Piggybak::ShippingCalculator::Range"]
         @tax_calculators = ["::Piggybak::TaxCalculator::Percent"]
+
+        @default_country = "US"
       end
     end
 

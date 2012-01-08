@@ -1,58 +1,17 @@
 var tax_total = 0;
-var geodata;
 
 $(function() {
-	piggybak.populate_geodata();
 	piggybak.initialize_listeners();
 	piggybak.update_shipping_options($('#piggybak_order_shipping_address_attributes_state_id'));
 	piggybak.update_tax();
 });
 
 var piggybak = {
-	populate_geodata: function() {
-		$.ajax({
-			url: geodata_lookup,
-			cached: false,
-			dataType: "JSON",
-			success: function(data) {
-				geodata = data;
-			}
-		});
-	},
-	update_state_option: function(type, block) {
-		var country_field = $('#piggybak_order_' + type + '_address_attributes_country_id');
-		var country_id = country_field.val();
-		var new_field;
-
-		if(geodata.countries["country_" + country_id].length > 0) {
-			new_field = $('<select>');
-			$.each(geodata.countries["country_" + country_id], function(i, j) {
-				new_field.append($('<option>').val(j.id).html(j.name));
-			});	
-		} else {
-			new_field = $('<input>');
-		}
-		var old_field = $('#piggybak_order_' + type + '_address_attributes_state_id');
-		new_field.attr('name', old_field.attr('name'));
-		new_field.attr('id', old_field.attr('id'));
-		old_field.replaceWith(new_field);
-
-		if(block) {
-			block();
-		}
-		return;
-	},
 	initialize_listeners: function() {
-		$('#piggybak_order_shipping_address_attributes_country_id').change(function() {
-			piggybak.update_state_option('shipping');
-		});
-		$('#piggybak_order_billing_address_attributes_country_id').change(function() {
-			piggybak.update_state_option('billing');
-		});
-		$('#piggybak_order_shipping_address_attributes_state_id').change(function() {
+		$('#piggybak_order_shipping_address_attributes_state_id').live('click', function() {
 			piggybak.update_shipping_options($(this));
 		});
-		$('#piggybak_order_billing_address_attributes_state_id').change(function() {
+		$('#piggybak_order_billing_address_attributes_state_id').live('change', function() {
 			piggybak.update_tax();
 		});
 		$('#shipping select').change(function() {
@@ -71,7 +30,7 @@ var piggybak = {
 		});
 		var country = $('#piggybak_order_billing_address_attributes_country_id').val();
 		$('#piggybak_order_shipping_address_attributes_country_id').val(country);
-		piggybak.update_state_option('shipping', function() {
+		piggybak_states.update_state_option('shipping', function() {
 			var state = $('#piggybak_order_billing_address_attributes_state_id').val();
 			$('#piggybak_order_shipping_address_attributes_state_id').val(state);
 		});

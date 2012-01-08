@@ -20,11 +20,15 @@
 </div>
 <div class="item">
   <%= address.label :country_id %>
-  <%= address.collection_select :country_id, Piggybak::Country.all, :id, :name, { :selected => address.object.country_id.to_s } %>
+  <%= address.collection_select :country_id, Piggybak::Country.send(type), :id, :name, { :selected => address.object.country_id.to_s } %>
 </div>
 <div class="item">
 	<%= address.label :state_id %>
+	<% if address.object.country.states.any? -%>
 	<%= address.collection_select :state_id, address.object.country.states, :id, :name, { :selected => address.object.state_id.to_s } %>
+	<% else -%>
+	<%= address.text_field :state_id %>
+	<% end -%>
 </div>
 <div class="item">
 	<%= address.label :zip %>

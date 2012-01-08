@@ -1,0 +1,15 @@
+:ruby
+  type = form.jquery_namespace(field).match("billing") ? "billing" : "shipping"
+
+= form.collection_select "country_id", Piggybak::Country.send(type), :id, :name, { :selected => form.object.country_id.to_s }
+
+- if form.object.country.states.any?
+  = form.collection_select "state_id", form.object.country.states, :id, :name, { :selected => form.object.state_id.to_s }
+- else
+  = form.text_field "state_id"
+
+- if type == "billing"
+  = javascript_include_tag "piggybak.states"
+
+:javascript
+  var geodata_lookup = "#{piggybak.orders_geodata_url}";

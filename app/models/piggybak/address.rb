@@ -14,13 +14,9 @@ module Piggybak
     after_initialize :set_default_country
 
     def set_default_country
-      self.country ||= Address.DEFAULT_COUNTRY
+      self.country ||= Country.find_by_abbr(Piggybak.config.default_country)
     end
 
-    def self.DEFAULT_COUNTRY
-      Country.find_by_abbr("US")
-    end
-      
     def admin_label
       address = "#{self.firstname} #{self.lastname}<br />"
       address += "#{self.address1}<br />"

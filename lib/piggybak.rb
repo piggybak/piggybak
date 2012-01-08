@@ -87,6 +87,7 @@ module Piggybak
               help ""
             end
             field :user do
+              partial "no_edit_form_filtering_select"
               read_only do
                 !bindings[:object].new_record?
               end
@@ -110,6 +111,19 @@ module Piggybak
           parent Piggybak::Order
           object_label_method :admin_label
           visible false
+
+          edit do
+            field :firstname
+            field :lastname
+            field :address1
+            field :address2
+            field :city
+            field :zip
+            field :location do
+              partial "location_select"
+              help "Required"
+            end
+          end
         end
       
         config.model Piggybak::LineItem do
@@ -118,7 +132,9 @@ module Piggybak
           visible false
 
           edit do
-            field :variant
+            field :variant do
+              partial "no_edit_form_filtering_select"
+            end
             field :quantity
             field :total do
               read_only true
@@ -136,7 +152,9 @@ module Piggybak
           visible false
 
           edit do
-            field :shipping_method
+            field :shipping_method do
+              partial "no_edit_form_filtering_select"
+            end
             field :status
             field :total do
               read_only true
@@ -159,6 +177,7 @@ module Piggybak
             #  help "Autopopulated"
             #end
             field :payment_method do
+              partial "no_edit_form_filtering_select"
               read_only do 
                 !bindings[:object].new_record?
               end 
@@ -299,6 +318,8 @@ module Piggybak
           edit do
             field :name
             field :abbr
+            field :active_shipping
+            field :active_billing
           end
         end
 

@@ -1,16 +1,18 @@
 module Piggybak
   class TaxCalculator::Percent
-    KEYS = ["state_abbr", "rate"]
+    KEYS = ["state_id", "rate"]
 
     def self.available?(method, object)
-      abbr = method.metadata.detect { |t| t.key == "state_abbr" }.value
+      id = method.metadata.detect { |t| t.key == "state_id" }.value
 
       if object.is_a?(Cart)
-        state = State.find(object.extra_data["state_id"])
-        return state.abbr == abbr
+        if object.extra_data["state_id"] != ""
+          state = State.find(object.extra_data["state_id"])
+          return state.id == id.to_i if state
+        end
       else
         if object.billing_address && object.billing_address.state 
-          return object.billing_address.state.abbr == abbr
+          return object.billing_address.state.id == id.to_i
         end
       end
       return false

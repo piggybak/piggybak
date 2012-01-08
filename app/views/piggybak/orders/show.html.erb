@@ -33,7 +33,7 @@
 <div id="billing_address">
 	<h3>Billing Address</h3>
 	<%= f.fields_for :billing_address do |billing_address| %>
-	<%= render "address_form", :address => billing_address %>
+	<%= render "address_form", :address => billing_address, :type => "billing" %>
 	<% end -%>
 </div>
 <div id="shipping_address">
@@ -43,7 +43,7 @@
 	</h3>
 
 	<%= f.fields_for :shipping_address do |shipping_address| %>
-	<%= render "address_form", :address => shipping_address %>
+	<%= render "address_form", :address => shipping_address, :type => "shipping" %>
 	<% end -%>
 </div>
 
@@ -109,7 +109,7 @@
 
 </div>
 
-<%= javascript_include_tag "piggybak" %>
+<%= javascript_include_tag "piggybak", "piggybak.states" %>
 <script type="text/javascript">
 var shipping_lookup = "<%= piggybak.orders_shipping_url %>"; 
 var tax_lookup = "<%= piggybak.orders_tax_url %>"; 

@@ -102,9 +102,7 @@ Recipes
 TODOs
 ========
 
-* Feature: Finish refund functionality
-* Feature: Create rake task for copying over views
-* Feature: Figure out how to make entire payments section read only (hide delete button), or clean up payments section
+* Feature: Create rake task for copying over piggybak/ views
 * Test: Test email send functionality
 * Test: Add unit testing
 

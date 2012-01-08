@@ -83,7 +83,7 @@ module Piggybak
               help "Autopopulated"
             end
             field :actions do
-              partial "actions"
+              partial "order_actions"
               help ""
             end
             field :user do
@@ -102,7 +102,9 @@ module Piggybak
             end
             field :line_items
             field :shipments
-            field :payments
+            field :payments do
+              partial "form_nested_no_destroy"
+            end
           end
         end
       
@@ -179,22 +181,19 @@ module Piggybak
                 !bindings[:object].new_record?
               end 
             end
-            field :status do
-              read_only do 
-                !bindings[:object].new_record?
-              end 
-            end
             field :number do
               read_only do 
                 !bindings[:object].new_record?
               end 
             end
             field :month do
+              label "Exp. Month"
               read_only do 
                 !bindings[:object].new_record?
               end 
             end
             field :year do
+              label "Exp. Year"
               read_only do 
                 !bindings[:object].new_record?
               end 
@@ -212,8 +211,8 @@ module Piggybak
               help "This will automatically be calculated at the time of processing."
             end
             field :actions do
-              partial "payment_special"
-              help ""
+              partial "payment_refund"
+              help "Admin driven refunds are not supported because credit cards are not stored."
             end
           end
         end

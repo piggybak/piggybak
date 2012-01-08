@@ -86,6 +86,20 @@ module Piggybak
       redirect_to rails_admin.edit_path('Piggybak::Order', order.id)
     end
 
+    def cancel
+      order = Order.find(params[:id])
+
+      if can?(:cancel, order)
+        order.payments.each do |payment|
+          payment.refund
+        end
+        order.update_attribute(:status, "cancelled")
+        flash[:notice] = "Cancelled"
+      end
+
+      redirect_to rails_admin.edit_path('Piggybak::Order', order.id)
+    end
+
     # AJAX Actions from checkout
     def shipping
       cart = Piggybak::Cart.new(request.cookies["cart"])

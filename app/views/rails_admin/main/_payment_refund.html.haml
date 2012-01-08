@@ -1,0 +1,6 @@
+- if form.object.new_record?
+  N/A
+-elsif form.object.status == "refunded"
+  Payment Marked as Refunded
+- else
+  = link_to "Mark as Refunded", piggybak.refund_payment_url(form.object.id)

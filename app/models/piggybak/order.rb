@@ -36,9 +36,12 @@ module Piggybak
       end
 
       self.total_due = self.total
-      payments.each do |payment|
-        self.total_due -= payment.total
-      end
+      payments_total = payments.inject(0) do |payments_total, payment|
+        payments_total += payment.total if payment.status == "paid"
+        payments_total
+      end 
+      self.total_due -= payments_total
+
       !has_errors
     end
 
@@ -50,8 +53,9 @@ module Piggybak
           "Subtotal: $#{"%.2f" % subtotal}<br />" + 
           "Shipping: $#{"%.2f" % shipping}<br />" + 
           "Tax: $#{"%.2f" % self.tax_charge}<br />" + 
-          "Due: $#{"%.2f" % self.total_due}<br />" + 
-          "Created at: #{self.created_at.strftime("%m-%d-%Y")}<br />" #details here"
+          "Order Total: $#{"%.2f" % self.total}<br />" + 
+          "Total Due: $#{"%.2f" % self.total_due}<br />" + 
+          "Created at: #{self.created_at.strftime("%m-%d-%Y")}<br />"
       else
         return "New Order"
       end
@@ -113,6 +117,8 @@ module Piggybak
     end
 
     def update_status
+      return if self.status == "cancelled"  # do nothing
+
       if self.total_due > 0.00
         self.status = "payment owed"
       elsif self.total_due < 0.00

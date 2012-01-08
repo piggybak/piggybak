@@ -31,6 +31,8 @@ module Piggybak
     end
 
     def process
+      ActiveMerchant::Billing::Base.mode = Piggybak.config.activemerchant_mode
+
       if self.new_record?
         payment_gateway = self.payment_method.klass.constantize
         gateway = payment_gateway::KLASS.new(self.payment_method.key_values)
@@ -52,12 +54,29 @@ module Piggybak
       end
     end
 
+    # TODO: Add refund support at some point
+    # Note: It is not added now, because for methods that do not store
+    # user profiles, a credit card number must be passed
+    # If encrypted credit cards are stored on the system,
+    # this can be updated
     def refund
-      # Call refund on payment gateway calculator
-      # Update status to refunded if success
-      # Else return error messages
-      # Update total due on order
-      "Not Implemented Yet"
+=begin
+      # ActiveMerchant::Billing::Base.mode = Piggybak.config.activemerchant_mode
+
+      begin
+        payment_gateway = self.payment_method.klass.constantize
+        gateway = payment_gateway::KLASS.new(self.payment_method.key_values)
+       
+        b = gateway.refund(self.total*100, self.transaction_id, { :card_number => "4111111111111111" })
+      rescue Exception => e
+        return e.inspect
+      end
+=end
+
+      self.update_attribute(:status, "refunded")
+      self.order.update_attribute(:total_due, self.order.total_due + self.total)
+
+      return "Marked as Refunded"
     end
 
     def admin_label

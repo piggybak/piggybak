@@ -102,9 +102,9 @@ Recipes
 TODOs
 ========
 
-* Feature: Figure out how to make entire payments section read only (hide delete button)
-* Feature: Add refunds as actionable link on orders page / payment
+* Feature: Finish refund functionality
 * Feature: Create rake task for copying over views
+* Feature: Figure out how to make entire payments section read only (hide delete button), or clean up payments section
 * Test: Test email send functionality
 * Test: Add unit testing
 

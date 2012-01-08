@@ -122,6 +122,7 @@ module Piggybak
             field :location do
               partial "location_select"
               help "Required"
+              label "Country & State"
             end
           end
         end
@@ -172,12 +173,13 @@ module Piggybak
           visible false
 
           edit do
-            #field :details do
-            #  read_only true
-            #  help "Autopopulated"
-            #end
             field :payment_method do
               partial "no_edit_form_filtering_select"
+              read_only do 
+                !bindings[:object].new_record?
+              end 
+            end
+            field :status do
               read_only do 
                 !bindings[:object].new_record?
               end 
@@ -208,6 +210,10 @@ module Piggybak
                 "$%.2f" % value
               end
               help "This will automatically be calculated at the time of processing."
+            end
+            field :actions do
+              partial "payment_special"
+              help ""
             end
           end
         end

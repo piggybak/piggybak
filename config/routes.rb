@@ -20,5 +20,6 @@ Piggybak::Engine.routes.draw do
     # admin actions
     match "/admin/orders/:id/email" => "orders#email", :as => :orders_email
     match "/admin/orders/:id/download" => "orders#download", :as => :orders_download, :format => "txt"
+    match "/admin/payments/:id/refund" => "payments#refund", :as => :refund_payment
   end
 end

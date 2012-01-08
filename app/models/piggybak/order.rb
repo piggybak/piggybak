@@ -106,7 +106,9 @@ module Piggybak
 
       self.total_due = self.total
       payments.each do |payment|
-        self.total_due -= payment.total
+        if payment.status == "paid"
+          self.total_due -= payment.total
+        end
       end
     end
 

@@ -52,6 +52,14 @@ module Piggybak
       end
     end
 
+    def refund
+      # Call refund on payment gateway calculator
+      # Update status to refunded if success
+      # Else return error messages
+      # Update total due on order
+      "Not Implemented Yet"
+    end
+
     def admin_label
       if !self.new_record? 
         return "Payment ##{self.id} (#{self.created_at.strftime("%m-%d-%Y")})<br />" + 

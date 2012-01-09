@@ -105,6 +105,7 @@ TODOs
 * Test: Test email send functionality
 * Test: Add unit testing
 * Feature: Add API to call Refund if profiles only
+* Feature: Add helper for Google Analytics order tagging
 
 Copyright
 ========

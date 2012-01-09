@@ -102,10 +102,11 @@ Recipes
 TODOs
 ========
 
-* Test: Test email send functionality
 * Test: Add unit testing
-* Feature: Add API to call Refund if profiles only
+* Cleanup: Add credit card encryption, and refund support
 * Feature: Add helper for Google Analytics order tagging
+* Cleanup: Move ActiveSupport::Concern for adding acts-as-* to ActiveRecord
+* Test: Test email send functionality
 
 Copyright
 ========

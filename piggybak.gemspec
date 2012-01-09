@@ -5,26 +5,30 @@
 
 Gem::Specification.new do |s|
   s.name = "piggybak"
-  s.version = "0.2.1"
+  s.version = ""
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steph Skardal", "Brian Buchalter"]
-  s.date = "2012-01-07"
+  s.date = "2012-01-09"
   s.description = "Mountable ecommerce"
   s.email = "steph@endpoint.com"
   s.extra_rdoc_files = [
+    "LICENSE",
     "README.md"
   ]
   s.files = [
     ".document",
     "Gemfile",
     "Gemfile.lock",
+    "LICENSE",
     "README.md",
     "Rakefile",
     "VERSION",
     "app/assets/javascripts/piggybak.js",
+    "app/assets/javascripts/piggybak.states.js",
     "app/controllers/piggybak/cart_controller.rb",
     "app/controllers/piggybak/orders_controller.rb",
+    "app/controllers/piggybak/payments_controller.rb",
     "app/helpers/piggybak_helper.rb",
     "app/mailers/piggybak/notifier.rb",
     "app/models/piggybak/address.rb",
@@ -60,7 +64,11 @@ Gem::Specification.new do |s|
     "app/views/piggybak/orders/no_access.text.erb",
     "app/views/piggybak/orders/receipt.html.erb",
     "app/views/piggybak/orders/show.html.erb",
-    "app/views/rails_admin/main/_actions.html.erb",
+    "app/views/rails_admin/main/_form_nested_no_destroy.html.haml",
+    "app/views/rails_admin/main/_location_select.html.haml",
+    "app/views/rails_admin/main/_no_edit_form_filtering_select.html.haml",
+    "app/views/rails_admin/main/_order_details.html.erb",
+    "app/views/rails_admin/main/_payment_refund.html.haml",
     "config/routes.rb",
     "db/migrate/20111227150106_create_orders.rb",
     "db/migrate/20111227150322_create_addresses.rb",
@@ -78,6 +86,7 @@ Gem::Specification.new do |s|
     "db/migrate/20120102162703_create_tax_method_values.rb",
     "db/migrate/20120104020930_populate_countries_and_states.rb",
     "db/migrate/20120106010412_create_credits.rb",
+    "db/migrate/20120107135459_add_active_to_countries.rb",
     "lib/acts_as_orderer/base.rb",
     "lib/acts_as_variant/base.rb",
     "lib/currency.rb",

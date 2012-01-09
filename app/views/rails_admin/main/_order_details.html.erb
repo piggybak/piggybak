@@ -1,0 +1,44 @@
+<% if form.object.new_record? %>
+N/A
+<% else -%>
+<table cellpadding="0" cellspacing="0">
+	<tr>
+		<td>Status</td>
+		<td><%= form.object.status %></td>
+	</tr>
+	<tr>
+		<td>Subtotal</td>
+		<td>$<%= "%.2f" % form.object.line_items.inject(0) { |subtotal, li| subtotal + li.total } %></td>
+	</tr>
+	<tr>
+		<td>Shipping</td>
+		<td>$<%= "%.2f" % form.object.shipments.inject(0) { |shipping, shipment| shipping + shipment.total } %></td>
+	</tr>
+	<tr>
+		<td>Tax</td>
+		<td>$<%= "%.2f" % form.object.tax_charge %></td>
+	</tr>
+	<tr>
+		<td>Order Total</td>
+		<td>$<%= "%.2f" % form.object.total %></td>
+	</tr>
+	<tr>
+		<td>Total Due</td>
+		<td>$<%= "%.2f" % form.object.total_due %></td>
+	</tr>
+	<tr>
+		<td>Created At</td>
+		<td><%= form.object.created_at.strftime("%m-%d-%Y") %></td>
+	</tr>
+	<tr>
+		<td>Actions</td>
+		<td>
+			<ul>
+				<li><%= link_to "Send Email Confirmation", piggybak.email_order_url(form.object.id) %></li>
+				<li><%= link_to "View as Text", piggybak.download_order_url(form.object.id) %></li>
+				<li><%= link_to "Cancel Order", piggybak.cancel_order_url(form.object.id) %> (marks payments as refunded, marks order as cancelled)</li>
+			</ul>
+		</td>
+	</tr>
+</table>
+<% end -%>

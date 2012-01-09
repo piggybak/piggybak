@@ -79,11 +79,7 @@ module Piggybak
           end
           edit do
             field :details do
-              read_only true
-              help "Autopopulated"
-            end
-            field :actions do
-              partial "order_actions"
+              partial "order_details"
               help ""
             end
             field :user do

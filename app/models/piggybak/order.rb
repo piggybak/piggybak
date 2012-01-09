@@ -45,22 +45,6 @@ module Piggybak
       !has_errors
     end
 
-    def details
-      if !self.new_record? 
-        subtotal = self.line_items.inject(0) { |subtotal, li| subtotal + li.total }
-        shipping = self.shipments.inject(0) { |shipping, shipment| shipping + shipment.total }
-        return "Status: #{self.status}<br />" +
-          "Subtotal: $#{"%.2f" % subtotal}<br />" + 
-          "Shipping: $#{"%.2f" % shipping}<br />" + 
-          "Tax: $#{"%.2f" % self.tax_charge}<br />" + 
-          "Order Total: $#{"%.2f" % self.total}<br />" + 
-          "Total Due: $#{"%.2f" % self.total_due}<br />" + 
-          "Created at: #{self.created_at.strftime("%m-%d-%Y")}<br />"
-      else
-        return "New Order"
-      end
-    end
-
     def add_line_items(cart)
       cart.update_quantities
       cart.items.each do |item|

@@ -1,9 +1,0 @@
-<% if params[:action] == 'edit' -%>
-<ul>
-<li><%= link_to "Send Email Confirmation", piggybak.email_order_url(params[:id]) %></li>
-<li><%= link_to "View as Text", piggybak.download_order_url(params[:id]) %></li>
-<li><%= link_to "Cancel Order", piggybak.cancel_order_url(params[:id]) %> (marks payments as refunded, marks order as cancelled)</li>
-</ul>
-<% else -%>
-N/A
-<% end -%>

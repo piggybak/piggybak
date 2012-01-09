@@ -102,9 +102,9 @@ Recipes
 TODOs
 ========
 
-* Feature: Create rake task for copying over piggybak/ views
 * Test: Test email send functionality
 * Test: Add unit testing
+* Feature: Add API to call Refund if profiles only
 
 Copyright
 ========

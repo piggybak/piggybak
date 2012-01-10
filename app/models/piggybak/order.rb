@@ -90,8 +90,6 @@ module Piggybak
         self.total -= credit.total
       end
 
-      self.total = self.total.to_c
-
       self.total_due = self.total
       payments.each do |payment|
         if payment.status == "paid"

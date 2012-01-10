@@ -105,6 +105,7 @@ TODOs
 * Test: Add unit testing
 * Cleanup: Add credit card encryption, and refund support
 * Feature: Add helper for Google Analytics order tagging
+* Cleanup: Add note or prevent users from adding one payment at a time via admin interface
 * Cleanup: Move ActiveSupport::Concern for adding acts-as-* to ActiveRecord
 * Test: Test email send functionality
 

@@ -23,9 +23,27 @@ module Piggybak
     validates_presence_of :tax_charge
     validates_presence_of :created_at
 
+    after_initialize :initialize_nested
     before_validation :set_defaults
     after_validation :update_totals
     before_save :process_payments, :update_status
+
+    def initialize_nested
+      self.billing_address ||= Piggybak::Address.new
+      self.shipping_address ||= Piggybak::Address.new
+      self.shipments ||= [Piggybak::Shipment.new] 
+      self.payments ||= [Piggybak::Payment.new]
+      if self.payments.any?
+        self.payments.first.payment_method_id = Piggybak::PaymentMethod.find_by_active(true).id
+      end
+    end
+
+    def initialize_user(user)
+      if user
+        self.user = user
+        self.email = user.email 
+      end
+    end
 
     def process_payments
       has_errors = false
@@ -63,7 +81,11 @@ module Piggybak
       self.tax_charge = 0
 
       self.line_items.each do |line_item|
-        line_item.total = line_item.variant.price * line_item.quantity
+        if line_item.variant
+          line_item.total = line_item.variant.price * line_item.quantity
+        else
+          line_item.total = 0
+        end
       end
     end
 
@@ -71,14 +93,14 @@ module Piggybak
       self.total = 0
 
       self.line_items.each do |line_item|
-        self.total += line_item.total
+        self.total += line_item.total 
       end
 
       self.tax_charge = TaxMethod.calculate_tax(self)
       self.total += self.tax_charge
 
       shipments.each do |shipment|
-        if shipment.new_record? 
+        if shipment.new_record? && shipment.shipping_method
           calculator = shipment.shipping_method.klass.constantize
           shipment.total = calculator.rate(shipment.shipping_method, self)
         end
@@ -108,7 +130,7 @@ module Piggybak
       else
         if self.total == 0.00
           self.status = "new"
-        elsif self.shipments.all? { |s| s.status == "shipped" }
+        elsif self.shipments.any? && self.shipments.all? { |s| s.status == "shipped" }
           self.status = "shipped"
         else
           self.status = "paid"

@@ -33,7 +33,7 @@ Installation
 More Details
 ========
 
-Visit the project webiste [Here][project-website] to see more documentation and view a demo.
+Visit the project website [here][project-website] to see more documentation and view a demo.
 
 [project-website]: http://www.piggybak.org/
 

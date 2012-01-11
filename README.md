@@ -11,28 +11,6 @@ Modular / mountable ecommerce gem. Features:
 
 * Fully defined backend RailsAdmin interface for adding orders on the backend
 
-This engine explicitly excludes:
-
-* SSL configuration (to be handled in your parent application)
-
-* Redirects on login / logout (see recipe below)
-
-* Coupons and Gift cerficates (May be added later)
-
-* Per unit inventory tracking
-
-* Downloadable products
-
-This engine is highly dependent on: 
-
-* Rails 3.1 (Assets, Engines)
-
-* RailsAdmin (Admin UI) 
-
-* Devise (User Authentication)
-
-* CanCan (User Authorization)
-
 Installation
 ========
 
@@ -52,62 +30,14 @@ Installation
 
         mount Piggybak::Engine => '/checkout', :as => 'piggybak'" to config/routes
 
-Integration Components
+More Details
 ========
 
-* Add acts_as_variant to models that will be sellable
-* Add acts_as_orderer to user model (or model that devise hooks into as authenticated user)
-* Add <%= cart_form(@some_item) %> to view to display cart form
-* Add <%= cart_link %> to display link to cart
-* Add <%= orders_link %> to display link to user orders
+Visit the project webiste [Here][project-website] to see more documentation and view a demo.
 
-Recipes
-========
-
-* Redirect after login / logout
-
-        before_filter :set_last_page
-        def set_last_page
-            if !request.xhr? && !request.url.match(/users\/sign_in/) && !request.url.match(/users\/sign_out/)
-            session[:return_to] = request.url
-            end 
-        end 
-        def after_sign_in_path_for(resource_or_scope)
-            session[:return_to] || root_url
-        end 
-        def after_sign_out_path_for(resource_or_scope)
-            session[:return_to] || root_url
-        end
-
-* Cancan access control
-
-        class Ability
-            include CanCan::Ability
-            def initialize(user)
-                if user && user.roles.include?(Role.find_by_name("admin"))
-                    can :access, :rails_admin
-                    can :manage, [ #Insert your app models here
-                                  ::Piggybak::Variant,
-                                  ::Piggybak::ShippingMethod,
-                                  ::Piggybak::PaymentMethod,
-                                  ::Piggybak::TaxMethod,
-                                  ::Piggybak::State,
-                                  ::Piggybak::Country]
-                   can [:download, :email, :read, :create, :update, :history, :export], ::Piggybak::Order
-                end
-            end
-        end
-
-
-TODOs
-========
-
-* Test: Add unit testing
-* Cleanup: Add credit card encryption, and refund support
-* Cleanup: Move ActiveSupport::Concern for adding acts-as-* to ActiveRecord
-* Test: Test email send functionality
+[project-website]: http://www.piggybak.org/
 
 Copyright
 ========
 
-Copyright (c) 2011 Steph Skardal. See LICENSE.txt for further details.
+Copyright (c) 2011 End Point & Steph Skardal. See LICENSE.txt for further details.

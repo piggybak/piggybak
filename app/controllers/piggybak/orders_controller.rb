@@ -58,6 +58,11 @@ module Piggybak
     def receipt
       response.headers['Cache-Control'] = 'no-cache'
 
+      if !session.has_key?(:last_order)
+        redirect_to root_url 
+        return
+      end
+
       @order = Piggybak::Order.find(session[:last_order])
     end
 

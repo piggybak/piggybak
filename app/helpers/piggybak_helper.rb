@@ -14,4 +14,9 @@ module PiggybakHelper
       link_to text, piggybak.orders_list_url
     end
   end
+  def piggybak_track_order(store_name)
+    if params[:controller] == "piggybak/orders" && params[:action] == "receipt" && session.has_key?(:last_order)
+      render "piggybak/orders/google_analytics", :order => @order, :store_name => store_name
+    end
+  end
 end

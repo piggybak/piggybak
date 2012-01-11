@@ -23,10 +23,14 @@ module Piggybak
       if self.address2 && self.address2 != ''
         address += "#{self.address2}<br />"
       end
-      address += "#{self.city}, #{self.state ? self.state.name : self.state_id} #{self.zip}<br />"
+      address += "#{self.city}, #{self.state_display} #{self.zip}<br />"
       address += "#{self.country.name}"
       address
     end
     alias :display :admin_label  
+
+    def state_display
+      self.state ? self.state.name : self.state_id
+    end
   end
 end

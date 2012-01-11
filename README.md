@@ -104,7 +104,6 @@ TODOs
 
 * Test: Add unit testing
 * Cleanup: Add credit card encryption, and refund support
-* Feature: Add helper for Google Analytics order tagging
 * Cleanup: Move ActiveSupport::Concern for adding acts-as-* to ActiveRecord
 * Test: Test email send functionality
 

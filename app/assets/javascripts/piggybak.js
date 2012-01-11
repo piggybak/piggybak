@@ -10,7 +10,7 @@ $(function() {
 
 var piggybak = {
 	initialize_listeners: function() {
-		$('#piggybak_order_shipping_address_attributes_state_id').live('click', function() {
+		$('#piggybak_order_shipping_address_attributes_state_id').live('change', function() {
 			piggybak.update_shipping_options($(this));
 		});
 		$('#piggybak_order_billing_address_attributes_state_id').live('change', function() {

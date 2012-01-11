@@ -9,6 +9,9 @@ module Piggybak
     validates_presence_of :month
     validates_presence_of :year
 
+    attr_accessor :number
+    attr_accessor :verification_value
+
     def status_enum
       ["paid", "refunded"]
     end
@@ -40,8 +43,6 @@ module Piggybak
         gateway_response = gateway.authorize(self.order.total_due*100, credit_card, :address => self.order.avs_address)
         if gateway_response.success?
           self.attributes = { :total => self.order.total_due, 
-                              :number => 'hidden',
-                              :verification_value => 'hidden',
                               :transaction_id => payment_gateway.transaction_id(gateway_response) } 
           gateway.capture(1000, gateway_response.authorization)
           return true

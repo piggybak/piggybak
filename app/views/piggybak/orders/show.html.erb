@@ -114,4 +114,9 @@
 var shipping_lookup = "<%= piggybak.orders_shipping_url %>"; 
 var tax_lookup = "<%= piggybak.orders_tax_url %>"; 
 var geodata_lookup = "<%= piggybak.orders_geodata_url %>"; 
+<% if params.has_key?(:piggybak_order) &&  params[:piggybak_order].has_key?(:shipments_attributes) -%>
+var previous_shipping = <%= params[:piggybak_order][:shipments_attributes]["0"][:shipping_method_id] %>;
+<% else -%>
+var previous_shipping = "";
+<% end -%>
 </script>

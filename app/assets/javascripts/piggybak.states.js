@@ -41,7 +41,10 @@ var piggybak_states = {
 			new_field = $('<input>');
 		}
 		var old_field = $('#piggybak_order_' + type + '_address_attributes_state_id');
-		new_field.attr('name', old_field.attr('name')).attr('id', old_field.attr('id')).val(old_field.val());
+		new_field.attr('name', old_field.attr('name')).attr('id', old_field.attr('id'));
+		if(old_field.prop('tagName') == new_field.prop('tagName')) {
+			new_field.val(old_field.val());
+		}
 		old_field.replaceWith(new_field);
 
 		if(block) {

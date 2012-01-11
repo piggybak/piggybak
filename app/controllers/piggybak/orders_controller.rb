@@ -6,30 +6,19 @@ module Piggybak
       @cart = Piggybak::Cart.new(request.cookies["cart"])
       @order = Piggybak::Order.new
 
-      if current_user
-        @order.user = current_user
-        @order.email = current_user.email 
-      end
-
-      @order.billing_address ||= Piggybak::Address.new
-      @order.shipping_address ||= Piggybak::Address.new
-
-      @order.shipments ||= [Piggybak::Shipment.new] 
-
-      @order.payments ||= [Piggybak::Payment.new] 
+      @order.initialize_user(current_user)
     end
   
     def submit
       response.headers['Cache-Control'] = 'no-cache'
+      @cart = Piggybak::Cart.new(request.cookies["cart"])
 
       begin
         ActiveRecord::Base.transaction do
           @order = Piggybak::Order.new(params[:piggybak_order])
-          @order.user = current_user if current_user
-          @order.payments.first.payment_method_id = Piggybak::PaymentMethod.find_by_active(true).id
+          @order.initialize_user(current_user)
 
-          cart = Piggybak::Cart.new(request.cookies["cart"])
-          @order.add_line_items(cart)
+          @order.add_line_items(@cart)
 
           if @order.save
             Piggybak::Notifier.order_notification(@order)
@@ -42,14 +31,9 @@ module Piggybak
           end
         end
       rescue Exception => e
-        @cart = Piggybak::Cart.new(request.cookies["cart"])
-
-        if current_user
-          @order.user = current_user
-          @order.email = current_user.email 
+        if @order.errors.empty?
+  	      @order.errors.add "", "Your order could not go through. Please try again."
         end
-
-        @user = current_user
 
         render "piggybak/orders/show"
       end

@@ -1,7 +1,15 @@
 = form.fields_for field.name do |nested_form|
   %blockquote
     - if nested_form.object.new_record?
-      = nested_form.link_to_remove "cancel", :class => 'label notice'
+      = nested_form.link_to_remove "cancel", :class => 'label notice', :id => "payments_cancel"
     = nested_form.generate({:action => :create, :model_config => field.associated_model_config, :nested_in => field.name })
     %hr
-= form.link_to_add t("admin.index.add_new"), field.name, :class => 'label notice'
+= form.link_to_add t("admin.index.add_new"), field.name, :class => 'label notice', :id => "payments_add"
+
+:javascript
+    $('#payments_add').live('click', function() {
+      $(this).hide();
+    });
+    $('#payments_cancel').live('click', function() {
+      $('#payments_add').show();
+    });

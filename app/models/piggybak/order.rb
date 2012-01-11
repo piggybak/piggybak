@@ -146,7 +146,7 @@ module Piggybak
       {
       :address1 => self.billing_address.address1,
       :city     => self.billing_address.city,
-      :state    => self.billing_address.state,
+      :state    => self.billing_address.state_display,
       :zip      => self.billing_address.zip,
       :country  => "US" 
       }

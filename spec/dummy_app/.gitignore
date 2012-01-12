@@ -11,13 +11,3 @@
 /db/*.sqlite3
 
 # Ignore all logfiles and tempfiles.
-/log
-/tmp
-sevenwonders-html/
-*.swp
-# public/system/
-pgsql/
-rails_admin/
-httpd/
-config/database.yml
-public/assets/

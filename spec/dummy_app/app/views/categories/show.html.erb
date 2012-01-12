@@ -1,0 +1,27 @@
+<div class="title">
+<h1><span class="f-left"></span><span class="titletext"><%= @category.title %></span><span class="f-right"></span></h1>
+</div>
+
+<div id="ts-display-portfolio">
+<ul id="ts-display-pf-col-3">
+	<% @category.images.each do |image| %>
+	<li class="four columns alpha">
+		<div class="ts-display-pf-img">
+			<%= link_to image_tag(image.gallery.url(:thumb)), image_url(image.slug) %>
+		</div>
+		<div class="ts-display-pf-text">
+			<h3 class="posttitle"><%= link_to image.title, image_url(image.slug) %></h3>
+		</div>
+		<div class="ts-display-clear"></div>
+	</li>
+	<% end -%>
+</ul>
+<div class="clearfix"></div>
+</div><!-- end #ts-display-portfolio -->
+
+<% if false -%>
+<div class="pagenavi">
+Page 1 of 5 &nbsp;<a href="" class="page">1</a><a href="" class="page">2</a><a href="" class="page">3</a><span class="current">4</span><a href="" class="page">5</a>
+</div><!-- end pagenavi -->
+<% end -%>
+<div class="clearfix"></div>

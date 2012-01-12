@@ -1,0 +1,256 @@
+/* 
+
+SevenWonders - CSS File
+
+USE THIS STYLE SHEET FOR INNER PAGE
+
+*/
+
+.pagenavi {clear:both; padding:0px 0; margin-bottom:15px;}
+.pagenavi a, .pagenavi a:visited{
+	padding:0 10px;
+	margin:0 4px;
+	display:inline;
+	display:inline-block;
+	height:25px;
+	line-height:25px;
+	text-decoration:none !important;
+}
+.pagenavi a:hover{
+	background-position:0 -23px;
+	text-decoration:none !important;
+}
+.pagenavi .current{
+	padding:0 10px;
+	margin:0 4px;
+	display:inline;
+	display:inline-block;
+	height:25px;
+	line-height:25px;
+	background-position:0 -23px;
+	text-decoration:none !important;
+	}
+.pagenavi .pages{
+	padding:5px 10px;
+	margin:0 4px;
+}
+
+
+/* PORTFOLIO */
+.ts-display-pf-img{position:relative;}
+.ts-display-clear{clear:both; height:1px !important; line-height:1px !important; float:none!important}
+.ts-display-pf-text{ line-height:20px;}
+.ts-display-pf-text p{ margin-bottom:0;}
+.ts-display-pf-text .more{	text-align:left; display:block; padding:5px 0 0 0}
+.ts-display-pf-text .more:hover{}
+
+.ts-display-pf-img{
+    border:1px solid #e6e6e6; padding:5px;
+	overflow:hidden;
+}
+.ts-display-pf-img a.image{
+	display:block;
+	position:relative;
+	overflow:hidden;
+}
+.ts-display-pf-img a .rollover{
+	background:url(<%= image_path "hover-zoom.png" %>);
+	background-color:#000;
+	background-repeat:no-repeat;
+	background-position:center;
+	display:block;
+    position:absolute;
+	z-index:10;
+	display:none;
+	cursor:pointer;
+}
+.ts-display-pf-img a .rollover.gotolink{
+	background:url(<%= image_path "hover-link.png" %>);
+	background-color:#000;
+	background-repeat:no-repeat;
+	background-position:center;
+}
+.ts-display-pf-img a .rollover.gotopost{
+	background:url(<%= image_path "hover-doc.png" %>);
+	background-color:#000;
+	background-repeat:no-repeat;
+	background-position:center;
+}
+
+.ts-display-pf-img a.image{
+	width:100%;
+	height:100%;
+}
+
+.ts-display-pf-img a .rollover{
+	width:100%;
+	height:100%;
+}
+
+
+/* 2 column */
+#ts-display-pf-col-2{list-style-type:none; padding:0; margin:0;}
+#ts-display-pf-col-2 li{list-style-type:none; padding:0; margin-bottom:20px; }
+#ts-display-pf-col-2 li.nomargin{margin-right:0; }
+#ts-display-pf-col-2 h3{margin-bottom:8px;}
+
+#ts-display-pf-col-2 .ts-display-pf-img, #ts-display-pf-col-2 img{
+	width:448px;
+	height:191px;
+}
+#ts-display-pf-col-2 .ts-display-pf-text{
+	margin-top:10px;
+	margin-bottom:20px
+}
+
+/* 3 column */
+#ts-display-pf-col-3{list-style-type:none; padding:0; margin:0;}
+#ts-display-pf-col-3 li{list-style-type:none; padding:0; margin-bottom:20px;}
+#ts-display-pf-col-3 li.nomargin{margin-right:0; }
+#ts-display-pf-col-3 h3{margin-bottom:8px;}
+
+#ts-display-pf-col-3 .ts-display-pf-img, #ts-display-pf-col-3 img{
+	width:288px;
+	height:140px;
+}
+#ts-display-pf-col-3 .ts-display-pf-text{
+	margin-top:10px;
+	margin-bottom:20px
+}
+
+/* 4 column */
+#ts-display-pf-col-4{list-style-type:none; padding:0; margin:0;}
+#ts-display-pf-col-4 li{list-style-type:none; padding:0; margin-bottom:20px;}
+#ts-display-pf-col-4 li.nomargin{margin-right:0; }
+#ts-display-pf-col-4 h3{margin-bottom:8px;}
+
+#ts-display-pf-col-4 .ts-display-pf-img, #ts-display-pf-col-4 img{
+	width:208px;
+	height:112px;
+}
+#ts-display-pf-col-4 .ts-display-pf-text{
+	margin-top:10px;
+	margin-bottom:20px
+}
+
+.ts-display-pf-tex.nodesc{margin-bottom:0 !important;}
+
+/* slideshow and client info in single portfolio */
+.clienturl{margin-top:-15px;}
+
+#portfolio-gallery #frame-slider-portfolio li{ width:100%!important; height:100%!important; }
+#portfolio-gallery #frame-slider-portfolio #sliderportfolio{list-style-type:none; margin:0; padding:0; height:410px;  }
+
+#portfolio-gallery #frame-slider-portfolio #slide-nav{position:absolute;  bottom:-35px; z-index:30; width:62%; text-align:center; }
+#portfolio-gallery #slide-nav a{
+	background: url(<%= image_path "but-slide.png" %>) no-repeat scroll 50% 50%;
+	display:inline;
+	display:inline-block;
+	zoom:1;
+	font-size:0px;
+	width:11px;
+	height:11px;
+	margin:3px;
+	outline-style:none;
+	outline-width:medium;
+	padding:0px;
+	cursor:pointer;
+}
+#portfolio-gallery #slide-nav .activeSlide {background: url(<%= image_path "but-slide-selected.png" %>) no-repeat scroll 0% 50%;}
+
+/* BLOG */
+.post{margin-bottom:40px;  position:relative; padding-bottom:50px; }
+.post .posttitle{ margin-bottom:10px}
+.posttitle a:hover{text-decoration:none}
+.post.single{margin-bottom:0px; padding-bottom:0px; border:0;}
+.entry-utility{font-size:11px; color:#878787}
+.entry-utility a, .entry-utility a:visited{color:#878787;}
+.entry-utility span{padding:0 20px 0 0;}
+.entry-utility img{vertical-align:middle; margin:0 6px 0 0}
+.entry-content{padding:20px 0 0 0;}
+.entry-content .frame{margin-bottom:10px;}
+
+
+#comment .pagenavi{
+	padding:0 0 40px 0;
+
+}
+
+#comment h3{
+	line-height: 24px;
+    margin: 0 0 20px;
+    padding: 13px 0;
+}
+
+.commentlist{
+	list-style-type:none;
+	padding:20px 0;
+	margin:0;
+}
+.commentlist ol{
+	list-style-type:none;
+	padding:30px 0 0 90px;
+	margin:0;
+}
+
+.commentlist li{
+	position:relative;
+	padding:0 0 30px 0;
+}
+.commentlist li li{
+	position:relative;
+	padding:0;
+}
+
+.avatar{
+	position:absolute;
+	top:0;
+	left:0;
+   	padding:5px;
+	width:68px;
+	height:68px;
+}
+.tuser{font-size:12px; color: #65696A;}
+.tdate{ font-size:10px; font-style:italic; padding:0px 5px;}
+.comment-body{margin:0 0 0 100px; padding: 10px;}
+.comment-body a.more{ font-size:10px;}
+
+#commentform label{display:block}
+#commentform .text-input{
+	margin-bottom:8px;
+	padding:8px 5px;
+	vertical-align:middle;
+}
+#commentform .textarea{
+	margin-bottom:10px;
+	padding:8px 5px;
+	vertical-align:top;
+}
+#commentform .button{
+ }
+#commentform .button:hover{}
+
+/* CONTACT */
+form{margin:0; padding:0;}
+fieldset{border:0px;}
+#contactform{margin:0 auto; position:relative; }
+#contactform label{display:block}
+label.sp { width:3px;}
+span.error{color:red;text-align:left; font-size:11px;}
+#contactform input.text-input{
+	margin-bottom:8px;
+	vertical-align:middle;
+	width:90%;
+}
+#contactform textarea{ width:90%;} 
+#message{ margin-left:0px;}
+#message h2	{}
+#message p{margin:6px 0px; }
+
+#contactform .button{
+	cursor:pointer;
+	margin-top:15px;
+	padding:3px 15px;
+	line-height:20px;
+ }
+

@@ -1,0 +1,53 @@
+<div id="single_image">
+	<div id="portfolio-gallery" class="eight columns alpha">
+		<div id="frame-slider-portfolio" >
+			<ul id="sliderportfolio">
+				<li><%= image_tag @image.main.url %></li>
+			</ul><!-- end #slider -->
+			
+			<div id="slide-nav">
+				<div id="pager"></div>
+			</div><!-- end #slide-nav -->
+		</div><!-- end #farme-slider-portfolio -->
+		<div class="clear"></div>
+	</div> 
+	
+	<div class="four columns omega">
+		<h1 class="pagetitle"><%= @image.title %></h1>
+		<p><%= @image.description %></p>
+		<p>
+			<strong>Photographer</strong><br />
+			<%= @image.user.display_name %>
+		</p>
+		<div id="cart_form">
+			<%= cart_form(@image) %>
+		</div>							 
+	</div>
+	
+	<div class="clear"></div>
+
+	<% if @related_images.any? -%>	
+	<div class="title">
+	<h1><span class="f-left"></span><span class="titletext">Related images</span><span class="f-right"></span></h1>
+	</div>
+	
+	<div id="ts-display-portfolio">
+	<ul id="ts-display-pf-col-3">
+		<% @related_images.each do |image| %>
+		<li class="four columns alpha">
+			<div class="ts-display-pf-img">
+				<%= link_to image_tag(image.gallery.url(:thumb)), image_url(image.slug) %>
+			</div>
+			<div class="ts-display-pf-text">
+				<h3 class="posttitle"><%= link_to image.title, image_url(image.slug) %></h3>
+			</div>
+			<div class="ts-display-clear"></div>
+		</li>
+		<% end -%>
+	</ul>
+	<div class="clearfix"></div>
+	</div><!-- end #ts-display-portfolio -->
+	
+	<div class="clearfix"></div>
+	<% end -%>
+</div>

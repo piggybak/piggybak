@@ -5,8 +5,9 @@ require 'simplecov'
 SimpleCov.start 'rails'
 
 ENV['SKIP_RAILS_ADMIN_INITIALIZER'] = 'true'
-require File.expand_path('../dummy_app/config/environment', __FILE__)
+#require File.expand_path('../dummy_app/config/environment', __FILE__)
 
+require 'rails/all'
 require 'rspec/rails'
 require 'factory_girl'
 require 'factories'
@@ -35,13 +36,9 @@ RSpec.configure do |config|
   config.include Piggybak::Engine.routes.url_helpers
 
   config.before(:each) do
-    # RailsAdmin::Config.excluded_models = [RelTest, FieldTest]
     RailsAdmin::AbstractModel.all_models = nil
     RailsAdmin::AbstractModel.all_abstract_models = nil
     RailsAdmin::AbstractModel.new("User").destroy_all!
-    RailsAdmin::AbstractModel.new("Category").destroy_all!
-    RailsAdmin::AbstractModel.new("Page").destroy_all!
-    RailsAdmin::AbstractModel.new("Role").destroy_all!
     RailsAdmin::AbstractModel.new("Image").destroy_all!
   end
 

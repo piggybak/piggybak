@@ -1,0 +1,5 @@
+# Test shipping returns rates
+# Test tax returns rate
+# Test checkout with logged in, logged out user
+# Test create, delete, update of line items and quantities
+# Test various validations on order

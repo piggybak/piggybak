@@ -1,129 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= @title || "DummyApp" %></title>
+  <title>DummyApp</title>
   <%= stylesheet_link_tag    "application" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-525312-15']);
-  _gaq.push(['_trackPageview']);
-  <%= piggybak_track_order("DummyApp") %>
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
 </head>
-</head>
-
 <body>
 
-<div id="wrapper">
-	<div id="wrapper-top">
-		<div class="container">
-			<div id="top">
-				<div id="logo" class="four columns">
-					<%= link_to image_tag("piggybak_demo.png"), "/demo/" %>
-				</div><!--#logo-->
-				<div id="nav" class="eight columns">
-					<ul id="topnav" class="sf-menu">
-						<li><a href="/demo/">Shop</a>
-							<ul>
-								<% Category.all.each do |category| %>
-								<li><%= link_to category.title, category_url(category.slug) %></li>
-								<% end -%>
-							</ul>
-						</li>
-						<li><a href="/demo/about/">About</a></li>
-						<% if current_user -%>
-						<% if current_user.piggybak_orders.any? -%>
-						<li>
-							<%= orders_link("Order History") %>
-						</li>
-						<% end -%>
-						<% if current_user.roles.size > 0 -%>
-						<li>
-							<%= link_to 'ADMIN', "/demo/admin" %>
-						</li>
-						<% end -%>
-						<li>
-							<%= link_to 'LOGOUT', destroy_user_session_path, :method => :delete, :class => "last" %>
-						</li>
-						<% else -%>
-						<li>
-							<%= link_to 'LOG IN', new_user_session_path %>
-						</li>
-						<% end -%>
-						<li><a id="home" href="/">Piggybak Home</a></li>
-					</ul><!-- #topnav -->
-				</div><!--#nav-->
-				<div class="clearfix"></div>
-			</div><!--#top-->
-		</div><!--container-->
-	</div><!--#wrapper-top-->
-	
-	<div id="wrapper-beforeheader">
-		<div class="container">
-			<div id="sn" class="six columns">
-				<ul>
-					<li id="cart_link">
-						<%= cart_link %>
-					</li>
-				</ul>
-			</div><!--#sn-->
-			<div id="toptext" class="six columns">
-				<% if params[:controller] == "home" %>
-                <span>Hi There!  Welcome to the Piggybak demo</span>
-				<% elsif params[:controller] == "image" -%>
-				<div id="breadcrumb">
-					<%= link_to "Home", root_url %> &raquo;
-					<% if @image.categories.any? -%>
-					<%= link_to @image.categories.first.title, category_url(@image.categories.first.slug) %> &raquo;
-					<% end -%>
-					<%= @image.title %>
-					</div>
-				<% end -%>
-				<% if false -%>
-				<% end -%>
-			</div><!--#toptext-->
-			<div class="clearfix"></div>
-		</div><!--container-->
-	</div><!--#wrapper-beforeheader-->
-	
-	<div id="wrapper-content">
-		<div class="container">
-			<div id="content" class="twelve columns">
-				<%= yield %>
-			</div><!--#content-->
-		</div><!--container-->
-	</div><!--#wrapper-content-->
-	
-	<div id="wrapper-beforefooter">
-		<div class="container">
-			<div id="slogantext" class="twelve columns">
-				This is a demo website. The photos here are not actually for sale. All photos &copy; Steph Skardal.
-			</div><!--#slogantext-->
-		</div><!--container-->
-	</div><!--#wrapper-beforefooter-->
-	
-	<div id="wrapper-footer">
-		<div class="container">
-		<div id="footer" class="twelve columns">
-			<span id="copyright">Copyright &copy;<%= Time.now.year.to_s %> Steph Skardal.  All Rights Reserved.</span>
-			<ul id="footnav">
-				<% Page.all.each do |page| -%>
-				<li><%= link_to page.title, "/demo/#{page.slug}/" %></li>
-				<% end -%>
-			</ul><!-- #footnav -->
-		</div><!--#footer-->
-		</div><!--container-->
-	</div><!--#wrapper-footer-->
-</div><!--#wrapper-->
+<%= yield %>
+
 </body>
 </html>

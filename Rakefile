@@ -29,7 +29,8 @@ Jeweler::Tasks.new do |gem|
 
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'rspec-rails'
-  gem.add_development_dependency 'factory_girl_rails'
+  gem.add_development_dependency 'diff-lcs'
+  gem.add_development_dependency 'factory_girl'
   gem.add_development_dependency 'shoulda'
 
   gem.test_files = Dir['spec/**/*']

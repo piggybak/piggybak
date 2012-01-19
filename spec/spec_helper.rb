@@ -2,12 +2,12 @@
 ENV["RAILS_ENV"] = "test"
 
 require 'simplecov'
+require 'rails/all'
 SimpleCov.start 'rails'
 
 ENV['SKIP_RAILS_ADMIN_INITIALIZER'] = 'true'
-#require File.expand_path('../dummy_app/config/environment', __FILE__)
+require File.expand_path('../dummy_app/config/environment', __FILE__)
 
-require 'rails/all'
 require 'rspec/rails'
 require 'factory_girl'
 require 'factories'
@@ -15,7 +15,7 @@ require 'database_helpers'
 
 ActionMailer::Base.delivery_method = :test
 ActionMailer::Base.perform_deliveries = true
-#ActionMailer::Base.default_url_options[:host] = "example.com"
+ActionMailer::Base.default_url_options[:host] = "example.com"
 
 Rails.backtrace_cleaner.remove_silencers!
 

@@ -11,9 +11,12 @@ group :development, :test do
 
   gem 'rspec'
   gem 'rspec-rails', '~> 2.7.0'
-  gem 'factory_girl_rails'
+  gem 'factory_girl'
+  gem 'diff-lcs'
   gem 'shoulda'
   gem 'simplecov'
+  gem 'tzinfo'
+  gem 'devise'
 end
 
 gem "countries"

@@ -186,4 +186,5 @@ DEPENDENCIES
   sass-rails (~> 3.1.5)
   sqlite3
   therubyracer
+  tzinfo
   uglifier (>= 1.0.3)

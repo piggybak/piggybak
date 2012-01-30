@@ -30,6 +30,10 @@ Installation
 
         mount Piggybak::Engine => '/checkout', :as => 'piggybak'" to config/routes
 
+* You must include jquery_ujs in your application.js file in to get the remove item from cart functionality to work.
+
+        //= require jquery_ujs
+
 More Details
 ========
 

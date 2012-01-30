@@ -1,5 +1,7 @@
 module Piggybak
   class Notifier < ActionMailer::Base
+    default :from => Piggybak.config.email_sender
+
     def order_notification(order)
       @order = order
   

@@ -21,7 +21,7 @@ module Piggybak
           @order.add_line_items(@cart)
 
           if @order.save
-            Piggybak::Notifier.order_notification(@order)
+            Piggybak::Notifier.order_notification(@order).deliver
 
             cookies["cart"] = { :value => '', :path => '/' }
             session[:last_order] = @order.id
@@ -68,7 +68,7 @@ module Piggybak
       order = Order.find(params[:id])
 
       if can?(:email, order)
-        Piggybak::Notifier.order_notification(order)
+        Piggybak::Notifier.order_notification(order).deliver
         flash[:notice] = "Email notification sent."
       end
 

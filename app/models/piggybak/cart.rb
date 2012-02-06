@@ -10,12 +10,14 @@ module Piggybak
       self.errors = []
       cookie ||= ''
       cookie.split(';').each do |item|
-	    item_variant = Piggybak::Variant.find_by_id(item.split(':')[0])
-		if item_variant.present?
-	      self.items << { :variant => item_variant, :quantity => (item.split(':')[1]).to_i }
+        item_variant = Piggybak::Variant.find_by_id(item.split(':')[0])
+        if item_variant.present?
+          self.items << { :variant => item_variant, :quantity => (item.split(':')[1]).to_i }
         end
       end
       self.total = self.items.sum { |item| item[:quantity]*item[:variant].price }
+
+      self.extra_data = {}
     end
   
     def self.to_hash(cookie)
@@ -79,6 +81,12 @@ module Piggybak
       end
       self.items = new_items
       self.total = self.items.sum { |item| item[:quantity]*item[:variant].price }
+    end
+
+    def set_extra_data(form_params)
+      form_params.each do |k, v|
+        self.extra_data[k.to_sym] = v if ![:controller, :action].include?(k)
+      end
     end
   end
 end

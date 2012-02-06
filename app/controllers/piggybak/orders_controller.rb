@@ -32,7 +32,7 @@ module Piggybak
         end
       rescue Exception => e
         if @order.errors.empty?
-  	      @order.errors.add "", "Your order could not go through. Please try again."
+          @order.errors.add "", "Your order could not go through. Please try again."
         end
 
         render "piggybak/orders/show"
@@ -92,14 +92,14 @@ module Piggybak
     # AJAX Actions from checkout
     def shipping
       cart = Piggybak::Cart.new(request.cookies["cart"])
-      cart.extra_data = params
+      cart.set_extra_data(params)
       shipping_methods = Piggybak::ShippingMethod.lookup_methods(cart)
       render :json => shipping_methods
     end
 
     def tax
       cart = Piggybak::Cart.new(request.cookies["cart"])
-      cart.extra_data = params
+      cart.set_extra_data(params)
       total_tax = Piggybak::TaxMethod.calculate_tax(cart)
       render :json => { :tax => total_tax }
     end

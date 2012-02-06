@@ -7,8 +7,7 @@ Piggybak::Engine.routes.draw do
     match "/cart/remove/:item" => "cart#remove", :via => :delete, :as => :remove_item
 
     # order actions
-    match "/show" => "orders#show", :as => :orders
-    match "/submit" => "orders#submit", :via => :post, :as => :order_submit
+    root :to => 'orders#submit', :as => :orders, :via => [:get, :post]
     match "/receipt" => "orders#receipt", :as => :receipt
     match "/orders/shipping" => "orders#shipping", :as => :orders_shipping
     match "/orders/tax" => "orders#tax", :as => :orders_tax

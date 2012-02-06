@@ -1,7 +1,7 @@
 <div id="checkout">
 
 <h1>Checkout</h1>
-<%= form_for @order, :url => piggybak.order_submit_url, :method => "POST" do |f| %>
+<%= form_for @order, :url => piggybak.orders_url, :method => "POST" do |f| %>
 
 <% if @order.errors.any? -%>
 <div id="checkout_error">

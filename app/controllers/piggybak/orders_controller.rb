@@ -1,41 +1,35 @@
 module Piggybak
   class OrdersController < ApplicationController
-    def show
-      response.headers['Cache-Control'] = 'no-cache'
-
-      @cart = Piggybak::Cart.new(request.cookies["cart"])
-      @order = Piggybak::Order.new
-
-      @order.initialize_user(current_user)
-    end
-  
     def submit
       response.headers['Cache-Control'] = 'no-cache'
       @cart = Piggybak::Cart.new(request.cookies["cart"])
 
-      begin
-        ActiveRecord::Base.transaction do
-          @order = Piggybak::Order.new(params[:piggybak_order])
-          @order.initialize_user(current_user)
+      if request.post?
+        begin
+          ActiveRecord::Base.transaction do
+            @order = Piggybak::Order.new(params[:piggybak_order])
+            @order.initialize_user(current_user)
 
-          @order.add_line_items(@cart)
+            @order.add_line_items(@cart)
 
-          if @order.save
-            Piggybak::Notifier.order_notification(@order).deliver
+            if @order.save
+              Piggybak::Notifier.order_notification(@order).deliver
 
-            cookies["cart"] = { :value => '', :path => '/' }
-            session[:last_order] = @order.id
-            redirect_to piggybak.receipt_url 
-          else
-            raise Exception, @order.errors.full_messages
+              cookies["cart"] = { :value => '', :path => '/' }
+              session[:last_order] = @order.id
+              redirect_to piggybak.receipt_url 
+            else
+              raise Exception, @order.errors.full_messages
+            end
+          end
+        rescue Exception => e
+          if @order.errors.empty?
+            @order.errors.add "", "Your order could not go through. Please try again."
           end
         end
-      rescue Exception => e
-        if @order.errors.empty?
-          @order.errors.add "", "Your order could not go through. Please try again."
-        end
-
-        render "piggybak/orders/show"
+	  else
+        @order = Piggybak::Order.new
+        @order.initialize_user(current_user)
       end
     end
   

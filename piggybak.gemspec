@@ -55,7 +55,7 @@ Gem::Specification.new do |s|
     "app/models/piggybak/variant.rb",
     "app/views/piggybak/cart/_form.html.erb",
     "app/views/piggybak/cart/_items.html.erb",
-    "app/views/piggybak/cart/show.html.erb",
+    "app/views/piggybak/cart/submit.html.erb",
     "app/views/piggybak/notifier/order_notification.text.erb",
     "app/views/piggybak/orders/_address_form.html.erb",
     "app/views/piggybak/orders/_details.html.erb",

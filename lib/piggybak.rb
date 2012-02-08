@@ -106,7 +106,6 @@ module Piggybak
       
         config.model Piggybak::Address do
           label "Address"
-          parent Piggybak::Order
           object_label_method :admin_label
           visible false
 
@@ -146,7 +145,6 @@ module Piggybak
         end
       
         config.model Piggybak::Shipment do
-          parent Piggybak::Order
           object_label_method :admin_label
           visible false
 
@@ -166,7 +164,6 @@ module Piggybak
         end
       
         config.model Piggybak::Payment do
-          parent Piggybak::Order
           object_label_method :admin_label
           visible false
 
@@ -247,7 +244,7 @@ module Piggybak
         end
       
         config.model Piggybak::ShippingMethod do
-          parent Piggybak::PaymentMethod
+          navigation_label "Configuration"
           object_label_method :admin_label
           edit do
             field :description do
@@ -279,7 +276,7 @@ module Piggybak
         end
 
         config.model Piggybak::TaxMethod do
-          parent Piggybak::PaymentMethod
+          navigation_label "Configuration"
           object_label_method :admin_label
           edit do
             field :description
@@ -325,7 +322,7 @@ module Piggybak
         end
 
         config.model Piggybak::State do
-          parent Piggybak::Country
+          navigation_label "Geodata"
           label "States"
           list do
             field :name
@@ -341,7 +338,7 @@ module Piggybak
       
         config.model Piggybak::Variant do
           label "Variant"
-          parent Piggybak::Order
+		  navigation_label "Orders"
           object_label_method :admin_label
           edit do
             field :item do

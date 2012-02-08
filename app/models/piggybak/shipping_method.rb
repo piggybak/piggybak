@@ -9,7 +9,7 @@ module Piggybak
     accepts_nested_attributes_for :shipping_method_values, :allow_destroy => true
 
     validates_each :shipping_method_values do |record, attr, value|
-      if record.klass
+      if record.klass.present?
         calculator = record.klass.constantize
         metadata_keys = value.collect { |v| v.key }.sort
         if calculator::KEYS.sort != metadata_keys

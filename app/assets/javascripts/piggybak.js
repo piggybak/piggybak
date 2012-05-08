@@ -1,6 +1,8 @@
 var tax_total = 0;
+var shipping_els;
 
 $(function() {
+	shipping_els = $('#piggybak_order_shipping_address_attributes_state_id,#piggybak_order_shipping_address_attributes_country_id,#piggybak_order_shipping_address_attributes_zip');
 	piggybak.initialize_listeners();
 	piggybak.update_shipping_options($('#piggybak_order_shipping_address_attributes_state_id'), function() {
 		$('#piggybak_order_shipments_attributes_0_shipping_method_id').val(previous_shipping);
@@ -10,7 +12,7 @@ $(function() {
 
 var piggybak = {
 	initialize_listeners: function() {
-		$('#piggybak_order_shipping_address_attributes_state_id').live('change', function() {
+		shipping_els.live('change', function() {
 			piggybak.update_shipping_options($(this));
 		});
 		$('#piggybak_order_billing_address_attributes_state_id').live('change', function() {

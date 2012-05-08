@@ -17,11 +17,11 @@ module Piggybak
     end
 
     def month_enum
-      1.upto(12)
+      1.upto(12).to_a
     end
 
     def year_enum
-      Time.now.year.upto(Time.now.year + 10)
+      Time.now.year.upto(Time.now.year + 10).to_a
     end
 
     def credit_card

@@ -24,7 +24,7 @@ module Piggybak
           end
         rescue Exception => e
           if @order.errors.empty?
-            @order.errors.add "", "Your order could not go through. Please try again."
+            @order.errors[:base] << "Your order could not go through. Please try again."
           end
         end
 	  else

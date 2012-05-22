@@ -23,6 +23,7 @@ var piggybak = {
 		});
 		$('#shipping_address #copy').click(function() {
 			piggybak.copy_from_billing();
+			piggybak.update_shipping_options($('#piggybak_order_shipping_address_attributes_state_id'));
 			return false;
 		});
 		return;

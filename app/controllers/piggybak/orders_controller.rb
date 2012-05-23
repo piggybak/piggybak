@@ -8,7 +8,7 @@ module Piggybak
         begin
           ActiveRecord::Base.transaction do
             @order = Piggybak::Order.new(params[:piggybak_order])
-            @order.initialize_user(current_user)
+            @order.initialize_user(current_user, true)
 
             @order.add_line_items(@cart)
 
@@ -29,7 +29,7 @@ module Piggybak
         end
 	  else
         @order = Piggybak::Order.new
-        @order.initialize_user(current_user)
+        @order.initialize_user(current_user, false)
       end
     end
   

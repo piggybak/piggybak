@@ -45,7 +45,7 @@ module Piggybak
     end
 
     def list
-      redirect_to root if current_user.nil?
+      redirect_to root_url if current_user.nil?
     end
 
     def download

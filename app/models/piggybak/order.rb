@@ -155,5 +155,9 @@ module Piggybak
     def admin_label
       "Order ##{self.id}"    
     end
+
+    def subtotal
+      self.line_items.inject(0) { |subtotal, li| subtotal + li.total }
+    end
   end
 end

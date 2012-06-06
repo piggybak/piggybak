@@ -86,12 +86,12 @@
 		<%= payment.label :month %>
 		<% if @order.errors.keys.include?("payments.verification_value".to_sym) %>
 		<span class="field_with_errors">
-		<%= payment.select :month, 1.upto(12) %> /
-		<%= payment.select :year, Time.now.year.upto(Time.now.year + 10) %>
+		<%= payment.select :month, 1.upto(12).to_a %> /
+		<%= payment.select :year, Time.now.year.upto(Time.now.year + 10).to_a %>
 		</span>
 		<% else -%>
-		<%= payment.select :month, 1.upto(12) %> /
-		<%= payment.select :year, Time.now.year.upto(Time.now.year + 10) %>
+		<%= payment.select :month, 1.upto(12).to_a %> /
+		<%= payment.select :year, Time.now.year.upto(Time.now.year + 10).to_a %>
 		<% end -%>
 		</div>
 	<% end -%>

@@ -4,8 +4,9 @@ module Piggybak
 
     def order_notification(order)
       @order = order
-  
+
       mail(:to => order.email,
+           :cc => Piggybak.config.order_cc,
            :subject => "Order ##{@order.id}")
     end
   end

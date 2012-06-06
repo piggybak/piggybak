@@ -7,9 +7,11 @@ module Piggybak
       attr_accessor :default_country
       attr_accessor :activemerchant_mode
       attr_accessor :email_sender
+      attr_accessor :order_cc
 
       def reset
         @email_sender = "support@piggybak.org"
+        @order_cc = nil
 
         @payment_calculators = ["::Piggybak::PaymentCalculator::Fake",
                                 "::Piggybak::PaymentCalculator::AuthorizeNet"]

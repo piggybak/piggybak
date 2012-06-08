@@ -39,12 +39,12 @@ module Piggybak
       if self.new_record?
         payment_gateway = self.payment_method.klass.constantize
         gateway = payment_gateway::KLASS.new(self.payment_method.key_values)
-  	    credit_card = ActiveMerchant::Billing::CreditCard.new(self.credit_card)
-        gateway_response = gateway.authorize(self.order.total_due*100, credit_card, :address => self.order.avs_address)
+        p_credit_card = ActiveMerchant::Billing::CreditCard.new(self.credit_card)
+        gateway_response = gateway.authorize(self.order.total_due*100, p_credit_card, :address => self.order.avs_address)
         if gateway_response.success?
           self.attributes = { :total => self.order.total_due, 
                               :transaction_id => payment_gateway.transaction_id(gateway_response) } 
-          gateway.capture(1000, gateway_response.authorization)
+          gateway.capture(1000, gateway_response.authorization, { :credit_card => p_credit_card } )
           return true
   	    else
   	      self.errors.add :payment_method_id, gateway_response.message

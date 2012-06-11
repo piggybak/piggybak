@@ -310,6 +310,7 @@ module Piggybak
           navigation_label "Geodata"
           weight 3
           list do
+            sort_by :name
             field :name
             field :abbr
           end

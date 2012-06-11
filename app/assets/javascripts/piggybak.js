@@ -48,7 +48,11 @@ var piggybak = {
 			var id = $(j).attr('id');
 			if(typeof(id) !== 'undefined') {
 				id = id.replace("piggybak_order_shipping_address_attributes_", '');
-				shipping_data[id] = $(j).val();	
+				if($(j).is(':checkbox')) {
+					shipping_data[id] = $(j).is(':checked');
+				} else {
+					shipping_data[id] = $(j).val();	
+				}
 			}
 		});
 		$.ajax({

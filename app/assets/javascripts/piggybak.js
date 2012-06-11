@@ -46,8 +46,10 @@ var piggybak = {
 		var shipping_data = {};
 		$('#shipping_address input, #shipping_address select').each(function(i, j) {
 			var id = $(j).attr('id');
-			id = id.replace("piggybak_order_shipping_address_attributes_", '');
-			shipping_data[id] = $(j).val();	
+			if(typeof(id) !== 'undefined') {
+				id = id.replace("piggybak_order_shipping_address_attributes_", '');
+				shipping_data[id] = $(j).val();	
+			}
 		});
 		$.ajax({
 			url: shipping_lookup,

@@ -44,7 +44,7 @@ module Piggybak
         if gateway_response.success?
           self.attributes = { :total => self.order.total_due, 
                               :transaction_id => payment_gateway.transaction_id(gateway_response) } 
-          gateway.capture(1000, gateway_response.authorization, { :credit_card => p_credit_card } )
+          gateway.capture(self.order.total_due*100, gateway_response.authorization, { :credit_card => p_credit_card } )
           return true
   	    else
   	      self.errors.add :payment_method_id, gateway_response.message

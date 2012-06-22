@@ -17,7 +17,9 @@ module Piggybak
     end
 
     def decrease_inventory
-      self.variant.update_inventory(-1 * self.quantity)
+      if !self.variant.unlimited_inventory
+        self.variant.update_inventory(-1 * self.quantity)
+      end
     end
 
     def increase_inventory

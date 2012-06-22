@@ -28,6 +28,8 @@ module Piggybak
     after_validation :update_totals
     before_save :process_payments, :update_status
 
+    default_scope :order => 'created_at DESC'
+
     def initialize_nested
       self.billing_address ||= Piggybak::Address.new
       self.shipping_address ||= Piggybak::Address.new

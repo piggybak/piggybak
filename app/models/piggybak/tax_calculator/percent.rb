@@ -24,7 +24,7 @@ module Piggybak
       if object.is_a?(Cart)
         taxable_total = object.total
       else
-        taxable_total = order.subtotal
+        taxable_total = object.subtotal
       end
 
       (method.metadata.detect { |m| m.key == "rate" }.value.to_f * taxable_total).to_c

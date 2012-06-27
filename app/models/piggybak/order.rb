@@ -71,6 +71,7 @@ module Piggybak
         line_item = Piggybak::LineItem.new({ :variant_id => item[:variant].id,
           :price => item[:variant].price,
           :total => item[:variant].price*item[:quantity],
+          :description => item[:variant].description,
           :quantity => item[:quantity] })
         self.line_items << line_item
       end

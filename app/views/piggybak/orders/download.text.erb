@@ -4,7 +4,7 @@ Email: <%= @order.email %>
 Phone: <%= @order.phone %>
 
 <% @order.line_items.each do |line_item| %>
-<%= line_item.quantity %> x <%= raw line_item.variant.description %> (<%= number_to_currency line_item.total %>)
+<%= line_item.quantity %> x <%= raw line_item.description %> (<%= number_to_currency line_item.total %>)
 <% end -%>
 
 Subtotal: <%= number_to_currency @order.line_items.inject(0) { |subtotal, li| subtotal + li.total } %>

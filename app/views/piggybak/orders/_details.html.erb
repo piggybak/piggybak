@@ -7,7 +7,7 @@
 	</tr>
 	<% order.line_items.each do |line_item| %>
 	<tr>
-		<td><%= line_item.variant.description %></td>
+		<td><%= line_item.description %></td>
 		<td><%= number_to_currency line_item.price %></td>
 		<td><%= line_item.quantity %></td>
 		<td><%= number_to_currency line_item.total %></td>

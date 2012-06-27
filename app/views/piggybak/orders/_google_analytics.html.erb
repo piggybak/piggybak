@@ -13,8 +13,8 @@ _gaq.push(['_addTrans',
 <% @order.line_items.each do |line_item| -%>
 _gaq.push(['_addItem',
   '<%= @order.id %>',
-  '<%= line_item.variant.sku %>',
-  '<%= line_item.variant.description %>', 
+  '<%= line_item.variant.try(:sku) %>',
+  '<%= line_item.description %>', 
   '',   // category or variation
   '<%= line_item.price %>', //unit price
   '<%= line_item.quantity %>'

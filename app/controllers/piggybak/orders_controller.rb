@@ -23,6 +23,7 @@ module Piggybak
             end
           end
         rescue Exception => e
+          Rails.logger.warn "Generic Order Exception: #{e.inspect}"
           if @order.errors.empty?
             @order.errors[:base] << "Your order could not go through. Please try again."
           end

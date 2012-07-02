@@ -1,6 +1,6 @@
 require 'piggybak/config'
-require 'acts_as_variant/base'
-require 'acts_as_orderer/base'
+require 'acts_as_variant'
+require 'acts_as_orderer'
 require 'active_merchant'
 require 'currency'
 

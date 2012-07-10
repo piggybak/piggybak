@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "piggybak"
-  s.version = "0.4.5"
+  s.version = "0.4.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steph Skardal", "Brian Buchalter"]
-  s.date = "2012-07-02"
+  s.date = "2012-07-10"
   s.description = "Mountable ecommerce"
   s.email = "steph@endpoint.com"
   s.extra_rdoc_files = [
@@ -65,7 +65,6 @@ Gem::Specification.new do |s|
     "app/views/piggybak/orders/no_access.text.erb",
     "app/views/piggybak/orders/receipt.html.erb",
     "app/views/piggybak/orders/submit.html.erb",
-    "app/views/rails_admin/main/_form_nested_no_destroy.html.haml",
     "app/views/rails_admin/main/_location_select.html.haml",
     "app/views/rails_admin/main/_no_edit_form_filtering_select.html.haml",
     "app/views/rails_admin/main/_order_details.html.erb",

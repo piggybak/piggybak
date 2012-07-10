@@ -128,22 +128,22 @@ module Piggybak
       return if self.status == "cancelled"  # do nothing
 
       if self.total_due > 0.00
-        self.status = "payment owed"
+        self.status = "payment_owed"
       elsif self.total_due < 0.00
         self.status = "credit_owed" 
       else
-        if self.total == 0.00
-          self.status = "new"
-        elsif self.shipments.any? && self.shipments.all? { |s| s.status == "shipped" }
+        if self.shipments.any? && self.shipments.all? { |s| s.status == "shipped" }
           self.status = "shipped"
+        elsif self.shipments.any? && self.shipments.all? { |s| s.status == "processing" }
+          self.status = "processing"
         else
-          self.status = "paid"
+          self.status = "new"
         end
       end
     end
 
     def status_enum
-      ["incomplete", "paid", "shipped"]
+      ["new", "processing", "shipped"]
     end
       
     def avs_address

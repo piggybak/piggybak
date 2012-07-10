@@ -99,7 +99,7 @@ module Piggybak
             field :line_items
             field :shipments
             field :payments do
-              partial "form_nested_no_destroy"
+              active true
             end
           end
         end
@@ -175,8 +175,15 @@ module Piggybak
               end 
             end
             field :number do
-              read_only do 
-                !bindings[:object].new_record?
+              help "Required"
+              visible do
+                bindings[:object].new_record?
+              end 
+            end
+            field :verification_value do
+              help "Required"
+              visible do
+                bindings[:object].new_record?
               end 
             end
             field :month do
@@ -191,11 +198,6 @@ module Piggybak
                 !bindings[:object].new_record?
               end 
             end
-            field :verification_value do
-              read_only do 
-                !bindings[:object].new_record?
-              end 
-            end
             field :total do
               read_only true
               formatted_value do
@@ -204,8 +206,11 @@ module Piggybak
               help "This will automatically be calculated at the time of processing."
             end
             field :actions do
+              visible do
+                !bindings[:object].new_record?
+              end 
               partial "payment_refund"
-              help "Admin driven refunds are not supported because credit cards are not stored."
+              help "This does not mark the payment gateway payment as refunded. This only marks this local payment as refunded."
             end
           end
         end

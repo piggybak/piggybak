@@ -34,9 +34,9 @@ N/A
 		<td>Actions</td>
 		<td>
 			<ul>
-				<li><%= link_to "Send Email Confirmation", piggybak.email_order_url(form.object.id) %></li>
+				<li><%= link_to "Send or Resend Email Confirmation", piggybak.email_order_url(form.object.id) %></li>
 				<li><%= link_to "View as Text", piggybak.download_order_url(form.object.id) %></li>
-				<li><%= link_to "Cancel Order", piggybak.cancel_order_url(form.object.id) %> (marks payments as refunded, marks order as cancelled)</li>
+				<li><%= link_to "Cancel Order", piggybak.cancel_order_url(form.object.id) %> (This does not mark the payment gateway payments. This marks payments tied to ths order in this database as refunded, and marks the order as cancelled.)</li>
 			</ul>
 		</td>
 	</tr>

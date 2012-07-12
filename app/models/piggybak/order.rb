@@ -85,6 +85,10 @@ module Piggybak
       self.tax_charge = 0
 
       self.line_items.each do |line_item|
+        if self.status != "shipped"
+          line_item.description = line_item.variant.description
+          line_item.price = line_item.variant.price
+        end
         if line_item.variant
           line_item.total = line_item.price * line_item.quantity
         else

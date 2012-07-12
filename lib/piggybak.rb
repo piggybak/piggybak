@@ -81,6 +81,9 @@ module Piggybak
             field :details do
               partial "order_details"
               help ""
+              visible do
+                !bindings[:object].new_record?
+              end
             end
             field :user do
               partial "no_edit_form_filtering_select"

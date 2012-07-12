@@ -90,7 +90,7 @@ module Piggybak
           line_item.price = line_item.variant.price
         end
         if line_item.variant
-          line_item.total = line_item.price * line_item.quantity
+          line_item.total = line_item.price * line_item.quantity.to_i
         else
           line_item.total = 0
         end

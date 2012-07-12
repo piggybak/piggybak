@@ -10,17 +10,12 @@ module Piggybak
     validates_presence_of :quantity
     validates_numericality_of :quantity, :only_integer => true, :greater_than_or_equal_to => 0
 
-    after_initialize :initialize_quantity
     after_create :decrease_inventory
     after_destroy :increase_inventory
     after_update :update_inventory
         
     def admin_label
       "#{self.quantity} x #{self.variant.description}"
-    end
-
-    def initialize_quantity
-      self.quantity = 0
     end
 
     def decrease_inventory

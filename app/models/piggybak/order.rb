@@ -104,7 +104,7 @@ module Piggybak
       self.total += self.tax_charge
 
       shipments.each do |shipment|
-        if shipment.new_record? && shipment.shipping_method
+        if (shipment.new_record? || shipment.status != "shipped") && shipment.shipping_method
           calculator = shipment.shipping_method.klass.constantize
           shipment.total = calculator.rate(shipment.shipping_method, self)
         end

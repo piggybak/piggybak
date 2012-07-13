@@ -86,7 +86,6 @@ module Piggybak
               end
             end
             field :user do
-              partial "no_edit_form_filtering_select"
               read_only do
                 !bindings[:object].new_record?
               end
@@ -133,9 +132,7 @@ module Piggybak
           visible false
 
           edit do
-            field :variant do
-              partial "no_edit_form_filtering_select"
-            end
+            field :variant
             field :quantity
             field :total do
               read_only true
@@ -152,9 +149,7 @@ module Piggybak
           visible false
 
           edit do
-            field :shipping_method do
-              partial "no_edit_form_filtering_select"
-            end
+            field :shipping_method
             field :status
             field :total do
               read_only true
@@ -172,7 +167,6 @@ module Piggybak
 
           edit do
             field :payment_method do
-              partial "no_edit_form_filtering_select"
               read_only do 
                 !bindings[:object].new_record?
               end 

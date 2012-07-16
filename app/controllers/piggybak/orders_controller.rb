@@ -10,6 +10,8 @@ module Piggybak
             @order = Piggybak::Order.new(params[:piggybak_order])
             @order.initialize_user(current_user, true)
 
+            @order.ip_address = request.remote_ip 
+            @order.user_agent = request.user_agent  
             @order.add_line_items(@cart)
 
             if @order.save

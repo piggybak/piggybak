@@ -3,11 +3,7 @@ N/A
 <% else -%>
 <table cellpadding="5" cellspacing="0">
 	<tr>
-		<td>Status</td>
-		<td><%= form.object.status %></td>
-	</tr>
-	<tr>
-		<td>Subtotal</td>
+		<td width="150">Subtotal</td>
 		<td>$<%= "%.2f" % form.object.line_items.inject(0) { |subtotal, li| subtotal + li.total } %></td>
 	</tr>
 	<tr>
@@ -27,11 +23,11 @@ N/A
 		<td>$<%= "%.2f" % form.object.total_due %></td>
 	</tr>
 	<tr>
-		<td>Created At</td>
+		<td>Created at</td>
 		<td><%= form.object.created_at.strftime("%m-%d-%Y") %></td>
 	</tr>
 	<tr>
-		<td>Actions</td>
+		<td valign="top">Actions</td>
 		<td>
 			<ul>
 				<li><%= link_to "Send or Resend Email Confirmation", piggybak.email_order_url(form.object.id) %></li>

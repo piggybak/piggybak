@@ -85,6 +85,15 @@ module Piggybak
             field :status
           end
           edit do
+            field :status do
+              visible do
+                !bindings[:object].new_record?
+              end 
+              read_only do 
+                !bindings[:object].new_record?
+              end 
+            end
+             
             field :details do
               partial "order_details"
               help ""
@@ -92,13 +101,20 @@ module Piggybak
                 !bindings[:object].new_record?
               end
             end
-            field :user do
-              read_only do
-                !bindings[:object].new_record?
-              end
-            end
+
+            field :user
             field :email
             field :phone
+            field :ip_address do
+              read_only do 
+                !bindings[:object].new_record?
+              end 
+            end
+            field :user_agent do
+              read_only do 
+                !bindings[:object].new_record?
+              end 
+            end
             field :billing_address do 
              help "Required"
             end

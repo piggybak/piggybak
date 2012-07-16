@@ -15,15 +15,9 @@ module Piggybak
     accepts_nested_attributes_for :line_items, :allow_destroy => true
     accepts_nested_attributes_for :payments
 
-    validates_presence_of :status  
-    validates_presence_of :email
-    validates_presence_of :phone
-    validates_presence_of :total
-    validates_presence_of :total_due
-    validates_presence_of :tax_charge
-    validates_presence_of :created_at
+    validates_presence_of :status, :email, :phone, :total, :total_due, :tax_charge, :created_at, :ip_address, :user_agent
 
-    after_initialize :initialize_nested
+    after_initialize :initialize_nested, :initialize_request
     before_validation :set_defaults
     after_validation :update_totals
     before_save :process_payments, :update_status
@@ -38,6 +32,11 @@ module Piggybak
       if self.payments.any?
         self.payments.first.payment_method_id = Piggybak::PaymentMethod.find_by_active(true).id
       end
+    end
+
+    def initialize_request
+      self.ip_address ||= 'admin'
+      self.user_agent ||= 'admin'
     end
 
     def initialize_user(user, on_post)

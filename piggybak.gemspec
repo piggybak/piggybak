@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "piggybak"
-  s.version = "0.4.10"
+  s.version = "0.4.11"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steph Skardal", "Brian Buchalter"]
-  s.date = "2012-07-13"
+  s.date = "2012-07-16"
   s.description = "Mountable ecommerce"
   s.email = "steph@endpoint.com"
   s.extra_rdoc_files = [
@@ -89,6 +89,7 @@ Gem::Specification.new do |s|
     "db/migrate/20120111195534_drop_cc_fields.rb",
     "db/migrate/20120627144001_add_price_to_line_item.rb",
     "db/migrate/20120627173754_add_description_to_line_item.rb",
+    "db/migrate/20120716191225_add_masked_credit_card_numbers.rb",
     "lib/acts_as_orderer.rb",
     "lib/acts_as_variant.rb",
     "lib/currency.rb",

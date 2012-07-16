@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "piggybak"
-  s.version = "0.4.11"
+  s.version = "0.4.12"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steph Skardal", "Brian Buchalter"]
@@ -90,6 +90,7 @@ Gem::Specification.new do |s|
     "db/migrate/20120627144001_add_price_to_line_item.rb",
     "db/migrate/20120627173754_add_description_to_line_item.rb",
     "db/migrate/20120716191225_add_masked_credit_card_numbers.rb",
+    "db/migrate/20120716195806_order_debugging.rb",
     "lib/acts_as_orderer.rb",
     "lib/acts_as_variant.rb",
     "lib/currency.rb",

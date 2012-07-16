@@ -180,6 +180,16 @@ module Piggybak
                 !bindings[:object].new_record?
               end 
             end
+            field :masked_number do
+              help "Required"
+              label "Number"
+              visible do
+                !bindings[:object].new_record?
+              end 
+              read_only do
+                !bindings[:object].new_record?
+              end 
+            end
             field :number do
               help "Required"
               visible do

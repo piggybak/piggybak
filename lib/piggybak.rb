@@ -66,16 +66,23 @@ module Piggybak
             field :payments
           end
           list do
-            field :status
+            field :id
+            field :billing_address do
+              label "Billing Name"
+              pretty_value do
+                "#{value.lastname}, #{value.firstname}"
+              end
+              searchable [:firstname, :lastname]
+            end
             field :total do
               formatted_value do
                 "$%.2f" % value
               end
             end
             field :created_at do
-              #strftime_format "%d-%m-%Y"
+              strftime_format "%d-%m-%Y"
             end
-            field :user
+            field :status
           end
           edit do
             field :details do
@@ -150,7 +157,9 @@ module Piggybak
 
           edit do
             field :shipping_method
-            field :status
+            field :status do
+              label "Shipping Status"
+            end
             field :total do
               read_only true
               formatted_value do

@@ -17,16 +17,22 @@ module Piggybak
     accepts_nested_attributes_for :payments
     accepts_nested_attributes_for :order_notes
 
+    attr_accessor :recorded_changes
+    attr_accessor :recorded_changer
+
     validates_presence_of :status, :email, :phone, :total, :total_due, :tax_charge, :created_at, :ip_address, :user_agent
 
     after_initialize :initialize_nested, :initialize_request
     before_validation :set_defaults
     after_validation :update_totals
     before_save :process_payments, :update_status
+    after_save :record_order_note
 
     default_scope :order => 'created_at DESC'
 
     def initialize_nested
+      self.recorded_changes ||= []
+
       self.billing_address ||= Piggybak::Address.new
       self.shipping_address ||= Piggybak::Address.new
       self.shipments ||= [Piggybak::Shipment.new] 
@@ -64,6 +70,16 @@ module Piggybak
       self.total_due -= payments_total
 
       !has_errors
+    end
+
+    def record_order_note
+      if self.changed?
+        self.recorded_changes << self.formatted_changes
+      end
+
+      if self.recorded_changes.any?
+        OrderNote.create(:order_id => self.id, :note => self.recorded_changes.join("<br />"), :user_id => self.recorded_changer.to_i)
+      end
     end
 
     def add_line_items(cart)

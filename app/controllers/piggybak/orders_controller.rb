@@ -77,9 +77,6 @@ module Piggybak
 
       if can?(:restore, order)
         order.update_attribute(:status, "new")
-        Piggybak::OrderNote.create(:user_id => current_user.id,
-          :order_id => order.id,
-          :note => "Order restored from cancelled.")
       end
 
       redirect_to rails_admin.edit_path('Piggybak::Order', order.id)
@@ -99,9 +96,6 @@ module Piggybak
         end
         order.update_attribute(:status, "cancelled")
 
-        Piggybak::OrderNote.create(:user_id => current_user.id,
-          :order_id => order.id,
-          :note => "Order marked as cancelled with #{cancelled_items.join(', ')}.")
         flash[:notice] = "Order #{order.id} cancelled"
       end
 

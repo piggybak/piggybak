@@ -1,7 +1,9 @@
 require 'piggybak/config'
 require 'acts_as_variant'
 require 'acts_as_orderer'
+require 'acts_as_changer'
 require 'active_merchant'
+require 'formatted_changes'
 require 'currency'
 
 module Piggybak
@@ -90,6 +92,15 @@ module Piggybak
             field :status
           end
           edit do
+            field :recorded_changer, :hidden do
+              partial "recorded_changer"
+            end
+            # TODO: Figure out why this doesn't work here
+            #field :recorded_changer, :hidden do
+            #  default_value do
+            #    bindings[:view]._current_user.id
+            #  end
+            #end
             field :status do
               visible do
                 !bindings[:object].new_record?
@@ -131,7 +142,9 @@ module Piggybak
             field :payments do
               active true
             end
-            field :order_notes
+            field :order_notes do
+              active true
+            end
           end
         end
      
@@ -270,6 +283,9 @@ module Piggybak
             end
             field :total do
               read_only true
+              visible do
+                !bindings[:object].new_record?
+              end 
               formatted_value do
                 "$%.2f" % value
               end

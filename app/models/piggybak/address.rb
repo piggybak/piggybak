@@ -2,6 +2,8 @@ module Piggybak
   class Address < ActiveRecord::Base
     belongs_to :state
     belongs_to :country
+    has_one :order_shipping, :foreign_key => "shipping_address_id", :class_name => "Piggybak::Order"
+    has_one :order_billing, :foreign_key => "billing_address_id", :class_name => "Piggybak::Order"
 
     validates_presence_of :firstname
     validates_presence_of :lastname
@@ -12,6 +14,7 @@ module Piggybak
     validates_presence_of :zip
 
     after_initialize :set_default_country
+    after_save :document_address_changes
 
     def set_default_country
       self.country ||= Country.find_by_abbr(Piggybak.config.default_country)
@@ -31,6 +34,16 @@ module Piggybak
 
     def state_display
       self.state ? self.state.name : self.state_id
+    end
+
+    def document_address_changes
+      # TODO: Fix this. It isn't working.
+      if self.order_billing.present? && self.changed?
+        self.order_billing.recorded_changes << self.formatted_changes
+      end
+      if self.order_shipping.present? && self.changed?
+        self.order_shipping.recorded_changes << self.formatted_changes
+      end
     end
   end
 end

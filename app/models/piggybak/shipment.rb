@@ -1,6 +1,7 @@
 module Piggybak
   class Shipment < ActiveRecord::Base
     belongs_to :order
+    acts_as_changer
     belongs_to :shipping_method
 
     validates_presence_of :status

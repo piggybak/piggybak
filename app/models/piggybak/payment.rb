@@ -1,6 +1,7 @@
 module Piggybak
   class Payment < ActiveRecord::Base
     belongs_to :order
+    acts_as_changer
     belongs_to :payment_method
 
     validates_presence_of :status

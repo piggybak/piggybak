@@ -1,6 +1,7 @@
 module Piggybak
   class LineItem < ActiveRecord::Base
     belongs_to :order
+    acts_as_changer
     belongs_to :variant
   
     validates_presence_of :variant_id

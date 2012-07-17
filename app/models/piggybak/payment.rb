@@ -45,7 +45,7 @@ module Piggybak
         if gateway_response.success?
           self.attributes = { :total => self.order.total_due, 
                               :transaction_id => payment_gateway.transaction_id(gateway_response),
-                              :masked_number => mask_number(self.number) } 
+                              :masked_number => self.number.mask_cc_number }
           gateway.capture(self.order.total_due*100, gateway_response.authorization, { :credit_card => p_credit_card } )
           return true
   	    else
@@ -55,15 +55,6 @@ module Piggybak
       else
         return true
       end
-    end
-
-    def mask_number(number)
-      masked_number = ''
-      if number.gsub(/\D+/i, '').match(/^(\d\d)(.+)(\d\d\d\d)$/)
-        masked_number = $1 + $2.length.times.inject('') { |s, i| "#{s}*" } + $3
-      end
-
-      masked_number
     end
 
     # TODO: Add refund support at some point

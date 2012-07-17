@@ -8,6 +8,8 @@ module Piggybak
       attr_accessor :activemerchant_mode
       attr_accessor :email_sender
       attr_accessor :order_cc
+      attr_accessor :logging
+      attr_accessor :logging_file
 
       def reset
         @email_sender = "support@piggybak.org"
@@ -23,6 +25,9 @@ module Piggybak
         @default_country = "US"
 
         @activemerchant_mode = :production
+
+        @logging = false
+        @logging_file = "/log/orders.log"
       end
     end
 

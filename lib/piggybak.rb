@@ -5,6 +5,7 @@ require 'acts_as_changer'
 require 'active_merchant'
 require 'formatted_changes'
 require 'currency'
+require 'mask_submissions'
 
 module Piggybak
   def self.config(entity = nil, &block)

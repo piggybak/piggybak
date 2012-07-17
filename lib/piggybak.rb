@@ -64,7 +64,11 @@ module Piggybak
             field :shipping_address
             field :shipments
             field :payments
-            field :order_notes
+            field :order_notes do
+              pretty_value do
+                value.inject([]) { |arr, o| arr << o.details }.join("<br /><br />").html_safe
+              end
+            end
           end
           list do
             field :id
@@ -133,25 +137,31 @@ module Piggybak
      
         config.model Piggybak::OrderNote do
           object_label_method :admin_label
+          visible false
           list do
             field :user
             field :note
             field :created_at
           end
           edit do
-            field :user do
+            field :details do
+              label "Order Note"
+              help ""
+              visible do
+                !bindings[:object].new_record?
+              end 
               read_only do 
                 !bindings[:object].new_record?
               end 
+            end
+            field :user_id, :hidden do
+              default_value do
+                bindings[:view]._current_user.id
+              end
             end
             field :note do
-              read_only do 
-                !bindings[:object].new_record?
-              end 
-            end
-            field :created_at do
-              read_only do 
-                !bindings[:object].new_record?
+              visible do
+                bindings[:object].new_record?
               end 
             end
           end

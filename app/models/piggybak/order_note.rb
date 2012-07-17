@@ -6,8 +6,12 @@ module Piggybak
     belongs_to :order
     belongs_to :user
 
+    def details
+      "<b>#{created_at.strftime("%m-%d-%Y %H:%M")}</b> by #{user.email}:<br />#{note}"
+    end
+
     def admin_label
-      "Order Note: #{created_at.strftime("%m-%d-%Y")}"
+      "Order Note: #{created_at.strftime("%m-%d-%Y %H:%M")}"
     end
   end
 end

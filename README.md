@@ -41,6 +41,11 @@ Visit the project website [here][project-website] to see more documentation and 
 
 [project-website]: http://www.piggybak.org/
 
+TODO
+========
+
+On order notes functionality, changes in addresses are not recorded. This functionality is broken and needs attention.
+
 Copyright
 ========
 

@@ -72,15 +72,37 @@ module Piggybak
       redirect_to rails_admin.edit_path('Piggybak::Order', order.id)
     end
 
+    def restore
+      order = Order.find(params[:id])
+
+      if can?(:restore, order)
+        order.update_attribute(:status, "new")
+        Piggybak::OrderNote.create(:user_id => current_user.id,
+          :order_id => order.id,
+          :note => "Order restored from cancelled.")
+      end
+
+      redirect_to rails_admin.edit_path('Piggybak::Order', order.id)
+    end
+
     def cancel
       order = Order.find(params[:id])
 
       if can?(:cancel, order)
+        cancelled_items = []
+        order.line_items.each do |line_item|
+          cancelled_items << "#{line_item.quantity}:#{line_item.variant.sku}"
+          line_item.destroy
+        end
         order.payments.each do |payment|
           payment.refund
         end
         order.update_attribute(:status, "cancelled")
-        flash[:notice] = "Cancelled"
+
+        Piggybak::OrderNote.create(:user_id => current_user.id,
+          :order_id => order.id,
+          :note => "Order marked as cancelled with #{cancelled_items.join(', ')}.")
+        flash[:notice] = "Order #{order.id} cancelled"
       end
 
       redirect_to rails_admin.edit_path('Piggybak::Order', order.id)

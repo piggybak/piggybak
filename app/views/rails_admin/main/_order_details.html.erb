@@ -18,14 +18,17 @@ N/A
 		<td>Order Total</td>
 		<td>$<%= "%.2f" % form.object.total %></td>
 	</tr>
+	<% if form.object.status != "cancelled" -%>
 	<tr>
 		<td>Total Due</td>
 		<td>$<%= "%.2f" % form.object.total_due %></td>
 	</tr>
+	<% end -%>
 	<tr>
 		<td>Created at</td>
 		<td><%= form.object.created_at.strftime("%m-%d-%Y") %></td>
 	</tr>
+	<% if form.object.status != "cancelled" -%>
 	<tr>
 		<td valign="top">Actions</td>
 		<td>
@@ -36,5 +39,18 @@ N/A
 			</ul>
 		</td>
 	</tr>
+	<% else -%>
+	<tr>
+		<td valign="top">Actions</td>
+		<td>
+			<ul>
+				<li>
+					<%= link_to "Restore Cancel Order", piggybak.restore_order_url(form.object.id) %>
+					(This marks order as un-cancelled.)
+				</li>
+			</ul>
+		</td>
+	</tr>
+	<% end -%>
 </table>
 <% end -%>

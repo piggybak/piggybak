@@ -64,6 +64,7 @@ module Piggybak
             field :shipping_address
             field :shipments
             field :payments
+            field :order_notes
           end
           list do
             field :id
@@ -126,9 +127,36 @@ module Piggybak
             field :payments do
               active true
             end
+            field :order_notes
           end
         end
-      
+     
+        config.model Piggybak::OrderNote do
+          object_label_method :admin_label
+          list do
+            field :user
+            field :note
+            field :created_at
+          end
+          edit do
+            field :user do
+              read_only do 
+                !bindings[:object].new_record?
+              end 
+            end
+            field :note do
+              read_only do 
+                !bindings[:object].new_record?
+              end 
+            end
+            field :created_at do
+              read_only do 
+                !bindings[:object].new_record?
+              end 
+            end
+          end
+        end
+ 
         config.model Piggybak::Address do
           label "Address"
           object_label_method :admin_label

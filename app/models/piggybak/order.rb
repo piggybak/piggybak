@@ -4,6 +4,7 @@ module Piggybak
     has_many :payments, :inverse_of => :order
     has_many :shipments, :inverse_of => :order
     has_many :credits, :inverse_of => :order
+    has_many :order_notes, :inverse_of => :order
 
     belongs_to :billing_address, :class_name => "Piggybak::Address"
     belongs_to :shipping_address, :class_name => "Piggybak::Address"
@@ -14,6 +15,7 @@ module Piggybak
     accepts_nested_attributes_for :shipments, :allow_destroy => true
     accepts_nested_attributes_for :line_items, :allow_destroy => true
     accepts_nested_attributes_for :payments
+    accepts_nested_attributes_for :order_notes
 
     validates_presence_of :status, :email, :phone, :total, :total_due, :tax_charge, :created_at, :ip_address, :user_agent
 
@@ -130,10 +132,8 @@ module Piggybak
     def update_status
       return if self.status == "cancelled"  # do nothing
 
-      if self.total_due > 0.00
-        self.status = "payment_owed"
-      elsif self.total_due < 0.00
-        self.status = "credit_owed" 
+      if self.total_due != 0.00
+        self.status = "unbalanced" 
       else
         if self.shipments.any? && self.shipments.all? { |s| s.status == "shipped" }
           self.status = "shipped"

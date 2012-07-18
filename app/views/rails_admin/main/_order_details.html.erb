@@ -15,6 +15,10 @@ N/A
 		<td>$<%= "%.2f" % form.object.tax_charge %></td>
 	</tr>
 	<tr>
+		<td>Adjustments</td>
+		<td>$<%= "%.2f" % form.object.adjustments.inject(0) { |total, adj| total + adj.total } %></td>
+	</tr>
+	<tr>
 		<td>Order Total</td>
 		<td>$<%= "%.2f" % form.object.total %></td>
 	</tr>

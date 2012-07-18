@@ -89,6 +89,7 @@ module Piggybak
       if can?(:email, order)
         Piggybak::Notifier.order_notification(order).deliver
         flash[:notice] = "Email notification sent."
+        OrderNote.create(:order_id => order.id, :note => "Email confirmation manually sent.", :user_id => current_user.id)
       end
 
       redirect_to rails_admin.edit_path('Piggybak::Order', order.id)
@@ -96,9 +97,11 @@ module Piggybak
 
     def restore
       order = Order.find(params[:id])
+      order.recorded_changer = current_user.id
 
       if can?(:restore, order)
-        order.update_attribute(:status, "new")
+        order.status = "new"
+        order.save
       end
 
       redirect_to rails_admin.edit_path('Piggybak::Order', order.id)
@@ -106,11 +109,10 @@ module Piggybak
 
     def cancel
       order = Order.find(params[:id])
+      order.recorded_changer = current_user.id
 
       if can?(:cancel, order)
-        cancelled_items = []
         order.line_items.each do |line_item|
-          cancelled_items << "#{line_item.quantity}:#{line_item.variant.sku}"
           line_item.destroy
         end
         order.payments.each do |payment|

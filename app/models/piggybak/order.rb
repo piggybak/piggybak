@@ -3,7 +3,7 @@ module Piggybak
     has_many :line_items, :inverse_of => :order
     has_many :payments, :inverse_of => :order
     has_many :shipments, :inverse_of => :order
-    has_many :credits, :inverse_of => :order
+    has_many :adjustments, :inverse_of => :order
     has_many :order_notes, :inverse_of => :order
 
     belongs_to :billing_address, :class_name => "Piggybak::Address"
@@ -15,6 +15,7 @@ module Piggybak
     accepts_nested_attributes_for :shipments, :allow_destroy => true
     accepts_nested_attributes_for :line_items, :allow_destroy => true
     accepts_nested_attributes_for :payments
+    accepts_nested_attributes_for :adjustments, :allow_destroy => true
     accepts_nested_attributes_for :order_notes
 
     attr_accessor :recorded_changes
@@ -132,9 +133,10 @@ module Piggybak
         self.total += shipment.total
       end
 
-      # Hook in credits, TBD
-      credits.each do |credit|
-        self.total -= credit.total
+      adjustments.each do |adjustment|
+        if !adjustment._destroy
+          self.total += adjustment.total
+        end
       end
 
       self.total_due = self.total

@@ -143,6 +143,7 @@ module Piggybak
             field :payments do
               active true
             end
+            field :adjustments
             field :order_notes do
               active true
             end
@@ -237,7 +238,42 @@ module Piggybak
             end
           end
         end
-      
+     
+        config.model Piggybak::Adjustment do
+          object_label_method :admin_label
+          visible false
+          edit do
+            field :user_id, :hidden do
+              default_value do
+                bindings[:view]._current_user.id
+              end
+            end
+            field :source do
+              help "Source of adjustment."
+              visible do
+                !bindings[:object].new_record?
+              end 
+              read_only do 
+                !bindings[:object].new_record?
+              end 
+            end
+            field :total do
+              help "A negative value will add credit to an order. A positive value will add charges to the order."
+              read_only do 
+                !bindings[:object].new_record?
+              end
+              formatted_value do
+                "$%.2f" % value
+              end 
+            end
+            field :note do
+              read_only do 
+                !bindings[:object].new_record?
+              end 
+            end
+          end
+        end
+ 
         config.model Piggybak::Payment do
           object_label_method :admin_label
           visible false

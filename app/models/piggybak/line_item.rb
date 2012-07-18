@@ -11,18 +11,16 @@ module Piggybak
     validates_presence_of :quantity
     validates_numericality_of :quantity, :only_integer => true, :greater_than_or_equal_to => 0
 
-    after_create :decrease_inventory
-    after_destroy :increase_inventory
-    after_update :update_inventory
+    after_create :decrease_inventory, :if => Proc.new { |line_item| !line_item.variant.unlimited_inventory }
+    after_destroy :increase_inventory, :if => Proc.new { |line_item| !line_item.variant.unlimited_inventory }
+    after_update :update_inventory, :if => Proc.new { |line_item| !line_item.variant.unlimited_inventory }
         
     def admin_label
       "#{self.quantity} x #{self.variant.description}"
     end
 
     def decrease_inventory
-      if !self.variant.unlimited_inventory
-        self.variant.update_inventory(-1 * self.quantity)
-      end
+      self.variant.update_inventory(-1 * self.quantity)
     end
 
     def increase_inventory

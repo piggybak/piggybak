@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "piggybak"
-  s.version = "0.4.15"
+  s.version = "0.4.16"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steph Skardal", "Brian Buchalter"]
@@ -32,9 +32,9 @@ Gem::Specification.new do |s|
     "app/helpers/piggybak_helper.rb",
     "app/mailers/piggybak/notifier.rb",
     "app/models/piggybak/address.rb",
+    "app/models/piggybak/adjustment.rb",
     "app/models/piggybak/cart.rb",
     "app/models/piggybak/country.rb",
-    "app/models/piggybak/credit.rb",
     "app/models/piggybak/line_item.rb",
     "app/models/piggybak/order.rb",
     "app/models/piggybak/order_note.rb",
@@ -95,6 +95,7 @@ Gem::Specification.new do |s|
     "db/migrate/20120716191225_add_masked_credit_card_numbers.rb",
     "db/migrate/20120716195806_order_debugging.rb",
     "db/migrate/20120717022155_create_order_notes.rb",
+    "db/migrate/20120718142841_modify_credits.rb",
     "lib/acts_as_changer.rb",
     "lib/acts_as_orderer.rb",
     "lib/acts_as_variant.rb",

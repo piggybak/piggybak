@@ -8,7 +8,7 @@ module Piggybak
     validates_presence_of :user_id
 
     def details
-      "<b>#{created_at.strftime("%m-%d-%Y %H:%M")}</b> by #{user.email}:<br />#{note}"
+      "<b>#{created_at.strftime("%m-%d-%Y %H:%M")}</b> by #{user ? user.email : 'N/A'}:<br />#{note}"
     end
 
     def admin_label

@@ -119,7 +119,9 @@ module Piggybak
       self.total = 0
 
       self.line_items.each do |line_item|
-        self.total += line_item.total 
+        if !line_item._destroy
+          self.total += line_item.total 
+        end
       end
 
       self.tax_charge = TaxMethod.calculate_tax(self)
@@ -130,7 +132,9 @@ module Piggybak
           calculator = shipment.shipping_method.klass.constantize
           shipment.total = calculator.rate(shipment.shipping_method, self)
         end
-        self.total += shipment.total
+        if !shipment._destroy
+          self.total += shipment.total
+        end
       end
 
       adjustments.each do |adjustment|

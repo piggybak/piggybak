@@ -6,7 +6,7 @@ module Piggybak
       def new_destroy_changes(type)
         text = "#{self.class.to_s.gsub(/Piggybak::/, '')} ##{self.id} #{type}:<br />"
         self.attributes.each do |k, v|
-          if !["upated_at", "created_at", "id", "order_id"].include?(k)
+          if !["upated_at", "created_at", "id", "order_id", "billing_address_id", "shipping_address_id"].include?(k)
             if v.is_a?(BigDecimal)
               text += "#{k}: $#{format("%.2f", v)}<br />"
             else

@@ -20,13 +20,14 @@ module Piggybak
 
     attr_accessor :recorded_changes
     attr_accessor :recorded_changer
+    attr_accessor :was_new_record
 
     validates_presence_of :status, :email, :phone, :total, :total_due, :tax_charge, :created_at, :ip_address, :user_agent
 
     after_initialize :initialize_nested, :initialize_request
     before_validation :set_defaults
     after_validation :update_totals
-    before_save :process_payments, :update_status
+    before_save :process_payments, :update_status, :set_new_record
     after_save :record_order_note
 
     default_scope :order => 'created_at DESC'
@@ -75,7 +76,11 @@ module Piggybak
 
     def record_order_note
       if self.changed?
-        self.recorded_changes << self.formatted_changes
+        if self.was_new_record
+          self.recorded_changes << self.new_destroy_changes("created")
+        else
+          self.recorded_changes << self.formatted_changes
+        end
       end
 
       if self.recorded_changes.any?
@@ -165,6 +170,11 @@ module Piggybak
           self.status = "new"
         end
       end
+    end
+    def set_new_record
+      self.was_new_record = self.new_record?
+
+      true
     end
 
     def status_enum

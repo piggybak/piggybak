@@ -6,6 +6,7 @@ module Piggybak
     belongs_to :order
     belongs_to :user
     validates_presence_of :user_id
+    default_scope :order => 'created_at ASC'
 
     def details
       "<b>#{created_at.strftime("%m-%d-%Y %H:%M")}</b> by #{user ? user.email : 'N/A'}:<br />#{note}"

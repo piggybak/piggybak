@@ -14,10 +14,12 @@ Modular / mountable ecommerce gem. Features:
 Installation
 ========
 
-* First, add to Gemfile:
+* First, add to Gemfile (from RubyGems, with version specified, or source) with *one* of the following options:
     
-        gem "piggybak", :git => "git://github.com/stephskardal/demo.git"
-
+        gem "piggybak"
+        gem "piggybak", '0.4.19'
+        gem "piggybak", :git => "git://github.com/stephskardal/piggybak.git"
+ 
 * Next, run rake task to copy migrations:
 
         rake piggybak_engine:install:migrations

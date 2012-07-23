@@ -25,7 +25,7 @@ module Piggybak
     validates_presence_of :status, :email, :phone, :total, :total_due, :tax_charge, :created_at, :ip_address, :user_agent
 
     after_initialize :initialize_nested, :initialize_request
-    before_validation :set_defaults
+    before_validation :set_defaults, :manage_payment_adjustments
     after_validation :update_totals
     before_save :process_payments, :update_status, :set_new_record
     after_save :record_order_note
@@ -56,6 +56,17 @@ module Piggybak
       end
     end
 
+    def manage_payment_adjustments
+      payments.each do |payment|
+        if payment.refund_amt.present?
+          self.adjustments << Piggybak::Adjustment.new(:total => -1*payment.refund_amt.to_f,
+                                                       :note => "Refund against Payment ##{payment.id} given.", 
+                                                       :source_id => self.recorded_changer,
+                                                       :source_type => "User")
+        end
+      end
+    end
+
     def process_payments
       has_errors = false
       self.payments.each do |payment|
@@ -65,8 +76,15 @@ module Piggybak
       end
 
       self.total_due = self.total
+
+      adjustments.each do |adjustment|
+        if !adjustment._destroy
+          self.total_due -= adjustment.total
+        end
+      end
+
       payments_total = payments.inject(0) do |payments_total, payment|
-        payments_total += payment.total if payment.status == "paid"
+        payments_total += payment.total 
         payments_total
       end 
       self.total_due -= payments_total
@@ -133,26 +151,23 @@ module Piggybak
       self.total += self.tax_charge
 
       shipments.each do |shipment|
-        if (shipment.new_record? || shipment.status != "shipped") && shipment.shipping_method
+        if !shipment._destroy && (shipment.new_record? || shipment.status != "shipped") && shipment.shipping_method
           calculator = shipment.shipping_method.klass.constantize
           shipment.total = calculator.rate(shipment.shipping_method, self)
-        end
-        if !shipment._destroy
           self.total += shipment.total
         end
       end
 
+      self.total_due = self.total
+
       adjustments.each do |adjustment|
         if !adjustment._destroy
-          self.total += adjustment.total
+          self.total_due -= adjustment.total
         end
       end
 
-      self.total_due = self.total
       payments.each do |payment|
-        if payment.status == "paid"
-          self.total_due -= payment.total
-        end
+        self.total_due -= payment.total
       end
     end
 

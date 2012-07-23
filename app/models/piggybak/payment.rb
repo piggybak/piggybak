@@ -12,9 +12,10 @@ module Piggybak
 
     attr_accessor :number
     attr_accessor :verification_value
+    attr_accessor :refund_amt
 
     def status_enum
-      ["paid", "refunded"]
+      ["paid"]
     end
 
     def month_enum
@@ -57,29 +58,13 @@ module Piggybak
       end
     end
 
-    # TODO: Add refund support at some point
     # Note: It is not added now, because for methods that do not store
     # user profiles, a credit card number must be passed
     # If encrypted credit cards are stored on the system,
     # this can be updated
     def refund
-=begin
-      # ActiveMerchant::Billing::Base.mode = Piggybak.config.activemerchant_mode
-
-      begin
-        payment_gateway = self.payment_method.klass.constantize
-        gateway = payment_gateway::KLASS.new(self.payment_method.key_values)
-       
-        b = gateway.refund(self.total*100, self.transaction_id, { :card_number => "4111111111111111" })
-      rescue Exception => e
-        return e.inspect
-      end
-=end
-
-      self.update_attribute(:status, "refunded")
-      self.order.update_attribute(:total_due, self.order.total_due + self.total)
-
-      return "Marked as Refunded"
+      # TODO: Create ActiveMerchant refund integration 
+      return
     end
 
     def admin_label

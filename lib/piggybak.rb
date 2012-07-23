@@ -123,14 +123,10 @@ module Piggybak
             field :email
             field :phone
             field :ip_address do
-              read_only do 
-                !bindings[:object].new_record?
-              end 
+              read_only true
             end
             field :user_agent do
-              read_only do 
-                !bindings[:object].new_record?
-              end 
+              read_only true
             end
             field :billing_address do 
              help "Required"
@@ -258,7 +254,7 @@ module Piggybak
               end 
             end
             field :total do
-              help "A negative value will add credit to an order. A positive value will add charges to the order."
+              help "A negative value represents credit. A positive value represents charge."
               read_only do 
                 !bindings[:object].new_record?
               end
@@ -328,12 +324,11 @@ module Piggybak
               end
               help "This will automatically be calculated at the time of processing."
             end
-            field :actions do
+            field :refund_amt do
               visible do
                 !bindings[:object].new_record?
               end 
-              partial "payment_refund"
-              help "This does not mark the payment gateway payment as refunded. This only marks this local payment as refunded."
+              help "This does not interact with the payment gateway."
             end
           end
         end

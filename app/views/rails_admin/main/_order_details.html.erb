@@ -15,19 +15,21 @@ N/A
 		<td>$<%= "%.2f" % form.object.tax_charge %></td>
 	</tr>
 	<tr>
+		<td>Total</td>
+		<td>$<%= "%.2f" % form.object.total %></td>
+	</tr>
+	<tr>
+		<td>Payments</td>
+		<td>$<%= "%.2f" % form.object.payments.inject(0) { |total, payment| total + payment.total } %></td>
+	</tr>
+	<tr>
 		<td>Adjustments</td>
 		<td>$<%= "%.2f" % form.object.adjustments.inject(0) { |total, adj| total + adj.total } %></td>
 	</tr>
 	<tr>
-		<td>Order Total</td>
-		<td>$<%= "%.2f" % form.object.total %></td>
-	</tr>
-	<% if form.object.status != "cancelled" -%>
-	<tr>
-		<td>Total Due</td>
+		<td>Balance Due</td>
 		<td>$<%= "%.2f" % form.object.total_due %></td>
 	</tr>
-	<% end -%>
 	<tr>
 		<td>Created at</td>
 		<td><%= form.object.created_at.strftime("%m-%d-%Y") %></td>
@@ -39,7 +41,9 @@ N/A
 			<ul>
 				<li><%= link_to "Send or Resend Email Confirmation", piggybak.email_order_url(form.object.id) %></li>
 				<li><%= link_to "View as Text", piggybak.download_order_url(form.object.id) %></li>
+				<% if form.object.total_due == 0.00 -%>
 				<li><%= link_to "Cancel Order", piggybak.cancel_order_url(form.object.id) %> (This does not mark the payment gateway payments. This marks payments tied to ths order in this database as refunded, and marks the order as cancelled.)</li>
+				<% end -%>
 			</ul>
 		</td>
 	</tr>

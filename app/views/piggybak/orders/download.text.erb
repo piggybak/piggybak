@@ -8,9 +8,12 @@ Phone: <%= @order.phone %>
 <% end -%>
 
 Subtotal: <%= number_to_currency @order.line_items.inject(0) { |subtotal, li| subtotal + li.total } %>
+Shipping & Handling: <%= number_to_currency @order.shipments.inject(0) { |shipping, shipment| shipping + shipment.total } %>
 Tax: <%= number_to_currency @order.tax_charge %>
-Shipping: <%= number_to_currency @order.shipments.inject(0) { |shipping, shipment| shipping + shipment.total } %>
 Total: <%= number_to_currency @order.total %>
+Less Payment: <%= number_to_currency(@order.payments.inject(0) { |total, p| total + p.total if p.status == "paid" }) %>
+Adjustments: <%= number_to_currency(@order.adjustments.inject(0) { |total, adj| total + adj.total }) %>
+Balance Due: <%= number_to_currency @order.total_due %>
 
 Billing Information
 <%= raw @order.billing_address.display.gsub("<br />", "\n") %>

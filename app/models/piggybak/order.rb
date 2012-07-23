@@ -21,11 +21,12 @@ module Piggybak
     attr_accessor :recorded_changes
     attr_accessor :recorded_changer
     attr_accessor :was_new_record
+    attr_accessor :refund_amt
 
     validates_presence_of :status, :email, :phone, :total, :total_due, :tax_charge, :created_at, :ip_address, :user_agent
 
     after_initialize :initialize_nested, :initialize_request
-    before_validation :set_defaults, :manage_payment_adjustments
+    before_validation :set_defaults, :manage_adjustments
     after_validation :update_totals
     before_save :process_payments, :update_status, :set_new_record
     after_save :record_order_note
@@ -56,14 +57,12 @@ module Piggybak
       end
     end
 
-    def manage_payment_adjustments
-      payments.each do |payment|
-        if payment.refund_amt.present?
-          self.adjustments << Piggybak::Adjustment.new(:total => -1*payment.refund_amt.to_f,
-                                                       :note => "Refund against Payment ##{payment.id} given.", 
-                                                       :source_id => self.recorded_changer,
-                                                       :source_type => "User")
-        end
+    def manage_adjustments
+      if self.refund_amt.present?
+        self.adjustments << Piggybak::Adjustment.new(:total => -1*self.refund_amt.to_f,
+                                                     :note => "Refund recorded.",
+                                                     :source_id => self.recorded_changer,
+                                                     :source_type => "User")
       end
     end
 
@@ -94,9 +93,7 @@ module Piggybak
 
     def record_order_note
       if self.changed?
-        if self.was_new_record
-          self.recorded_changes << self.new_destroy_changes("created")
-        else
+        if !self.was_new_record
           self.recorded_changes << self.formatted_changes
         end
       end
@@ -154,7 +151,8 @@ module Piggybak
         if !shipment._destroy && (shipment.new_record? || shipment.status != "shipped") && shipment.shipping_method
           calculator = shipment.shipping_method.klass.constantize
           shipment.total = calculator.rate(shipment.shipping_method, self)
-          self.total += shipment.total
+          shipping_cast = ((shipment.total*100).to_i).to_f/100
+          self.total += shipping_cast
         end
       end
 

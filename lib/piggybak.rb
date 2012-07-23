@@ -134,12 +134,29 @@ module Piggybak
             field :shipping_address do
               help "Required"
             end
-            field :line_items
-            field :shipments
+            field :line_items do
+              active true
+              help ""
+            end
+            field :shipments do
+              active true
+              help ""
+            end
+            field :adjustments do
+              active true
+              help ""
+            end
+            field :refund_amt do
+              label "Refund Amount"
+              visible do
+                !bindings[:object].new_record?
+              end 
+              help "This does not interact with the payment gateway."
+            end
             field :payments do
               active true
+              help ""
             end
-            field :adjustments
             field :order_notes do
               active true
             end
@@ -323,12 +340,6 @@ module Piggybak
                 "$%.2f" % value
               end
               help "This will automatically be calculated at the time of processing."
-            end
-            field :refund_amt do
-              visible do
-                !bindings[:object].new_record?
-              end 
-              help "This does not interact with the payment gateway."
             end
           end
         end

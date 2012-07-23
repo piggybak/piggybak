@@ -12,7 +12,6 @@ module Piggybak
 
     attr_accessor :number
     attr_accessor :verification_value
-    attr_accessor :refund_amt
 
     def status_enum
       ["paid"]

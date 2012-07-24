@@ -43,6 +43,8 @@ var piggybak = {
 	update_shipping_options: function(field, block) {
 		var shipping_field = $('#piggybak_order_shipments_attributes_0_shipping_method_id');
 		shipping_field.hide();
+		$('#shipping_spinner').show();
+		$('#shipping_empty').hide();
 		var shipping_data = {};
 		$('#shipping_address input, #shipping_address select').each(function(i, j) {
 			var id = $(j).attr('id');
@@ -65,11 +67,17 @@ var piggybak = {
 				$.each(data, function(i, j) {
 					shipping_field.append($('<option>').html(j.label).val(j.id).data('rate', j.rate));
 				});
-				shipping_field.show();
+				if(data.length == 0) {
+					shipping_field.hide();
+					$('#shipping_empty').show();
+				} else {
+					shipping_field.show();
+				}
 				piggybak.update_totals();
 				if(block) {
 					block();
 				}
+				$('#shipping_spinner').hide();
 			}
 		});
 	},

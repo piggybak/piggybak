@@ -54,6 +54,12 @@
 		<div class="item">
 		<%= shipment.label :shipping_method_id %>
 		<%= shipment.select :shipping_method_id, [] %>
+		<div id="shipping_spinner" style="display:none;">
+			<%= image_tag "ajax-loader.gif" %>
+		</div>
+		<div id="shipping_empty" style="display:none;">
+			No shipping methods found.
+		</div>
 		</div>
 	<% end -%>
 	</div>

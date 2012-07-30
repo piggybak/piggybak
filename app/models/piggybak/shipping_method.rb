@@ -35,7 +35,7 @@ module Piggybak
     def self.lookup_methods(cart)
       active_methods = ShippingMethod.find_all_by_active(true)
 
-      active_methods.inject([]) do |arr, method|
+      methods = active_methods.inject([]) do |arr, method|
         klass = method.klass.constantize
         if klass.available?(method, cart)
           rate = klass.rate(method, cart)
@@ -46,6 +46,8 @@ module Piggybak
 		end
         arr
       end
+
+      methods.sort_by { |b| b[:rate] }
     end
     def admin_label
       self.description

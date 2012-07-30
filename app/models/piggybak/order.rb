@@ -160,7 +160,7 @@ module Piggybak
 
       adjustments.each do |adjustment|
         if !adjustment._destroy
-          self.total_due -= adjustment.total
+          self.total_due -= adjustment.total.to_f
         end
       end
 

@@ -24,7 +24,7 @@ N/A
 	</tr>
 	<tr>
 		<td>Adjustments</td>
-		<td>$<%= "%.2f" % form.object.adjustments.inject(0) { |total, adj| total + adj.total } %></td>
+		<td>$<%= "%.2f" % form.object.adjustments.inject(0) { |total, adj| total + adj.total.to_f } %></td>
 	</tr>
 	<tr>
 		<td>Balance Due</td>

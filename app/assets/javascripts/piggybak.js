@@ -1,5 +1,6 @@
 var tax_total = 0;
 var shipping_els;
+var page_load = 1;
 
 $(function() {
 	shipping_els = $('#piggybak_order_shipping_address_attributes_state_id,#piggybak_order_shipping_address_attributes_country_id,#piggybak_order_shipping_address_attributes_zip');
@@ -44,7 +45,7 @@ var piggybak = {
 		var shipping_field = $('#piggybak_order_shipments_attributes_0_shipping_method_id');
 		shipping_field.hide();
 		$('#shipping_spinner').show();
-		$('#shipping_empty').hide();
+		$('#shipping_empty,#shipping_default').hide();
 		var shipping_data = {};
 		$('#shipping_address input, #shipping_address select').each(function(i, j) {
 			var id = $(j).attr('id');
@@ -69,7 +70,12 @@ var piggybak = {
 				});
 				if(data.length == 0) {
 					shipping_field.hide();
-					$('#shipping_empty').show();
+					if(page_load) {
+						page_load = 0;
+						$('#shipping_default').show();
+					} else {
+						$('#shipping_empty').show();
+					}
 				} else {
 					shipping_field.show();
 				}

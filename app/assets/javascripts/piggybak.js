@@ -41,9 +41,28 @@ var piggybak = {
 			$('#piggybak_order_shipping_address_attributes_state_id').val(state);
 		});
 	},
+	valid_shipping_address: function() {
+		var empty = 0;
+		$('#shipping_address input.required, #shipping_address select.required').each(function(i, j) {
+			if($(j).val() == '') {
+				empty+=1;
+			}
+		});
+		if(empty > 0) {
+			return false;
+		} else {
+			return true;
+		}
+	},
 	update_shipping_options: function(field, block) {
 		var shipping_field = $('#piggybak_order_shipments_attributes_0_shipping_method_id');
 		shipping_field.hide();
+		if(page_load && !piggybak.valid_shipping_address()) {
+			page_load = 0;
+			shipping_field.hide();
+			$('#shipping_default').show();
+			return;
+		}
 		$('#shipping_spinner').show();
 		$('#shipping_empty,#shipping_default').hide();
 		var shipping_data = {};

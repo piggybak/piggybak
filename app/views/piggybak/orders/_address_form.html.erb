@@ -1,14 +1,14 @@
 <div class="item">
 	<%= address.label :firstname %>
-	<%= address.text_field :firstname %>
+	<%= address.text_field :firstname, :class => "required" %>
 </div>
 <div class="item">
 	<%= address.label :lastname %>
-	<%= address.text_field :lastname %>
+	<%= address.text_field :lastname, :class => "required" %>
 </div>
 <div class="item">
 	<%= address.label :address1, "Address" %>
-	<%= address.text_field :address1 %>
+	<%= address.text_field :address1, :class => "required" %>
 </div>
 <div class="item">
 	<%= address.label :address2, "Address cont." %>
@@ -16,21 +16,21 @@
 </div>
 <div class="item">
 	<%= address.label :city %>
-	<%= address.text_field :city %>
+	<%= address.text_field :city, :class => "required" %>
 </div>
 <div class="item">
   <%= address.label :country_id %>
-  <%= address.collection_select :country_id, Piggybak::Country.send(type), :id, :name, { :selected => address.object.country_id.to_s } %>
+  <%= address.collection_select :country_id, Piggybak::Country.send(type), :id, :name, { :selected => address.object.country_id.to_s }, :class => "required" %>
 </div>
 <div class="item">
 	<%= address.label :state_id %>
 	<% if address.object.country.states.any? -%>
-	<%= address.collection_select :state_id, address.object.country.states, :id, :name, { :selected => address.object.state_id.to_s } %>
+	<%= address.collection_select :state_id, address.object.country.states, :id, :name, { :selected => address.object.state_id.to_s }, :class => "required" %>
 	<% else -%>
-	<%= address.text_field :state_id %>
+	<%= address.text_field :state_id, :class => "required" %>
 	<% end -%>
 </div>
 <div class="item">
 	<%= address.label :zip %>
-	<%= address.text_field :zip %>
+	<%= address.text_field :zip, :class => "required" %>
 </div>

@@ -78,15 +78,11 @@ module Piggybak
 
       adjustments.each do |adjustment|
         if !adjustment._destroy
-          self.total_due += adjustment.total
+          self.total_due -= adjustment.total
         end
       end
 
-      payments_total = payments.inject(0) do |payments_total, payment|
-        payments_total += payment.total 
-        payments_total
-      end 
-      self.total_due -= payments_total
+      self.total_due -= payments.sum(:total)
 
       !has_errors
     end
@@ -148,25 +144,23 @@ module Piggybak
       self.total += self.tax_charge
 
       shipments.each do |shipment|
-        if !shipment._destroy && (shipment.new_record? || shipment.status != "shipped") && shipment.shipping_method
+        if !shipment._destroy && shipment.new_record? && shipment.shipping_method
           calculator = shipment.shipping_method.klass.constantize
           shipment.total = calculator.rate(shipment.shipping_method, self)
-          shipping_cast = ((shipment.total*100).to_i).to_f/100
-          self.total += shipping_cast
         end
+        shipping_cast = ((shipment.total*100).to_i).to_f/100
+        self.total += shipping_cast
       end
 
       self.total_due = self.total
 
       adjustments.each do |adjustment|
         if !adjustment._destroy
-          self.total_due += adjustment.total.to_f
+          self.total_due -= adjustment.total.to_f
         end
       end
 
-      payments.each do |payment|
-        self.total_due -= payment.total
-      end
+      self.total_due -= payments.sum(:total)
     end
 
     def update_status

@@ -68,6 +68,7 @@ module Piggybak
 
     def process_payments
       has_errors = false
+
       self.payments.each do |payment|
         if(!payment.process)
           has_errors = true
@@ -81,10 +82,12 @@ module Piggybak
         end
       end
 
+      payments_total = self.payments.inject(0) { |s, payment| s + payment.total }
+
       if adjustment_total > 0
-        self.total_due = (self.total + adjustment_total - payments.sum(:total)).round(2)
+        self.total_due = (self.total + adjustment_total - payments_total).round(2)
       else
-        self.total_due = (self.total - (adjustment_total + payments.sum(:total))).round(2)
+        self.total_due = (self.total - (adjustment_total + payments_total)).round(2)
       end
 
       !has_errors
@@ -162,10 +165,12 @@ module Piggybak
         end
       end
 
+      payments_total = self.payments.inject(0) { |s, payment| s + payment.total }
+
       if adjustment_total > 0
-        self.total_due = (self.total + adjustment_total - payments.sum(:total)).round(2)
+        self.total_due = (self.total + adjustment_total - payments_total).round(2)
       else
-        self.total_due = (self.total - (adjustment_total + payments.sum(:total))).round(2)
+        self.total_due = (self.total - (adjustment_total + payments_total)).round(2)
       end
     end
 

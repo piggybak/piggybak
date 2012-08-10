@@ -123,6 +123,7 @@ module Piggybak
           shipment.destroy
         end
         order.update_attribute(:status, "cancelled")
+        order.update_attribute(:tax_charge, 0.00)
         order.update_attribute(:total, 0.00)
         order.update_attribute(:total_due, 0.00)
         

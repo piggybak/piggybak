@@ -74,15 +74,18 @@ module Piggybak
         end
       end
 
-      self.total_due = self.total
-
+      adjustment_total = 0
       adjustments.each do |adjustment|
         if !adjustment._destroy
-          self.total_due -= adjustment.total
+          adjustment_total += adjustment.total
         end
       end
 
-      self.total_due -= payments.sum(:total)
+      if adjustment_total > 0
+        self.total_due = (self.total + adjustment_total - payments.sum(:total)).round(2)
+      else
+        self.total_due = (self.total - (adjustment_total + payments.sum(:total))).round(2)
+      end
 
       !has_errors
     end
@@ -152,15 +155,18 @@ module Piggybak
         self.total += shipping_cast
       end
 
-      self.total_due = self.total
-
+      adjustment_total = 0
       adjustments.each do |adjustment|
         if !adjustment._destroy
-          self.total_due -= adjustment.total.to_f
+          adjustment_total += adjustment.total
         end
       end
 
-      self.total_due -= payments.sum(:total)
+      if adjustment_total > 0
+        self.total_due = (self.total + adjustment_total - payments.sum(:total)).round(2)
+      else
+        self.total_due = (self.total - (adjustment_total + payments.sum(:total))).round(2)
+      end
     end
 
     def update_status

@@ -112,20 +112,17 @@ module Piggybak
       order.recorded_changer = current_user.id
 
       if can?(:cancel, order)
-        order.adjustments << Piggybak::Adjustment.new(:total => -1*order.total,
-                                                     :note => "Cancelled order.", 
-                                                     :source_id => current_user.id,
-                                                     :source_type => "User")
         order.line_items.each do |line_item|
           line_item.destroy
         end
         order.shipments.each do |shipment|
           shipment.destroy
         end
-        order.update_attribute(:status, "cancelled")
         order.update_attribute(:tax_charge, 0.00)
         order.update_attribute(:total, 0.00)
-        order.update_attribute(:total_due, 0.00)
+        order.update_attribute(:to_be_cancelled, true)
+
+        OrderNote.create(:order_id => order.id, :note => "Order cancelled.", :user_id => current_user.id)
         
         flash[:notice] = "Order #{order.id} cancelled"
       end

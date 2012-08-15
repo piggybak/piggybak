@@ -146,13 +146,6 @@ module Piggybak
               active true
               help ""
             end
-            field :refund_amt do
-              label "Refund Amount"
-              visible do
-                !bindings[:object].new_record?
-              end 
-              help "This does not interact with the payment gateway."
-            end
             field :payments do
               active true
               help ""
@@ -271,7 +264,7 @@ module Piggybak
               end 
             end
             field :total do
-              help "A negative value represents credit. A positive value represents charge."
+              help "<ul><li>Enter a negative value representing a refund given (process in payment gateway). <i>ADDITIONAL INSTRUCTIONS HERE</i></li></ul>".html_safe
               read_only do 
                 !bindings[:object].new_record?
               end

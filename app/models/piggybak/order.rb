@@ -75,20 +75,15 @@ module Piggybak
         end
       end
 
-      adjustment_total = 0
+      payments_total = self.payments.inject(0) { |s, payment| s + payment.total }
+
       adjustments.each do |adjustment|
         if !adjustment._destroy
-          adjustment_total += adjustment.total
+          payments_total += adjustment.total.round(2)
         end
       end
 
-      payments_total = self.payments.inject(0) { |s, payment| s + payment.total }
-
-      if adjustment_total > 0
-        self.total_due = (self.total + adjustment_total - payments_total).round(2)
-      else
-        self.total_due = (self.total - (adjustment_total + payments_total)).round(2)
-      end
+      self.total_due = (self.total - payments_total).round(2)
 
       !has_errors
     end
@@ -150,7 +145,7 @@ module Piggybak
       self.total += self.tax_charge
 
       shipments.each do |shipment|
-        if !shipment._destroy && shipment.new_record? && shipment.shipping_method
+        if !shipment._destroy && (shipment.new_record? || shipment.status != 'shipped') && shipment.shipping_method
           calculator = shipment.shipping_method.klass.constantize
           shipment.total = calculator.rate(shipment.shipping_method, self)
         end
@@ -158,20 +153,15 @@ module Piggybak
         self.total += shipping_cast
       end
 
-      adjustment_total = 0
+      payments_total = self.payments.inject(0) { |s, payment| s + payment.total }
+
       adjustments.each do |adjustment|
         if !adjustment._destroy
-          adjustment_total += adjustment.total
+          payments_total += adjustment.total.round(2)
         end
       end
 
-      payments_total = self.payments.inject(0) { |s, payment| s + payment.total }
-
-      if adjustment_total > 0
-        self.total_due = (self.total + adjustment_total - payments_total).round(2)
-      else
-        self.total_due = (self.total - (adjustment_total + payments_total)).round(2)
-      end
+      self.total_due = (self.total - payments_total).round(2)
     end
 
     def update_status
@@ -180,7 +170,9 @@ module Piggybak
       if self.total_due != 0.00
         self.status = "unbalanced" 
       else
-        if self.shipments.any? && self.shipments.all? { |s| s.status == "shipped" }
+        if self.to_be_cancelled
+          self.status = "cancelled"
+        elsif self.shipments.any? && self.shipments.all? { |s| s.status == "shipped" }
           self.status = "shipped"
         elsif self.shipments.any? && self.shipments.all? { |s| s.status == "processing" }
           self.status = "processing"

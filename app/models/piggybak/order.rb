@@ -137,12 +137,15 @@ module Piggybak
       self.total += self.tax_charge
 
       shipments.each do |shipment|
-        if !shipment._destroy && (shipment.new_record? || shipment.status != 'shipped') && shipment.shipping_method
-          calculator = shipment.shipping_method.klass.constantize
-          shipment.total = calculator.rate(shipment.shipping_method, self)
+        if !shipment._destroy
+          if (shipment.new_record? || shipment.status != 'shipped') && shipment.shipping_method
+            calculator = shipment.shipping_method.klass.constantize
+            shipment.total = calculator.rate(shipment.shipping_method, self)
+          end
+
+          shipping_cast = ((shipment.total*100).to_i).to_f/100
+          self.total += shipping_cast
         end
-        shipping_cast = ((shipment.total*100).to_i).to_f/100
-        self.total += shipping_cast
       end
 
       payments_total = self.payments.inject(0) { |s, payment| s + payment.total }

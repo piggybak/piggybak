@@ -231,7 +231,11 @@ module Piggybak
           visible false
 
           edit do
-            field :shipping_method
+            field :shipping_method do
+              read_only do
+                bindings[:object].status == "shipped"
+              end
+            end
             field :status do
               label "Shipping Status"
             end

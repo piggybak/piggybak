@@ -21,12 +21,12 @@ module Piggybak
     attr_accessor :recorded_changes
     attr_accessor :recorded_changer
     attr_accessor :was_new_record
-    attr_accessor :refund_amt
+    attr_accessor :disable_order_notes
 
     validates_presence_of :status, :email, :phone, :total, :total_due, :tax_charge, :created_at, :ip_address, :user_agent
 
     after_initialize :initialize_nested, :initialize_request
-    before_validation :set_defaults, :manage_adjustments
+    before_validation :set_defaults
     after_validation :update_totals
     before_save :process_payments, :update_status, :set_new_record
     after_save :record_order_note
@@ -57,15 +57,6 @@ module Piggybak
       end
     end
 
-    def manage_adjustments
-      if self.refund_amt.present?
-        self.adjustments << Piggybak::Adjustment.new(:total => -1*self.refund_amt.to_f,
-                                                     :note => "Refund recorded.",
-                                                     :source_id => self.recorded_changer,
-                                                     :source_type => "User")
-      end
-    end
-
     def process_payments
       has_errors = false
 
@@ -89,13 +80,11 @@ module Piggybak
     end
 
     def record_order_note
-      if self.changed?
-        if !self.was_new_record
-          self.recorded_changes << self.formatted_changes
-        end
+      if self.changed? && !self.was_new_record
+        self.recorded_changes << self.formatted_changes
       end
 
-      if self.recorded_changes.any?
+      if self.recorded_changes.any? && !self.disable_order_notes
         OrderNote.create(:order_id => self.id, :note => self.recorded_changes.join("<br />"), :user_id => self.recorded_changer.to_i)
       end
     end
@@ -118,6 +107,9 @@ module Piggybak
       self.total = 0
       self.total_due = 0
       self.tax_charge = 0
+      self.disable_order_notes = false
+
+      return if self.to_be_cancelled
 
       self.line_items.each do |line_item|
         if self.status != "shipped"

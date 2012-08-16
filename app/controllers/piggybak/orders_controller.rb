@@ -109,22 +109,24 @@ module Piggybak
 
     def cancel
       order = Order.find(params[:id])
-      order.recorded_changer = current_user.id
 
       if can?(:cancel, order)
+        order.recorded_changer = current_user.id
+        order.disable_order_notes = true
+
         order.line_items.each do |line_item|
-          line_item.destroy
+          line_item.mark_for_destruction
         end
         order.shipments.each do |shipment|
-          shipment.destroy
+          shipment.mark_for_destruction
         end
         order.update_attribute(:tax_charge, 0.00)
         order.update_attribute(:total, 0.00)
         order.update_attribute(:to_be_cancelled, true)
 
-        OrderNote.create(:order_id => order.id, :note => "Order cancelled.", :user_id => current_user.id)
+        OrderNote.create(:order_id => order.id, :note => "Order set to cancelled. Line items, shipments, tax removed.", :user_id => current_user.id)
         
-        flash[:notice] = "Order #{order.id} cancelled"
+        flash[:notice] = "Order #{order.id} set to cancelled. Order is now in unbalanced state."
       end
 
       redirect_to rails_admin.edit_path('Piggybak::Order', order.id)

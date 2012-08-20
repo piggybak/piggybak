@@ -26,7 +26,7 @@ module Piggybak
     validates_presence_of :status, :email, :phone, :total, :total_due, :tax_charge, :created_at, :ip_address, :user_agent
 
     after_initialize :initialize_nested, :initialize_request
-    before_validation :set_defaults
+    before_validation :set_defaults, :prepare_for_destruction
     after_validation :update_totals
     before_save :process_payments, :update_status, :set_new_record
     after_save :record_order_note
@@ -120,6 +120,14 @@ module Piggybak
           line_item.total = line_item.price * line_item.quantity.to_i
         else
           line_item.total = 0
+        end
+      end
+    end
+
+    def prepare_for_destruction
+      self.line_items.each do |line_item|
+        if line_item.quantity == 0
+          line_item.mark_for_destruction
         end
       end
     end

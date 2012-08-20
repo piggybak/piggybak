@@ -209,7 +209,15 @@ module Piggybak
     end
 
     def subtotal
-      self.line_items.inject(0) { |subtotal, li| subtotal + li.total }
+      v = 0
+
+      self.line_items.each do |line_item|
+        if !line_item._destroy
+          v += line_item.total 
+        end
+      end
+
+      v
     end
   end
 end

@@ -268,7 +268,7 @@ module Piggybak
               end 
             end
             field :total do
-              help "<ul><li>Enter a negative value representing a refund given (process in payment gateway). <i>ADDITIONAL INSTRUCTIONS HERE</i></li></ul>".html_safe
+              help "<ul><li>Enter a negative value representing the customer refund amount. (This should be done AFTER completing a refund in the payment gateway) This will balance the invoice and remove the unbalanced status.</li></ul>".html_safe
               read_only do 
                 !bindings[:object].new_record?
               end

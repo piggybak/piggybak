@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
     "app/assets/images/ajax-loader.gif",
     "app/assets/javascripts/piggybak.js",
     "app/assets/javascripts/piggybak.states.js",
+    "app/assets/javascripts/jquery.ajaxq.js",
     "app/controllers/piggybak/cart_controller.rb",
     "app/controllers/piggybak/orders_controller.rb",
     "app/controllers/piggybak/payments_controller.rb",

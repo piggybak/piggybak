@@ -1,8 +1,10 @@
 var tax_total = 0;
 var shipping_els;
 var page_load = 1;
+var shipping_field;
 
 $(function() {
+	shipping_field = $('#piggybak_order_shipments_attributes_0_shipping_method_id');
 	shipping_els = $('#piggybak_order_shipping_address_attributes_state_id,#piggybak_order_shipping_address_attributes_country_id,#piggybak_order_shipping_address_attributes_zip');
 	piggybak.initialize_listeners();
 	piggybak.update_shipping_options($('#piggybak_order_shipping_address_attributes_state_id'), function() {
@@ -55,49 +57,31 @@ var piggybak = {
 		}
 	},
 	update_shipping_options: function(field, block) {
-		var shipping_field = $('#piggybak_order_shipments_attributes_0_shipping_method_id');
-		shipping_field.hide();
 		if(page_load && !piggybak.valid_shipping_address()) {
 			page_load = 0;
 			shipping_field.hide();
 			$('#shipping_default').show();
 			return;
 		}
-		$('#shipping_spinner').show();
-		$('#shipping_empty,#shipping_default').hide();
-		var shipping_data = {};
-		$('#shipping_address input, #shipping_address select').each(function(i, j) {
-			var id = $(j).attr('id');
-			if(typeof(id) !== 'undefined') {
-				id = id.replace("piggybak_order_shipping_address_attributes_", '');
-				if($(j).is(':checkbox')) {
-					shipping_data[id] = $(j).is(':checked');
-				} else {
-					shipping_data[id] = $(j).val();	
-				}
-			}
-		});
-		$.ajax({
+
+		var shipping_data = piggybak.retrieve_shipping_data();
+
+		//Stopping existing queue AJAX calls
+		$.ajaxq("shipping_queue");	
+
+		//Adding new AJAX call to queue
+		$.ajaxq("shipping_queue", {
 			url: shipping_lookup,
 			cached: false,
 			data: shipping_data,
 			dataType: "JSON",
+			beforeSend: function() {
+				shipping_field.hide();
+				$('#shipping_spinner').show();
+				$('#shipping_empty,#shipping_default').hide();
+			},
 			success: function(data) {
-				shipping_field.find('option').remove();
-				$.each(data, function(i, j) {
-					shipping_field.append($('<option>').html(j.label).val(j.id).data('rate', j.rate));
-				});
-				if(data.length == 0) {
-					shipping_field.hide();
-					if(page_load) {
-						page_load = 0;
-						$('#shipping_default').show();
-					} else {
-						$('#shipping_empty').show();
-					}
-				} else {
-					shipping_field.show();
-				}
+				piggybak.render_shipping_options(data);
 				piggybak.update_totals();
 				if(block) {
 					block();
@@ -134,5 +118,37 @@ var piggybak = {
 		$('#shipping_total').html('$' + shipping_total.toFixed(2));
 		var order_total = subtotal + tax_total + shipping_total;
 		$('#order_total').html('$' + order_total.toFixed(2));	
+	},
+	retrieve_shipping_data: function() {
+		var shipping_data = {};
+		$('#shipping_address input, #shipping_address select').each(function(i, j) {
+			var id = $(j).attr('id');
+			if(typeof(id) !== 'undefined') {
+				id = id.replace("piggybak_order_shipping_address_attributes_", '');
+				if($(j).is(':checkbox')) {
+					shipping_data[id] = $(j).is(':checked');
+				} else {
+					shipping_data[id] = $(j).val();	
+				}
+			}
+		});
+		return shipping_data;
+	},
+	render_shipping_options: function(data) {	
+		shipping_field.find('option').remove();
+		$.each(data, function(i, j) {
+			shipping_field.append($('<option>').html(j.label).val(j.id).data('rate', j.rate));
+		});
+		if(data.length == 0) {
+			shipping_field.hide();
+			if(page_load) {
+				page_load = 0;
+				$('#shipping_default').show();
+			} else {
+				$('#shipping_empty').show();
+			}
+		} else {
+			shipping_field.show();
+		}
 	}
 };

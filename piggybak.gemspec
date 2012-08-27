@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "piggybak"
-  s.version = "0.4.37"
+  s.version = "0.4.38"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steph Skardal", "Brian Buchalter"]
-  s.date = "2012-08-22"
+  s.date = "2012-08-27"
   s.description = "Mountable ecommerce"
   s.email = "steph@endpoint.com"
   s.extra_rdoc_files = [
@@ -25,9 +25,9 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "app/assets/images/ajax-loader.gif",
+    "app/assets/javascripts/jquery.ajaxq.js",
     "app/assets/javascripts/piggybak.js",
     "app/assets/javascripts/piggybak.states.js",
-    "app/assets/javascripts/jquery.ajaxq.js",
     "app/controllers/piggybak/cart_controller.rb",
     "app/controllers/piggybak/orders_controller.rb",
     "app/controllers/piggybak/payments_controller.rb",

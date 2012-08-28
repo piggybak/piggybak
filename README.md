@@ -36,6 +36,12 @@ Installation
 
         //= require jquery_ujs
 
+* You must add the following to your application layout:
+
+       <% if "#{params[:controller]}##{params[:action]}" == "piggybak/orders#submit" -%>
+       <%= javascript_include_tag "piggybak-application" %>
+       <% end -%>
+
 More Details
 ========
 

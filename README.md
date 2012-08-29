@@ -42,6 +42,10 @@ Installation
        <%= javascript_include_tag "piggybak-application" %>
        <% end -%>
 
+* And you must add this to your production configuration, in order for this asset to be precompiled (and in some cases, ensure that it is served via SSL):
+
+       config.assets.precompile += %w( piggybak-application.js )
+
 More Details
 ========
 

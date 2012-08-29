@@ -38,13 +38,13 @@ Installation
 
 * You must add the following to your application layout:
 
-       <% if "#{params[:controller]}##{params[:action]}" == "piggybak/orders#submit" -%>
-       <%= javascript_include_tag "piggybak-application" %>
-       <% end -%>
+        <% if "#{params[:controller]}##{params[:action]}" == "piggybak/orders#submit" -%>
+        <%= javascript_include_tag "piggybak-application" %>
+        <% end -%>
 
 * And you must add this to your production configuration, in order for this asset to be precompiled (and in some cases, ensure that it is served via SSL):
 
-       config.assets.precompile += %w( piggybak-application.js )
+        config.assets.precompile += %w( piggybak-application.js )
 
 More Details
 ========

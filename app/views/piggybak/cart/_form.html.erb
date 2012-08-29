@@ -7,7 +7,7 @@
 			<span id="price"><%= number_to_currency object.piggybak_variant.price %></span>
 			</div>
 			<label>Quantity</label>
-			<%= text_field_tag :quantity %>
+			<%= text_field_tag :quantity, "1" %>
 			<%= hidden_field_tag :variant_id, object.piggybak_variant.id %>
 			<%= submit_tag "Add to Cart", :id => "submit" %>
 			<% end -%>

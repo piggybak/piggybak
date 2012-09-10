@@ -10,20 +10,18 @@ module Piggybak
       end
     end
 
-    module InstanceMethods
-      def document_new_item
-        self.order.recorded_changes << self.new_destroy_changes("added")
-      end
+    def document_new_item
+      self.order.recorded_changes << self.new_destroy_changes("added")
+    end
 
-      def document_nested_change
-        if self.changed?
-          self.order.recorded_changes << self.formatted_changes
-        end
+    def document_nested_change
+      if self.changed?
+        self.order.recorded_changes << self.formatted_changes
       end
+    end
 
-      def document_destroy_item
-        self.order.recorded_changes << self.new_destroy_changes("destroyed")
-      end
+    def document_destroy_item
+      self.order.recorded_changes << self.new_destroy_changes("destroyed")
     end
   end
 end

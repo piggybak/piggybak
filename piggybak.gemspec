@@ -192,6 +192,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<devise>, [">= 0"])
       s.add_runtime_dependency(%q<activemerchant>, [">= 0"])
       s.add_runtime_dependency(%q<countries>, [">= 0"])
+      s.add_runtime_dependency(%q<whois>, [">= 0"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
       s.add_development_dependency(%q<rspec-rails>, [">= 0"])
       s.add_development_dependency(%q<diff-lcs>, [">= 0"])
@@ -218,6 +219,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<diff-lcs>, [">= 0"])
       s.add_dependency(%q<factory_girl>, [">= 0"])
       s.add_dependency(%q<shoulda>, [">= 0"])
+      s.add_dependency(%q<whois>, [">= 0"])
     end
   else
     s.add_dependency(%q<countries>, [">= 0"])
@@ -240,6 +242,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<diff-lcs>, [">= 0"])
     s.add_dependency(%q<factory_girl>, [">= 0"])
     s.add_dependency(%q<shoulda>, [">= 0"])
+    s.add_dependency(%q<whois>, [">= 0"])
   end
 end
 

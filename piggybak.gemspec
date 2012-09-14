@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "piggybak"
-  s.version = "0.5.2"
+  s.version = "0.5.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steph Skardal", "Brian Buchalter"]
-  s.date = "2012-09-10"
+  s.date = "2012-09-14"
   s.description = "Mountable ecommerce"
   s.email = "steph@endpoint.com"
   s.extra_rdoc_files = [
@@ -74,6 +74,7 @@ Gem::Specification.new do |s|
     "app/views/rails_admin/main/_order_notes.html.erb",
     "app/views/rails_admin/main/_payment_refund.html.haml",
     "app/views/rails_admin/main/_recorded_changer.html.erb",
+    "app/views/rails_admin/main/_whois.html.erb",
     "config/routes.rb",
     "db/migrate/20111227150106_create_orders.rb",
     "db/migrate/20111227150322_create_addresses.rb",
@@ -178,6 +179,7 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<countries>, [">= 0"])
+      s.add_runtime_dependency(%q<whois>, [">= 0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
@@ -192,7 +194,6 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<devise>, [">= 0"])
       s.add_runtime_dependency(%q<activemerchant>, [">= 0"])
       s.add_runtime_dependency(%q<countries>, [">= 0"])
-      s.add_runtime_dependency(%q<whois>, [">= 0"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
       s.add_development_dependency(%q<rspec-rails>, [">= 0"])
       s.add_development_dependency(%q<diff-lcs>, [">= 0"])
@@ -200,6 +201,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<shoulda>, [">= 0"])
     else
       s.add_dependency(%q<countries>, [">= 0"])
+      s.add_dependency(%q<whois>, [">= 0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_dependency(%q<rspec>, [">= 0"])
@@ -219,10 +221,10 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<diff-lcs>, [">= 0"])
       s.add_dependency(%q<factory_girl>, [">= 0"])
       s.add_dependency(%q<shoulda>, [">= 0"])
-      s.add_dependency(%q<whois>, [">= 0"])
     end
   else
     s.add_dependency(%q<countries>, [">= 0"])
+    s.add_dependency(%q<whois>, [">= 0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
     s.add_dependency(%q<rspec>, [">= 0"])
@@ -242,7 +244,6 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<diff-lcs>, [">= 0"])
     s.add_dependency(%q<factory_girl>, [">= 0"])
     s.add_dependency(%q<shoulda>, [">= 0"])
-    s.add_dependency(%q<whois>, [">= 0"])
   end
 end
 

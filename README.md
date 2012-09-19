@@ -32,6 +32,12 @@ Installation
 
         mount Piggybak::Engine => '/checkout', :as => 'piggybak'" to config/routes
 
+* Add acts_as_variant to any model that will become a sellable item.
+
+        class Product < ActiveRecord::Base
+          acts_as_variant
+        end
+
 * You must include jquery_ujs in your application.js file in to get the remove item from cart functionality to work.
 
         //= require jquery_ujs

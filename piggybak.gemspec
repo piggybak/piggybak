@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "piggybak"
-  s.version = "0.5.3"
+  s.version = "0.5.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steph Skardal", "Brian Buchalter"]
-  s.date = "2012-09-14"
+  s.date = "2012-09-19"
   s.description = "Mountable ecommerce"
   s.email = "steph@endpoint.com"
   s.extra_rdoc_files = [
@@ -69,12 +69,12 @@ Gem::Specification.new do |s|
     "app/views/piggybak/orders/no_access.text.erb",
     "app/views/piggybak/orders/receipt.html.erb",
     "app/views/piggybak/orders/submit.html.erb",
+    "app/views/rails_admin/main/_ip_address.html.erb",
     "app/views/rails_admin/main/_location_select.html.haml",
     "app/views/rails_admin/main/_order_details.html.erb",
     "app/views/rails_admin/main/_order_notes.html.erb",
     "app/views/rails_admin/main/_payment_refund.html.haml",
     "app/views/rails_admin/main/_recorded_changer.html.erb",
-    "app/views/rails_admin/main/_whois.html.erb",
     "config/routes.rb",
     "db/migrate/20111227150106_create_orders.rb",
     "db/migrate/20111227150322_create_addresses.rb",
@@ -179,7 +179,6 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<countries>, [">= 0"])
-      s.add_runtime_dependency(%q<whois>, [">= 0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
@@ -201,7 +200,6 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<shoulda>, [">= 0"])
     else
       s.add_dependency(%q<countries>, [">= 0"])
-      s.add_dependency(%q<whois>, [">= 0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_dependency(%q<rspec>, [">= 0"])
@@ -224,7 +222,6 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<countries>, [">= 0"])
-    s.add_dependency(%q<whois>, [">= 0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
     s.add_dependency(%q<rspec>, [">= 0"])

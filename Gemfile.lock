@@ -104,4 +104,3 @@ DEPENDENCIES
   shoulda
   simplecov
   tzinfo
-  whois

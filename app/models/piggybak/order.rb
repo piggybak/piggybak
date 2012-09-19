@@ -219,17 +219,5 @@ module Piggybak
 
       v
     end
-
-    def whois
-      @whois ||= self.find_whois
-    end
-
-    def find_whois
-      return nil if self.ip_address.nil?
-      
-      w = Whois::Client.new
-      r = w.query(self.ip_address)
-      r.content 
-    end
   end
 end

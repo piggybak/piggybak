@@ -88,7 +88,6 @@ GEM
     tzinfo (0.3.31)
     warden (1.1.0)
       rack (>= 1.0)
-    whois (2.6.4)
 
 PLATFORMS
   ruby

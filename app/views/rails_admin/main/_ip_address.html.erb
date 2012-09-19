@@ -1,0 +1,5 @@
+<% if Piggybak.config.whois_url -%>
+<%= link_to form.object.ip_address, "#{Piggybak.config.whois_url}#{form.object.ip_address}", :title => "whois lookup", :target => "_blank" %>
+<% else -%>
+<%= form.object.ip_address %>
+<% end -%>

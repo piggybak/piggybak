@@ -20,4 +20,3 @@ group :development, :test do
 end
 
 gem "countries"
-gem "whois"

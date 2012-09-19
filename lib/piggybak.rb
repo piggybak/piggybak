@@ -6,7 +6,6 @@ require 'active_merchant'
 require 'formatted_changes'
 require 'currency'
 require 'mask_submissions'
-require 'whois'
 
 module Piggybak
   def self.config(entity = nil, &block)
@@ -74,7 +73,7 @@ module Piggybak
               end
             end
             field :ip_address
-            field :whois 
+            field :user_agent
           end
           list do
             field :id
@@ -126,12 +125,8 @@ module Piggybak
             field :email
             field :phone
             field :ip_address do
-              read_only true
+              partial "ip_address"
             end
-           field :whois do 
-             partial 'whois'
-             help ''
-           end
             field :user_agent do
               read_only true
             end

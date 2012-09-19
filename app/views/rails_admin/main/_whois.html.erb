@@ -1,9 +1,0 @@
-<script style="text/javascript">
-$('#whois-toggle').live('click', function() {
-  $(this).siblings('#whois').toggle('slow');
-  return false;
-});
-</script>
-
-<a href="#" id="whois-toggle">Click to show/hide</a>
-<pre style="display:none" class='prettyprint' id="whois"> <%= form.object.whois.html_safe %></pre>

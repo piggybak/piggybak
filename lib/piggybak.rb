@@ -83,6 +83,7 @@ module Piggybak
                 "#{value.lastname}, #{value.firstname}"
               end
               searchable [:firstname, :lastname]
+              sortable false
             end
             field :total do
               formatted_value do

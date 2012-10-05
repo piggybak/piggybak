@@ -4,6 +4,7 @@ var page_load = 1;
 var shipping_field;
 
 $(function() {
+	piggybak.prevent_double_click();
 	shipping_field = $('#piggybak_order_shipments_attributes_0_shipping_method_id');
 	shipping_els = $('#piggybak_order_shipping_address_attributes_state_id,#piggybak_order_shipping_address_attributes_country_id,#piggybak_order_shipping_address_attributes_zip');
 	piggybak.initialize_listeners();
@@ -14,6 +15,12 @@ $(function() {
 });
 
 var piggybak = {
+	prevent_double_click: function() {
+		//TODO: Implement doubleclick prevent here on form submission
+		//$('#new_piggybak_order').submit(function() {
+		//disable if already submitted
+		//});
+	},
 	initialize_listeners: function() {
 		shipping_els.live('change', function() {
 			piggybak.update_shipping_options($(this));

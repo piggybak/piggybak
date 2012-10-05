@@ -16,10 +16,10 @@ $(function() {
 
 var piggybak = {
 	prevent_double_click: function() {
-		//TODO: Implement doubleclick prevent here on form submission
-		//$('#new_piggybak_order').submit(function() {
-		//disable if already submitted
-		//});
+    $('#new_piggybak_order').find('input:submit').removeAttr('disabled');
+    $('#new_piggybak_order').submit(function() {
+      $(this).find('input:submit').attr('disabled', 'disabled');
+    });
 	},
 	initialize_listeners: function() {
 		shipping_els.live('change', function() {

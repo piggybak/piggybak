@@ -2,6 +2,10 @@ module Piggybak
   class ShippingCalculator::FlatRate
     KEYS = ["rate"]
 
+    def self.description
+      "Flat Rate"
+    end
+
     def self.available?(*args)
       true
     end

@@ -2,6 +2,10 @@ module Piggybak
   class ShippingCalculator::Range
     KEYS = ["cost", "upper", "lower"]
 
+    def self.description
+      "Cost per Range"
+    end
+
     def self.available?(method, object)
       low_end = method.metadata.detect { |m| m.key == "lower" }.value
       high_end = method.metadata.detect { |m| m.key == "upper" }.value

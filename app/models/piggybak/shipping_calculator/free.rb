@@ -2,6 +2,10 @@ module Piggybak
   class ShippingCalculator::Free
     KEYS = []
 
+    def self.description
+      "Free Shipping"
+    end
+
     def self.available?(method, object)
       true
     end

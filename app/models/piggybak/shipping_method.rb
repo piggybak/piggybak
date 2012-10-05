@@ -23,7 +23,7 @@ module Piggybak
     end
 
     def klass_enum
-      Piggybak.config.shipping_calculators
+      Piggybak.config.shipping_calculators.collect { |b| [ b.constantize.description, b ] }
     end
 
     def self.available_methods(cart)

@@ -1,5 +1,5 @@
 require 'piggybak/config'
-require 'acts_as_variant'
+require 'acts_as_sellable'
 require 'acts_as_orderer'
 require 'acts_as_changer'
 require 'active_merchant'
@@ -9,6 +9,7 @@ require 'mask_submissions'
 
 module Piggybak
   def self.config(entity = nil, &block)
+
     if entity
       Piggybak::Config.model(entity, &block)
     elsif block_given? && ENV['SKIP_RAILS_ADMIN_INITIALIZER'] != "true"
@@ -23,12 +24,17 @@ module Piggybak
   end
 
   class Engine < Rails::Engine
+      
     initializer "piggybak.add_helper" do |app|
       ApplicationController.class_eval do
         helper :piggybak
       end
     end
 
+    initializer 'piggybak.alias_sellable' do
+      Piggybak::Variant = Piggybak::Sellable
+    end
+    
     initializer "piggybak.rails_admin_config" do |app|
       # RailsAdmin config file. Generated on December 21, 2011 13:04
       # See github.com/sferik/rails_admin for more informations
@@ -217,7 +223,7 @@ module Piggybak
           visible false
 
           edit do
-            field :variant
+            field :sellable
             field :quantity
             field :total do
               read_only true
@@ -471,29 +477,30 @@ module Piggybak
           end
         end
       
-        config.model Piggybak::Variant do
-          label "Variant"
-		  navigation_label "Orders"
-          object_label_method :admin_label
-          edit do
-            field :item do
-              read_only do
-                !bindings[:object].new_record?
-              end
-            end
-            include_all_fields
-            field :unlimited_inventory do
-              help "If true, backorders on this variant will be allowed, regardless of quantity on hand."
-            end
-          end
-          list do
-            field :description
-            field :price
-            field :quantity
-            field :active
-          end
-        end
+        # config.model Piggybak::Variant do
+        #   label "Variant"
+        #           navigation_label "Orders"
+        #   object_label_method :admin_label
+        #   edit do
+        #     field :item do
+        #       read_only do
+        #         !bindings[:object].new_record?
+        #       end
+        #     end
+        #     include_all_fields
+        #     field :unlimited_inventory do
+        #       help "If true, backorders on this sellable will be allowed, regardless of quantity on hand."
+        #     end
+        #   end
+        #   list do
+        #     field :description
+        #     field :price
+        #     field :quantity
+        #     field :active
+        #   end
+        # end
       end
+      
     end
   end
 end

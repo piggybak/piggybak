@@ -10,12 +10,12 @@ module Piggybak
       self.errors = []
       cookie ||= ''
       cookie.split(';').each do |item|
-        item_variant = Piggybak::Variant.find_by_id(item.split(':')[0])
-        if item_variant.present?
-          self.items << { :variant => item_variant, :quantity => (item.split(':')[1]).to_i }
+        item_sellable = Piggybak::Sellable.find_by_id(item.split(':')[0])
+        if item_sellable.present?
+          self.items << { :sellable => item_sellable, :quantity => (item.split(':')[1]).to_i }
         end
       end
-      self.total = self.items.sum { |item| item[:quantity]*item[:variant].price }
+      self.total = self.items.sum { |item| item[:quantity]*item[:sellable].price }
 
       self.extra_data = {}
     end
@@ -38,14 +38,14 @@ module Piggybak
 
     def self.add(cookie, params)
       cart = to_hash(cookie)
-      cart["#{params[:variant_id]}"] ||= 0
-      cart["#{params[:variant_id]}"] += params[:quantity].to_i
+      cart["#{params[:sellable_id]}"] ||= 0
+      cart["#{params[:sellable_id]}"] += params[:quantity].to_i
       to_string(cart)
     end
   
-    def self.remove(cookie, variant_id)
+    def self.remove(cookie, sellable_id)
       cart = to_hash(cookie)
-      cart[variant_id] = 0
+      cart[sellable_id] = 0
       to_string(cart)
     end
   
@@ -58,7 +58,7 @@ module Piggybak
     def to_cookie
       cookie = ''
       self.items.each do |item|
-        cookie += "#{item[:variant].id.to_s}:#{item[:quantity].to_s};" if item[:quantity].to_i > 0
+        cookie += "#{item[:sellable].id.to_s}:#{item[:quantity].to_s};" if item[:quantity].to_i > 0
       end
       cookie
     end
@@ -67,20 +67,20 @@ module Piggybak
       self.errors = []
       new_items = []
       self.items.each do |item|
-        if !item[:variant].active
-          self.errors << ["Sorry, #{item[:variant].description} is no longer for sale"]
-        elsif item[:variant].unlimited_inventory || item[:variant].quantity >= item[:quantity]
+        if !item[:sellable].active
+          self.errors << ["Sorry, #{item[:sellable].description} is no longer for sale"]
+        elsif item[:sellable].unlimited_inventory || item[:sellable].quantity >= item[:quantity]
           new_items << item
-        elsif item[:variant].quantity == 0
-          self.errors << ["Sorry, #{item[:variant].description} is no longer available"]
+        elsif item[:sellable].quantity == 0
+          self.errors << ["Sorry, #{item[:sellable].description} is no longer available"]
         else
-          self.errors << ["Sorry, only #{item[:variant].quantity} available for #{item[:variant].description}"]
-          item[:quantity] = item[:variant].quantity
+          self.errors << ["Sorry, only #{item[:sellable].quantity} available for #{item[:sellable].description}"]
+          item[:quantity] = item[:sellable].quantity
           new_items << item if item[:quantity] > 0
         end
       end
       self.items = new_items
-      self.total = self.items.sum { |item| item[:quantity]*item[:variant].price }
+      self.total = self.items.sum { |item| item[:quantity]*item[:sellable].price }
     end
 
     def set_extra_data(form_params)

@@ -3,7 +3,7 @@ Thanks for your order!
 Items
 
 <% @order.line_items.each do |line_item| %>
-<%= line_item.variant.description %> x <%= line_item.quantity %> = <%= number_to_currency line_item.total %>
+<%= line_item.sellable.description %> x <%= line_item.quantity %> = <%= number_to_currency line_item.total %>
 <% end -%>
 
 Total

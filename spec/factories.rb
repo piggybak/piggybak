@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :variant do
+  factory :sellable do
   end
 
   factory :order do

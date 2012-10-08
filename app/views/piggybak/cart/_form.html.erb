@@ -1,14 +1,14 @@
-<% if object.reflections.keys.include?(:piggybak_variant) -%>
-	<% if object.piggybak_variant && object.piggybak_variant.active -%>
-		<% if object.piggybak_variant.quantity > 0 || object.piggybak_variant.unlimited_inventory -%>
+<% if object.reflections.keys.include?(:piggybak_sellable) -%>
+	<% if object.piggybak_sellable && object.piggybak_sellable.active -%>
+		<% if object.piggybak_sellable.quantity > 0 || object.piggybak_sellable.unlimited_inventory -%>
 			<%= form_tag piggybak.cart_add_url do -%>
-			<div id="variant_details">
-			<span id="title"><%= object.piggybak_variant.description %></span>
-			<span id="price"><%= number_to_currency object.piggybak_variant.price %></span>
+			<div id="sellable_details">
+			<span id="title"><%= object.piggybak_sellable.description %></span>
+			<span id="price"><%= number_to_currency object.piggybak_sellable.price %></span>
 			</div>
 			<label>Quantity</label>
 			<%= text_field_tag :quantity, "1" %>
-			<%= hidden_field_tag :variant_id, object.piggybak_variant.id %>
+			<%= hidden_field_tag :sellable_id, object.piggybak_sellable.id %>
 			<%= submit_tag "Add to Cart", :id => "submit" %>
 			<% end -%>
 			<% else -%>

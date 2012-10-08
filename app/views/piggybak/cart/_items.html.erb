@@ -12,19 +12,19 @@
 	</tr>
 	<% @cart.items.each do |item| %>
 	<tr>
-		<td><%= item[:variant].description %></td>
-		<td><%= number_to_currency item[:variant].price %></td>
+		<td><%= item[:sellable].description %></td>
+		<td><%= number_to_currency item[:sellable].price %></td>
 		<td>
 			<% if page == "cart" -%>
-			<%= text_field_tag "quantity[#{item[:variant].id}]", item[:quantity] %>
+			<%= text_field_tag "quantity[#{item[:sellable].id}]", item[:quantity] %>
             <% else -%>
 			<%= item[:quantity] %>
 			<% end -%>
 		</td>
-		<td><%= number_to_currency item[:quantity]*item[:variant].price %></td>
+		<td><%= number_to_currency item[:quantity]*item[:sellable].price %></td>
 		<% if page == "cart" -%>
 		<td>
-			<%= link_to "Remove", piggybak.remove_item_url(item[:variant].id), :method => :delete %>
+			<%= link_to "Remove", piggybak.remove_item_url(item[:sellable].id), :method => :delete %>
 		</td>
 		<% end -%>
 	</tr>

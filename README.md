@@ -13,44 +13,31 @@ Modular / mountable ecommerce gem. Features:
 
 Installation
 ========
+* First create a new rails project:
+        rails new webstore
 
-* First, add to Gemfile (from RubyGems, with version specified, or source) with *one* of the following options:
+* Config your database.yml and create the databases
+		
+* Add to Gemfile:
     
         gem "piggybak"
-        gem "piggybak", '0.4.19'
-        gem "piggybak", :git => "git://github.com/stephskardal/piggybak.git"
  
-* Next, run rake task to copy migrations:
+* Next, run bundle install:
 
-        rake piggybak_engine:install:migrations
+        bundle install
 
-* Next, run rake task to run migrations:
+* Next, run the piggybak install command:
 
-        rake db:migrate
+        piggybak install
 
-* Next, mount in your application by adding:
-
-        mount Piggybak::Engine => '/checkout', :as => 'piggybak'" to config/routes
-
-* Add acts_as_variant to any model that will become a sellable item.
+* Piggybak is now installed and ready to be added to whatever model class will be sold.
 
         class Product < ActiveRecord::Base
-          acts_as_variant
-        end
+		  acts_as_sellable
+		end
 
-* You must include jquery_ujs in your application.js file in to get the remove item from cart functionality to work.
+* Piggybak checkout is located at /checkout
 
-        //= require jquery_ujs
-
-* You must add the following to your application layout:
-
-        <% if "#{params[:controller]}##{params[:action]}" == "piggybak/orders#submit" -%>
-        <%= javascript_include_tag "piggybak-application" %>
-        <% end -%>
-
-* And you must add this to your production configuration, in order for this asset to be precompiled (and in some cases, ensure that it is served via SSL):
-
-        config.assets.precompile += %w( piggybak-application.js )
 
 More Details
 ========

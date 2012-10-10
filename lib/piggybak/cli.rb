@@ -9,14 +9,13 @@ module Piggybak
       inject_rails_admin
       run('bundle install')
       run('rake piggybak_engine:install:migrations')
-      run('rake db:migrate')    
       create_user_class  
+      run('rake db:migrate')    
       run('rails g rails_admin:install')
       run('rake db:migrate')      
       mount_piggybak_route
       add_javascript_include_tag
       config_assets_precompile
-      
       welcome
     end
     
@@ -44,14 +43,9 @@ module Piggybak
     
     desc "create user class", "Create a user class"
     def create_user_class
-      user_class = <<-eos
-class User < ActiveRecord::Base
-
-end
-      eos
-      
-      create_file 'app/models/user.rb', user_class
+      run('rails generate model User')      
     end
+    
     desc "config_assets-precompile", "amust add this to your production configuration, in order for this asset to be precompiled"
     def config_assets_precompile
       insert_into_file 'config/environments/production.rb', "\n  config.assets.precompile += %w( piggybak-application.js )", :after => 'Village::Application.configure do'

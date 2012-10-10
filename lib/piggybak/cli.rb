@@ -10,8 +10,6 @@ module Piggybak
       run('bundle install')
       run('rake piggybak_engine:install:migrations')
       run('rake db:migrate')    
-      create_user_class  
-      run('rake db:migrate')    
       run('rails g rails_admin:install')
       run('rake db:migrate')      
       mount_piggybak_route
@@ -54,6 +52,9 @@ module Piggybak
     
     desc "welcome", "invite to piggybak"
     def welcome
+      say ""
+      say ""
+      say ""
       say "******************************************************************"
       say "******************************************************************"
       say "Piggybak Successfully Installed!"

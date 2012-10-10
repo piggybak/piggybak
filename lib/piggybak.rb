@@ -66,7 +66,8 @@ module Piggybak
             field :created_at
             field :email
             field :phone
-            field :user
+
+            field :user if defined?(User)
 
             field :line_items
             field :billing_address
@@ -128,7 +129,7 @@ module Piggybak
               end
             end
 
-            field :user
+            field :user if defined?(User)
             field :email
             field :phone
             field :ip_address do
@@ -169,7 +170,7 @@ module Piggybak
           object_label_method :admin_label
           visible false
           list do
-            field :user
+            field :user if defined?(User)
             field :note
             field :created_at
           end

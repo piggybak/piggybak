@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+
+begin
+  require 'piggybak/cli'
+rescue LoadError => e
+warn 'Could not load "piggybak/cli"'
+  exit -1
+end
+
+Piggybak::CLI.start

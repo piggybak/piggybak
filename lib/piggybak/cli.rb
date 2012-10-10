@@ -9,6 +9,7 @@ module Piggybak
       inject_rails_admin
       run('bundle install')
       run('rake piggybak_engine:install:migrations')
+      run('rake db:migrate')    
       create_user_class  
       run('rake db:migrate')    
       run('rails g rails_admin:install')

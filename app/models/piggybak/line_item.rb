@@ -16,6 +16,8 @@ module Piggybak
     after_destroy :increase_inventory, :if => Proc.new { |line_item| !line_item.sellable.unlimited_inventory }
     after_update :update_inventory, :if => Proc.new { |line_item| !line_item.sellable.unlimited_inventory }
     
+    attr_accessible :sellable_id, :price, :total, :description, :quantity
+    
     def variant_id
       self.sellable_id
     end

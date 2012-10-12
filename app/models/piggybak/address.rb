@@ -15,7 +15,9 @@ module Piggybak
 
     after_initialize :set_default_country
     after_save :document_address_changes
-
+    
+    attr_accessible :firstname, :lastname, :address1, :address2, :city, :state_id, :zip
+    
     def set_default_country
       self.country ||= Country.find_by_abbr(Piggybak.config.default_country)
     end

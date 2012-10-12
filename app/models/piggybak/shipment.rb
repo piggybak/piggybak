@@ -7,7 +7,9 @@ module Piggybak
     validates_presence_of :status
     validates_presence_of :total
     validates_presence_of :shipping_method_id
-
+    
+    attr_accessible :shipping_method_id
+    
     def status_enum
       ["new", "processing", "shipped"]
     end

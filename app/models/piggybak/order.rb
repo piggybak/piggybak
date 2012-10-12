@@ -33,6 +33,10 @@ module Piggybak
 
     default_scope :order => 'created_at DESC'
 
+    attr_accessible :email, :phone, :billing_address_attributes, 
+                    :shipping_address_attributes, :payments_attributes,
+                    :shipments_attributes
+                    
     def initialize_nested
       self.recorded_changes ||= []
 

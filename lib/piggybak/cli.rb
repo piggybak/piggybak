@@ -32,7 +32,7 @@ module Piggybak
     desc "inject_rails_admin", "add rails_admin"
     def inject_rails_admin
       puts 'add reference to rails_admin in GEMFILE'
-      insert_into_file "GEMFILE", "gem 'rails_admin'\n", :after => "gem 'devise'\n"
+      insert_into_file "Gemfile", "gem 'rails_admin'\n", :after => "gem 'devise'\n"
     end
   
     desc "mount_piggybak_route", "mount piggbak route"

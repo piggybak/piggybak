@@ -3,7 +3,7 @@ module Piggybak
     belongs_to :order
     acts_as_changer
     belongs_to :sellable
-    alias :variant :sellable
+
   
     validates_presence_of :sellable_id
     validates_presence_of :total
@@ -17,15 +17,7 @@ module Piggybak
     after_update :update_inventory, :if => Proc.new { |line_item| !line_item.sellable.unlimited_inventory }
     
     attr_accessible :sellable_id, :price, :total, :description, :quantity
-    
-    def variant_id
-      self.sellable_id
-    end
-    
-    def variant_id=(value)
-      self.sellable_id = value
-    end
-    
+        
     def admin_label
       "#{self.quantity} x #{self.sellable.description}"
     end

@@ -6,10 +6,14 @@ module Piggybak
   
     desc "install", "install and configure piggybak"
     def install
+      inject_devise
       inject_rails_admin
       run('bundle install')
       run('rake piggybak_engine:install:migrations')
-      run('rake db:migrate')    
+      run('rake db:migrate')   
+      run('rails generate devise:install')
+      run('rails generate devise User') 
+      run('rake db:migrate')      
       run('rails g rails_admin:install')
       run('rake db:migrate')      
       mount_piggybak_route
@@ -17,11 +21,18 @@ module Piggybak
       config_assets_precompile
       welcome
     end
+
+    desc "inject_devise", "add devise"
+    def inject_devise
+      puts 'add reference to devise in GEMFILE'
+      insert_into_file "GEMFILE", "gem 'devise'\n", :after => "source 'https://rubygems.org'\n"
+    end
+
     
     desc "inject_rails_admin", "add rails_admin"
     def inject_rails_admin
       puts 'add reference to rails_admin in GEMFILE'
-      insert_into_file "GEMFILE", "gem 'rails_admin'", :after => "source 'https://rubygems.org'\n"
+      insert_into_file "GEMFILE", "gem 'rails_admin'\n", :after => "gem 'devise'\n"
     end
   
     desc "mount_piggybak_route", "mount piggbak route"

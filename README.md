@@ -30,6 +30,8 @@ Installation
 
         piggybak install
 
+(NOTE: If you run into an error saying that piggybak gem is missing, use bundle exec piggybak install)
+
 * Piggybak is now installed and ready to be added to whatever model class will be sold.
 
         class Product < ActiveRecord::Base

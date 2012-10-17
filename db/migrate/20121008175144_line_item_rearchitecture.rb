@@ -25,8 +25,9 @@ class LineItemRearchitecture < ActiveRecord::Migration
         li = Piggybak::LineItem.new({ :line_item_type => klass.to_s.demodulize.downcase,
           :price => 0.00,
           :description => description,
-          :quantity => 1, 
-          :order_id => item.order_id })
+          :quantity => 1 })
+        b = item.attributes["order_id"]
+        li.order_id = b
         li.save
 
         if [Piggybak::Shipment, Piggybak::Payment].include?(klass)

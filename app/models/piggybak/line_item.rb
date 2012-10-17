@@ -35,6 +35,11 @@ module Piggybak
     end
 
     def preprocess_sellable
+      if self.sellable_id.nil?
+        self.errors.add(:sellable_id, "Sellable can't be blank")
+        return
+      end
+
       sellable = Piggybak::Sellable.find(self.sellable_id)
 
       return if sellable.nil?

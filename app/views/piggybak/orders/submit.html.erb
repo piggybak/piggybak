@@ -6,7 +6,7 @@
 <% if @order.errors.any? -%>
 <div id="checkout_error">
 <b>You have errors with your submission:</b><br />
-<%= raw @order.errors.full_messages.join("<br />") %>
+<%= raw @order.errors.full_messages.collect { |b| b.gsub(/^Line items payment/, 'Payment').gsub(/^Line items shipment shipping/, 'Shipping') }.join("<br />") %>
 </div>
 <% end -%>
 <div class="clear"></div>
@@ -50,59 +50,65 @@
 <div id="add_details">
 	<div id="shipping">
 	<h3>Shipping Option</h3>
-	<%= f.fields_for :shipments, f.object.shipments.build do |shipment| %>
-		<div class="item">
-		<%= shipment.label :shipping_method_id %>
-		<%= shipment.select :shipping_method_id, [] %>
-		<div id="shipping_spinner" style="display:none;">
-			<%= image_tag "ajax-loader.gif" %>
-		</div>
-		<div id="shipping_default" style="display:none;">
-			Please enter a shipping address.
-		</div>
-		<div id="shipping_empty" style="display:none;">
-			No shipping methods found.
-		</div>
-		</div>
+	<%= f.fields_for :line_items, @order.line_items.detect { |li| li.line_item_type == "shipment" } do |line_item_f| %>
+		<%= line_item_f.hidden_field :line_item_type, { :value => "shipment" } %>
+		<%= line_item_f.fields_for :shipment do |shipment| %>
+			<div class="item">
+			<%= shipment.label :shipping_method_id %>
+			<%= shipment.select :shipping_method_id, [] %>
+			<div id="shipping_spinner" style="display:none;">
+				<%= image_tag "ajax-loader.gif" %>
+			</div>
+			<div id="shipping_default" style="display:none;">
+				Please enter a shipping address.
+			</div>
+			<div id="shipping_empty" style="display:none;">
+				No shipping methods found.
+			</div>
+			</div>
+		<% end -%>
 	<% end -%>
 	</div>
 	<div id="payment">
 	<h3>Payment</h3>
-	<%= f.fields_for :payments, f.object.payments.build do |payment| %>
-		<div class="item">
-		<%= payment.label :number %>
-		<% if @order.errors.keys.include?("payments.number".to_sym) %>
-		<span class="field_with_errors">
-		<%= payment.text_field :number %>
-		</span>
-		<% else -%>
-		<%= payment.text_field :number %>
+	<%= f.fields_for :line_items, @order.line_items.detect { |li| li.line_item_type == "payment" } do |line_item_f| %>
+		<%= line_item_f.hidden_field :line_item_type, { :value => "payment" } %>
+		<%= line_item_f.fields_for :payment do |payment| %>
+			<div class="item">
+			<%= payment.label :number %>
+			<% if @order.errors.keys.include?("payments.number".to_sym) %>
+			<span class="field_with_errors">
+			<%= payment.text_field :number %>
+			</span>
+			<% else -%>
+			<%= payment.text_field :number %>
+			<% end -%>
+			</div>
+	
+			<div class="item">
+			<%= payment.label :verification_value %>
+			<% if @order.errors.keys.include?("payments.verification_value".to_sym) %>
+			<span class="field_with_errors">
+			<%= payment.text_field :verification_value %>
+			</span>
+			<% else -%>
+			<%= payment.text_field :verification_value %>
+			<% end -%>
+			</div>
+	
+			<div class="item">
+			<%= payment.label :month %>
+			<% if @order.errors.keys.include?("payments.verification_value".to_sym) %>
+			<span class="field_with_errors">
+			<%= payment.select :month, 1.upto(12).to_a %> /
+			<%= payment.select :year, Time.now.year.upto(Time.now.year + 10).to_a %>
+			</span>
+			<% else -%>
+			<%= payment.select :month, 1.upto(12).to_a %> /
+			<%= payment.select :year, Time.now.year.upto(Time.now.year + 10).to_a %>
+			<% end -%>
+			</div>
 		<% end -%>
-		</div>
-
-		<div class="item">
-		<%= payment.label :verification_value %>
-		<% if @order.errors.keys.include?("payments.verification_value".to_sym) %>
-		<span class="field_with_errors">
-		<%= payment.text_field :verification_value %>
-		</span>
-		<% else -%>
-		<%= payment.text_field :verification_value %>
-		<% end -%>
-		</div>
-
-		<div class="item">
-		<%= payment.label :month %>
-		<% if @order.errors.keys.include?("payments.verification_value".to_sym) %>
-		<span class="field_with_errors">
-		<%= payment.select :month, 1.upto(12).to_a %> /
-		<%= payment.select :year, Time.now.year.upto(Time.now.year + 10).to_a %>
-		</span>
-		<% else -%>
-		<%= payment.select :month, 1.upto(12).to_a %> /
-		<%= payment.select :year, Time.now.year.upto(Time.now.year + 10).to_a %>
-		<% end -%>
-		</div>
 	<% end -%>
 	</div>
 	<div id="submit">

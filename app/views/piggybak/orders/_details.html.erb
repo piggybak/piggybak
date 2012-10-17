@@ -5,12 +5,12 @@
 		<th>Quantity</th>
 		<th>Subtotal</th>
 	</tr>
-	<% order.line_items.each do |line_item| %>
+	<% order.line_items.sellables.each do |line_item| %>
 	<tr>
 		<td><%= line_item.description %></td>
-		<td><%= number_to_currency line_item.price %></td>
+		<td><%= number_to_currency line_item.unit_price %></td>
 		<td><%= line_item.quantity %></td>
-		<td><%= number_to_currency line_item.total %></td>
+		<td><%= number_to_currency line_item.price %></td>
 	</tr>
 	<% end -%>
 	<tr>
@@ -19,7 +19,7 @@
 	<tr>
 		<td colspan="2"></td>
 		<td>Subtotal</td>
-		<td><%= number_to_currency order.line_items.inject(0) { |subtotal, li| subtotal + li.total } %></td>
+		<td><%= number_to_currency order.line_items.sellables.inject(0) { |subtotal, li| subtotal + li.price } %></td>
 	</tr>
 	<tr>
 		<td colspan="2"></td>
@@ -29,8 +29,17 @@
 	<tr>
 		<td colspan="2"></td>
 		<td>Shipping</td>
-		<td><%= number_to_currency order.shipments.inject(0) { |shipping, shipment| shipping + shipment.total } %></td>
+		<td><%= number_to_currency order.shipment_charge %></td>
 	</tr>
+	<% Piggybak.config.line_item_types.each do |k, v| -%>
+	<% if v.has_key?(:display_in_cart) && order.line_items.detect { |li| li.line_item_type == k.to_s } -%>
+	<tr>
+		<td colspan="2"></td>
+		<td><%= v[:display_in_cart] %></td>
+		<td class="extra_totals" id="<%= k %>_total"><%= number_to_currency order.line_items.detect { |li| li.line_item_type == k.to_s }.price %></td>
+	</tr>
+	<% end -%> 
+	<% end -%>
 	<tr>
 		<td colspan="2"></td>
 		<td>Total</td>

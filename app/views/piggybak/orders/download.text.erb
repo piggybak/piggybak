@@ -3,16 +3,16 @@ Order: #<%= @order.id %>
 Email: <%= @order.email %>
 Phone: <%= @order.phone %>
 
-<% @order.line_items.each do |line_item| %>
-<%= line_item.quantity %> x <%= raw line_item.description %> (<%= number_to_currency line_item.total %>)
+<% @order.line_items.sellables.each do |line_item| %>
+<%= line_item.quantity %> x <%= raw line_item.description %> (<%= number_to_currency line_item.price %>)
 <% end -%>
 
-Subtotal: <%= number_to_currency @order.line_items.inject(0) { |subtotal, li| subtotal + li.total } %>
-Shipping & Handling: <%= number_to_currency @order.shipments.inject(0) { |shipping, shipment| shipping + shipment.total } %>
+Subtotal: <%= number_to_currency @order.line_items.sellables.inject(0) { |subtotal, li| subtotal + li.price } %>
+Shipping & Handling: <%= number_to_currency @order.line_items.shipments.inject(0) { |shipping, shipment| shipping + shipment.price } %>
 Tax: <%= number_to_currency @order.tax_charge %>
 Total: <%= number_to_currency @order.total %>
-Less Payment: <%= number_to_currency(@order.payments.inject(0) { |total, p| total + p.total if p.status == "paid" }) %>
-Adjustments: <%= number_to_currency(@order.adjustments.inject(0) { |total, adj| total + adj.total }) %>
+Less Payment: <%= number_to_currency(@order.line_items.payments.inject(0) { |total, p| total + p.price if p.payment.status == "paid" }) %>
+Adjustments: <%= number_to_currency(@order.line_items.adjustments.inject(0) { |total, adj| total + adj.price }) %>
 Balance Due: <%= number_to_currency @order.total_due %>
 
 Billing Information

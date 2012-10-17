@@ -11,8 +11,20 @@ Modular / mountable ecommerce gem. Features:
 
 * Fully defined backend RailsAdmin interface for adding orders on the backend
 
+
+Announcements
+========
+
+* Variants were recently changed to sellables, to provide the opportunity for advanced variant support via an extension.
+
+* Significant recent rearchitecture has been applied to the order line items. Stay tuned for the documentation.
+
+* Review the new installation process below.
+ 
+
 Installation
 ========
+
 * First create a new rails project:
         rails new webstore
 
@@ -35,8 +47,8 @@ Installation
 * Piggybak is now installed and ready to be added to whatever model class will be sold.
 
         class Product < ActiveRecord::Base
-		  acts_as_sellable
-		end
+          acts_as_sellable
+        end
 
 * Piggybak checkout is located at /checkout
 
@@ -51,7 +63,13 @@ Visit the project website [here][project-website] to see more documentation and 
 TODO
 ========
 
-On order notes functionality, changes in addresses are not recorded. This functionality is broken and needs attention.
+* Ensure that changes in nested addresses are recorded on order notes.
+
+* Add admin side validation to limit 1 payment at a time
+
+* Add/check validation to ensure sufficient inventory
+
+* Add copy from billing above shipping address section button
 
 Copyright
 ========

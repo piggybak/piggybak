@@ -5,7 +5,7 @@ var shipping_field;
 
 $(function() {
 	piggybak.prevent_double_click();
-	shipping_field = $('#piggybak_order_shipments_attributes_0_shipping_method_id');
+	shipping_field = $('#piggybak_order_line_items_attributes_0_shipment_attributes_shipping_method_id');
 	shipping_els = $('#piggybak_order_shipping_address_attributes_state_id,#piggybak_order_shipping_address_attributes_country_id,#piggybak_order_shipping_address_attributes_zip');
 	piggybak.initialize_listeners();
 	piggybak.update_shipping_options($('#piggybak_order_shipping_address_attributes_state_id'), function() {
@@ -124,6 +124,9 @@ var piggybak = {
 		}
 		$('#shipping_total').html('$' + shipping_total.toFixed(2));
 		var order_total = subtotal + tax_total + shipping_total;
+		$.each($('.extra_totals'), function(i, el) {
+			order_total += parseFloat($(el).html().replace(/\$/, ''));
+		});	
 		$('#order_total').html('$' + order_total.toFixed(2));	
 	},
 	retrieve_shipping_data: function() {

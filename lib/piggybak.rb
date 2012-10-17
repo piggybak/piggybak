@@ -30,12 +30,77 @@ module Piggybak
         helper :piggybak
       end
     end
-    
+
+    # Needed for development
+    config.to_prepare do
+      Piggybak.config.line_item_types.each do |k, v|
+        plural_k = k.to_s.pluralize.to_sym
+        if v[:nested_attrs]
+          Piggybak::LineItem.class_eval do
+            # TODO: dependent destroy destroys all line items. Figure out why
+            has_one k, :class_name => v[:class_name] #, :dependent => :destroy
+            accepts_nested_attributes_for k
+            attr_accessible "#{k}_attributes".to_sym
+          end
+        end
+        Piggybak::LineItem.class_eval do
+          scope plural_k, where(:line_item_type => "#{k}" )
+        end
+        Piggybak::Order.class_eval do
+          define_method "#{k}_charge" do
+            self.line_items.send(plural_k).inject(0) { |subtotal, li| subtotal + li.price }
+          end
+        end
+      end
+    end
+
     initializer "piggybak.rails_admin_config" do |app|
-      # RailsAdmin config file. Generated on December 21, 2011 13:04
-      # See github.com/sferik/rails_admin for more informations
+      Piggybak.config.line_item_types.each do |k, v|
+        plural_k = k.to_s.pluralize.to_sym
+        if v[:nested_attrs]
+          Piggybak::LineItem.class_eval do
+            # TODO: dependent destroy destroys all line items. Figure out why
+            has_one k, :class_name => v[:class_name] #, :dependent => :destroy
+            accepts_nested_attributes_for k
+            attr_accessible "#{k}_attributes".to_sym
+          end
+        end
+      end
+      RailsAdmin::Config.reset_model(Piggybak::LineItem)
 
       RailsAdmin.config do |config|
+        config.model Piggybak::LineItem do
+          label "Line Item"
+          object_label_method :admin_label
+          visible false
+
+          edit do
+            field :line_item_type do
+              label "Line Item Type"
+              partial "polymorphic_nested"
+              help ""
+            end
+            Piggybak.config.line_item_types.each do |k, v|
+              if v[:nested_attrs]
+                field k do
+                  active true
+                end
+              end
+            end
+            field :sellable_id, :enum do
+              label "Sellable"
+              help "Required"
+            end
+            field :price 
+            field :quantity
+            field :description  
+          end
+        end
+
+        config.model Piggybak::Sellable do
+          visible false
+        end
+
         config.model Piggybak::Order do
           label "Order"
           navigation_label "Orders"
@@ -45,11 +110,6 @@ module Piggybak
           show do
             field :status
             field :total do
-              formatted_value do
-                "$%.2f" % value
-              end
-            end
-            field :tax_charge do
               formatted_value do
                 "$%.2f" % value
               end
@@ -68,8 +128,6 @@ module Piggybak
             field :line_items
             field :billing_address
             field :shipping_address
-            field :shipments
-            field :payments
             field :order_notes do
               pretty_value do
                 value.inject([]) { |arr, o| arr << o.details }.join("<br /><br />").html_safe
@@ -102,12 +160,6 @@ module Piggybak
             field :recorded_changer, :hidden do
               partial "recorded_changer"
             end
-            # TODO: Figure out why this doesn't work here
-            #field :recorded_changer, :hidden do
-            #  default_value do
-            #    bindings[:view]._current_user.id
-            #  end
-            #end
             field :status do
               visible do
                 !bindings[:object].new_record?
@@ -134,25 +186,15 @@ module Piggybak
             field :user_agent do
               read_only true
             end
-            field :billing_address do 
-             help "Required"
+            field :billing_address do
+              active true
+              help "Required"
             end
             field :shipping_address do
+              active true
               help "Required"
             end
             field :line_items do
-              active true
-              help ""
-            end
-            field :shipments do
-              active true
-              help ""
-            end
-            field :adjustments do
-              active true
-              help ""
-            end
-            field :payments do
               active true
               help ""
             end
@@ -214,26 +256,7 @@ module Piggybak
           end
         end
       
-        config.model Piggybak::LineItem do
-          label "Line Item"
-          object_label_method :admin_label
-          visible false
-
-          edit do
-            field :sellable
-            field :quantity
-            field :total do
-              read_only true
-              formatted_value do
-                value ? "$%.2f" % value : '-'
-              end
-              help "This will automatically be calculated at the time of processing."
-            end
-          end
-        end
-      
         config.model Piggybak::Shipment do
-          object_label_method :admin_label
           visible false
 
           edit do
@@ -245,53 +268,14 @@ module Piggybak
             field :status do
               label "Shipping Status"
             end
-            field :total do
-              read_only true
-              formatted_value do
-                "$%.2f" % value
-              end
-              help "This will automatically be calculated at the time of processing."
-            end
           end
         end
-     
+    
         config.model Piggybak::Adjustment do
-          object_label_method :admin_label
           visible false
-          edit do
-            field :user_id, :hidden do
-              default_value do
-                bindings[:view]._current_user.id
-              end
-            end
-            field :source do
-              help "Source of adjustment."
-              visible do
-                !bindings[:object].new_record?
-              end 
-              read_only do 
-                !bindings[:object].new_record?
-              end 
-            end
-            field :total do
-              help "<ul><li>Enter a negative value representing the customer refund amount. (This should be done AFTER completing a refund in the payment gateway) This will balance the invoice and remove the unbalanced status.</li></ul>".html_safe
-              read_only do 
-                !bindings[:object].new_record?
-              end
-              formatted_value do
-                "$%.2f" % value
-              end 
-            end
-            field :note do
-              read_only do 
-                !bindings[:object].new_record?
-              end 
-            end
-          end
         end
- 
+
         config.model Piggybak::Payment do
-          object_label_method :admin_label
           visible false
 
           edit do
@@ -333,16 +317,6 @@ module Piggybak
               read_only do 
                 !bindings[:object].new_record?
               end 
-            end
-            field :total do
-              read_only true
-              visible do
-                !bindings[:object].new_record?
-              end 
-              formatted_value do
-                "$%.2f" % value
-              end
-              help "This will automatically be calculated at the time of processing."
             end
           end
         end
@@ -473,9 +447,7 @@ module Piggybak
             field :country
           end
         end
-      
       end
-      
     end
   end
 end

@@ -1,10 +1,5 @@
 var geodata;
 
-$(function() {
-	piggybak_states.populate_geodata();
-	piggybak_states.initialize_listeners();
-});
-
 var piggybak_states = {
 	initialize_listeners: function() {
 		$('#piggybak_order_shipping_address_attributes_country_id').change(function() {
@@ -53,3 +48,9 @@ var piggybak_states = {
 		return;
 	}
 };
+
+$(function() {
+	piggybak_states.populate_geodata();
+	piggybak_states.initialize_listeners();
+});
+

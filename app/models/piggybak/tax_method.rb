@@ -35,7 +35,7 @@ module Piggybak
           total_tax += calculator.rate(tax_method, object)
         end 
       end
-      
+   
       total_tax
     end
 

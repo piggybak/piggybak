@@ -48,6 +48,15 @@
 		<td>Shipping</td>
 		<td id="shipping_total"></td>
 	</tr>
+	<% Piggybak.config.line_item_types.each do |k, v| -%>
+	<% if v.has_key?(:display_in_cart) -%>
+	<tr id="<%= "#{k}_row" %>" style="display:none;">
+		<td colspan="<%= page == "cart" ? "3" : "2" %>"></td>
+		<td><%= v[:display_in_cart] %></td>
+		<td class="extra_totals" id="<%= k %>_total">$0.00</td>
+	</tr>
+	<% end -%> 
+	<% end -%>
 	<tr>
 		<td colspan="<%= page == "cart" ? "3" : "2" %>"></td>
 		<td>Total</td>

@@ -3,32 +3,32 @@ N/A
 <% else -%>
 <table cellpadding="5" cellspacing="0">
 	<tr>
-		<td width="150">Subtotal</td>
-		<td>$<%= "%.2f" % form.object.line_items.inject(0) { |subtotal, li| subtotal + li.total } %></td>
+		<td width="150">Subtotal (Sellables)</td>
+		<td><%= number_to_currency form.object.subtotal %></td>
 	</tr>
 	<tr>
 		<td>Shipping</td>
-		<td>$<%= "%.2f" % form.object.shipments.inject(0) { |shipping, shipment| shipping + shipment.total } %></td>
+		<td><%= number_to_currency form.object.shipment_charge %></td>
 	</tr>
 	<tr>
 		<td>Tax</td>
-		<td>$<%= "%.2f" % form.object.tax_charge %></td>
-	</tr>
-	<tr>
-		<td>Total</td>
-		<td>$<%= "%.2f" % form.object.total %></td>
-	</tr>
-	<tr>
-		<td>Payments</td>
-		<td>$<%= "%.2f" % form.object.payments.inject(0) { |total, payment| total + payment.total } %></td>
+		<td><%= number_to_currency form.object.tax_charge %></td>
 	</tr>
 	<tr>
 		<td>Adjustments</td>
-		<td>$<%= "%.2f" % form.object.adjustments.inject(0) { |total, adj| total + adj.total.to_f } %></td>
+		<td><%= number_to_currency form.object.adjustment_charge %></td>
+	</tr>
+	<tr>
+		<td>Total</td>
+		<td><%= number_to_currency form.object.total %></td>
+	</tr>
+	<tr>
+		<td>Payments</td>
+		<td><%= number_to_currency form.object.payment_charge %></td>
 	</tr>
 	<tr>
 		<td>Balance Due</td>
-		<td>$<%= "%.2f" % form.object.total_due %></td>
+		<td><%= number_to_currency form.object.total_due %></td>
 	</tr>
 	<tr>
 		<td>Created at</td>
@@ -42,20 +42,8 @@ N/A
 				<li><%= link_to "Send or Resend Email Confirmation", piggybak.email_order_url(form.object.id) %></li>
 				<li><%= link_to "View as Text", piggybak.download_order_url(form.object.id) %></li>
 				<% if form.object.total_due == 0.00 -%>
-				<li><%= link_to "Cancel Order", piggybak.cancel_order_url(form.object.id) %> (This does not mark the payment gateway payments. This marks payments tied to ths order in this database as refunded, and marks the order as cancelled.)</li>
+				<li><%= link_to "Cancel Order", piggybak.cancel_order_url(form.object.id) %> (This does not refund payments.)</li>
 				<% end -%>
-			</ul>
-		</td>
-	</tr>
-	<% else -%>
-	<tr>
-		<td valign="top">Actions</td>
-		<td>
-			<ul>
-				<li>
-					<%= link_to "Restore Cancel Order", piggybak.restore_order_url(form.object.id) %>
-					(This marks order as un-cancelled.)
-				</li>
 			</ul>
 		</td>
 	</tr>

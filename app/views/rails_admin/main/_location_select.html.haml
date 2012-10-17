@@ -8,8 +8,8 @@
 - else
   = form.text_field "state_id"
 
-- if type == "billing"
-  = javascript_include_tag "piggybak.states"
-
 :javascript
   var geodata_lookup = "#{piggybak.orders_geodata_url}";
+
+- if type == "billing"
+  = javascript_include_tag "piggybak.states"

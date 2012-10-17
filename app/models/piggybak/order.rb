@@ -1,9 +1,6 @@
 module Piggybak
   class Order < ActiveRecord::Base
     has_many :line_items, :inverse_of => :order
-    has_many :payments, :inverse_of => :order
-    has_many :shipments, :inverse_of => :order
-    has_many :adjustments, :inverse_of => :order
     has_many :order_notes, :inverse_of => :order
 
     belongs_to :billing_address, :class_name => "Piggybak::Address"
@@ -12,46 +9,38 @@ module Piggybak
   
     accepts_nested_attributes_for :billing_address, :allow_destroy => true
     accepts_nested_attributes_for :shipping_address, :allow_destroy => true
-    accepts_nested_attributes_for :shipments, :allow_destroy => true
     accepts_nested_attributes_for :line_items, :allow_destroy => true
-    accepts_nested_attributes_for :payments
-    accepts_nested_attributes_for :adjustments, :allow_destroy => true
     accepts_nested_attributes_for :order_notes
 
-    attr_accessor :recorded_changes
-    attr_accessor :recorded_changer
-    attr_accessor :was_new_record
-    attr_accessor :disable_order_notes
+    attr_accessor :recorded_changes, :recorded_changer,
+                  :was_new_record, :disable_order_notes 
 
-    validates_presence_of :status, :email, :phone, :total, :total_due, :tax_charge, :created_at, :ip_address, :user_agent
+    validates_presence_of :status, :email, :phone, :total, :total_due, :created_at, :ip_address, :user_agent
 
-    after_initialize :initialize_nested, :initialize_request
-    before_validation :set_defaults, :prepare_for_destruction
-    after_validation :update_totals
-    before_save :process_payments, :update_status, :set_new_record
+    after_initialize :initialize_defaults
+    before_save :postprocess_order, :update_status, :set_new_record
     after_save :record_order_note
 
     default_scope :order => 'created_at DESC'
 
-    attr_accessible :email, :phone, :billing_address_attributes, 
-                    :shipping_address_attributes, :payments_attributes,
-                    :shipments_attributes
+    attr_accessible :user_id, :email, :phone, :billing_address_attributes, 
+                    :shipping_address_attributes, :line_items_attributes,
+                    :order_notes_attributes, :details, :recorded_changer, :ip_address
                     
-    def initialize_nested
+    def initialize_defaults
       self.recorded_changes ||= []
 
       self.billing_address ||= Piggybak::Address.new
       self.shipping_address ||= Piggybak::Address.new
-      self.shipments ||= [Piggybak::Shipment.new] 
-      self.payments ||= [Piggybak::Payment.new]
-      if self.payments.any?
-        self.payments.first.payment_method_id = Piggybak::PaymentMethod.find_by_active(true).id
-      end
-    end
 
-    def initialize_request
       self.ip_address ||= 'admin'
       self.user_agent ||= 'admin'
+
+      self.created_at ||= Time.now
+      self.status ||= "new"
+      self.total ||= 0
+      self.total_due ||= 0
+      self.disable_order_notes = false
     end
 
     def initialize_user(user, on_post)
@@ -61,26 +50,62 @@ module Piggybak
       end
     end
 
-    def process_payments
-      has_errors = false
-
-      self.payments.each do |payment|
-        if(!payment.process)
-          has_errors = true
+    def postprocess_order
+      # Mark line items for destruction if quantity == 0
+      self.line_items.each do |line_item|
+        if line_item.quantity == 0
+          line_item.mark_for_destruction
         end
       end
 
-      payments_total = self.payments.inject(0) { |s, payment| s + payment.total }
+      # Recalculate and create line item for tax
+      # If a tax line item already exists, reset price
+      # If a tax line item doesn't, create
+      # If tax is 0, destroy tax line item
+      tax = TaxMethod.calculate_tax(self)
+      tax_line_item = self.line_items.detect { |line_item| line_item.line_item_type == "tax" }
+      if tax > 0
+        if tax_line_item
+          tax_line_item.price = tax
+        else
+          self.line_items << LineItem.new({ :line_item_type => "tax", :description => "Tax Charge", :price => tax })
+        end
+      elsif tax_line_item
+        tax_line_item.mark_for_destruction
+      end
 
-      adjustments.each do |adjustment|
-        if !adjustment._destroy
-          payments_total += adjustment.total.round(2)
+      # Postprocess everything but payments first
+      self.line_items.each do |line_item|
+        next if line_item.line_item_type == "payment"
+        method = "postprocess_#{line_item.line_item_type}"
+        if line_item.respond_to?(method)
+          if !line_item.send(method)
+            return false
+          end
+        end
+      end
+      
+      # Recalculating total and total due, in case post process changed totals
+      self.total = 0
+      self.line_items.each do |line_item|
+        if !line_item._destroy
+          self.total += line_item.price
+        end
+      end
+      self.total_due = self.total
+
+      # Postprocess payment last
+      self.line_items.each do |line_item|
+        next if line_item.line_item_type != "payment"
+        method = "postprocess_#{line_item.line_item_type}"
+        if line_item.respond_to?(method)
+          if !line_item.send(method)
+            return false
+          end
         end
       end
 
-      self.total_due = (self.total - payments_total).round(2)
-
-      !has_errors
+      true
     end
 
     def record_order_note
@@ -93,82 +118,38 @@ module Piggybak
       end
     end
 
+    def create_payment_shipment
+      shipment_line_item = self.line_items.detect { |li| li.line_item_type == "shipment" }
+
+      if shipment_line_item.nil?
+        new_shipment_line_item = Piggybak::LineItem.new({ :line_item_type => "shipment" })
+        new_shipment_line_item.build_shipment
+        self.line_items << new_shipment_line_item
+      elsif shipment_line_item.shipment.nil?
+        shipment_line_item.build_shipment
+      else
+        previous_method = shipment_line_item.shipment.shipping_method_id
+        shipment_line_item.build_shipment
+        shipment_line_item.shipment.shipping_method_id = previous_method
+      end
+
+      if !self.line_items.detect { |li| li.line_item_type == "payment" }
+        payment_line_item = Piggybak::LineItem.new({ :line_item_type => "payment" })
+        payment_line_item.build_payment 
+        self.line_items << payment_line_item
+      end
+    end
+
     def add_line_items(cart)
       cart.update_quantities
+
       cart.items.each do |item|
-        line_item = Piggybak::LineItem.new({ :sellable_id => item[:sellable].id,
-          :price => item[:sellable].price,
-          :total => item[:sellable].price*item[:quantity],
+        self.line_items << Piggybak::LineItem.new({ :sellable_id => item[:sellable].id,
+          :unit_price => item[:sellable].price,
+          :price => item[:sellable].price*item[:quantity],
           :description => item[:sellable].description,
           :quantity => item[:quantity] })
-        self.line_items << line_item
       end
-    end
-
-    def set_defaults
-      self.created_at ||= Time.now
-      self.status ||= "new"
-      self.total = 0
-      self.total_due = 0
-      self.tax_charge = 0
-      self.disable_order_notes = false
-
-      return if self.to_be_cancelled
-
-      self.line_items.each do |line_item|
-        if self.status != "shipped"
-          line_item.description = line_item.sellable.description
-          line_item.price = line_item.sellable.price
-        end
-        if line_item.sellable
-          line_item.total = line_item.price * line_item.quantity.to_i
-        else
-          line_item.total = 0
-        end
-      end
-    end
-
-    def prepare_for_destruction
-      self.line_items.each do |line_item|
-        if line_item.quantity == 0
-          line_item.mark_for_destruction
-        end
-      end
-    end
-
-    def update_totals
-      self.total = 0
-
-      self.line_items.each do |line_item|
-        if !line_item._destroy
-          self.total += line_item.total 
-        end
-      end
-
-      self.tax_charge = TaxMethod.calculate_tax(self)
-      self.total += self.tax_charge
-
-      shipments.each do |shipment|
-        if !shipment._destroy
-          if (shipment.new_record? || shipment.status != 'shipped') && shipment.shipping_method
-            calculator = shipment.shipping_method.klass.constantize
-            shipment.total = calculator.rate(shipment.shipping_method, self)
-          end
-
-          shipping_cast = ((shipment.total*100).to_i).to_f/100
-          self.total += shipping_cast
-        end
-      end
-
-      payments_total = self.payments.inject(0) { |s, payment| s + payment.total }
-
-      adjustments.each do |adjustment|
-        if !adjustment._destroy
-          payments_total += adjustment.total.round(2)
-        end
-      end
-
-      self.total_due = (self.total - payments_total).round(2)
     end
 
     def update_status
@@ -179,18 +160,19 @@ module Piggybak
       else
         if self.to_be_cancelled
           self.status = "cancelled"
-        elsif self.shipments.any? && self.shipments.all? { |s| s.status == "shipped" }
+        # TODO: line items scope doesn't work here, maybe on new items? Fix if possible.
+        elsif line_items.select { |li| li.line_item_type == "shipment" }.any? && line_items.select { |li| li.line_item_type == "shipment" }.all? { |s| s.shipment.status == "shipped" }
           self.status = "shipped"
-        elsif self.shipments.any? && self.shipments.all? { |s| s.status == "processing" }
+        elsif line_items.select { |li| li.line_item_type == "shipment" }.any? && line_items.select { |li| li.line_item_type == "shipment" }.all? { |s| s.shipment.status == "processing" }
           self.status = "processing"
         else
           self.status = "new"
         end
       end
     end
+
     def set_new_record
       self.was_new_record = self.new_record?
-
       true
     end
 
@@ -215,9 +197,9 @@ module Piggybak
     def subtotal
       v = 0
 
-      self.line_items.each do |line_item|
+      self.line_items.select { |li| li.line_item_type == "sellable" }.each do |line_item|
         if !line_item._destroy
-          v += line_item.total 
+          v += line_item.price
         end
       end
 

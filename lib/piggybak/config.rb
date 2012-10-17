@@ -11,6 +11,7 @@ module Piggybak
       attr_accessor :logging
       attr_accessor :logging_file
       attr_accessor :whois_url
+      attr_accessor :line_item_types
 
       def reset
         @email_sender = "support@piggybak.org"
@@ -22,6 +23,26 @@ module Piggybak
                                  "::Piggybak::ShippingCalculator::Free",
                                  "::Piggybak::ShippingCalculator::Range"]
         @tax_calculators = ["::Piggybak::TaxCalculator::Percent"]
+
+        @line_item_types = { :sellable => { :visible => true,
+                                            :fields => ["sellable_id", "quantity"],
+                                            :allow_destroy => true },
+                             :payment => { :visible => true,
+                                           :nested_attrs => true,
+                                           :fields => ["payment"],
+                                           :allow_destroy => false,
+                                           :class_name => "::Piggybak::Payment" },
+                             :shipment => { :visible => true, 
+                                            :nested_attrs => true, 
+                                            :fields => ["shipment"], 
+                                            :allow_destroy => true,
+                                            :class_name => "::Piggybak::Shipment" },
+                             :adjustment => { :visible => true, 
+                                              :fields => ["description", "price"],
+                                              :allow_destroy => true },
+                             :tax => { :visible => false, 
+                                       :allow_destroy => false }
+                           }
 
         @default_country = "US"
 

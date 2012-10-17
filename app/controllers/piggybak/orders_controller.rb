@@ -10,12 +10,14 @@ module Piggybak
         begin
           ActiveRecord::Base.transaction do
             @order = Piggybak::Order.new(params[:piggybak_order])
+            @order.create_payment_shipment
 
             if Piggybak.config.logging
-              clean_params = params[:piggybak_order].clone
-              clean_params["payments_attributes"]["0"]["number"] = clean_params["payments_attributes"]["0"]["number"].mask_cc_number
-              clean_params["payments_attributes"]["0"]["verification_value"] = clean_params["payments_attributes"]["0"]["verification_value"].mask_csv
-              logger.info "#{request.remote_ip}:#{Time.now.strftime("%Y-%m-%d %H:%M")} Order received with params #{clean_params.inspect}" 
+              # TODO: Reimplement on correctly filtered params
+              #clean_params = params[:piggybak_order].clone
+              #clean_params["payments_attributes"]["0"]["number"] = clean_params["payments_attributes"]["0"]["number"].mask_cc_number
+              #clean_params["payments_attributes"]["0"]["verification_value"] = clean_params["payments_attributes"]["0"]["verification_value"].mask_csv
+              #logger.info "#{request.remote_ip}:#{Time.now.strftime("%Y-%m-%d %H:%M")} Order received with params #{clean_params.inspect}" 
             end
             @order.initialize_user(current_user, true)
 
@@ -53,8 +55,9 @@ module Piggybak
             @order.errors[:base] << "Your order could not go through. Please try again."
           end
         end
-	  else
+      else
         @order = Piggybak::Order.new
+        @order.create_payment_shipment
         @order.initialize_user(current_user, false)
       end
     end
@@ -96,18 +99,6 @@ module Piggybak
       redirect_to rails_admin.edit_path('Piggybak::Order', order.id)
     end
 
-    def restore
-      order = Order.find(params[:id])
-      order.recorded_changer = current_user.id
-
-      if can?(:restore, order)
-        order.status = "new"
-        order.save
-      end
-
-      redirect_to rails_admin.edit_path('Piggybak::Order', order.id)
-    end
-
     def cancel
       order = Order.find(params[:id])
 
@@ -116,18 +107,18 @@ module Piggybak
         order.disable_order_notes = true
 
         order.line_items.each do |line_item|
-          line_item.mark_for_destruction
+          if line_item.line_item_type != "payment"
+            line_item.mark_for_destruction
+          end
         end
-        order.shipments.each do |shipment|
-          shipment.mark_for_destruction
-        end
-        order.update_attribute(:tax_charge, 0.00)
         order.update_attribute(:total, 0.00)
         order.update_attribute(:to_be_cancelled, true)
 
         OrderNote.create(:order_id => order.id, :note => "Order set to cancelled. Line items, shipments, tax removed.", :user_id => current_user.id)
         
         flash[:notice] = "Order #{order.id} set to cancelled. Order is now in unbalanced state."
+      else
+        flash[:error] = "You do not have permission to cancel this order."
       end
 
       redirect_to rails_admin.edit_path('Piggybak::Order', order.id)

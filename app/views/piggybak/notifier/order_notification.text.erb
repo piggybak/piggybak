@@ -2,8 +2,16 @@ Thanks for your order!
 
 Items
 
-<% @order.line_items.each do |line_item| %>
-<%= line_item.sellable.description %> x <%= line_item.quantity %> = <%= number_to_currency line_item.total %>
+<% @order.line_items.sellables.each do |line_item| %>
+<%= line_item.description %> x <%= line_item.quantity %> = <%= number_to_currency line_item.price %>
+<% end -%>
+
+<% @order.line_items.shipments.each do |line_item| %>
+<%= line_item.description %> = <%= number_to_currency line_item.price %>
+<% end -%>
+
+<% @order.line_items.payments.each do |line_item| %>
+<%= line_item.description %> = <%= number_to_currency line_item.price %>
 <% end -%>
 
 Total

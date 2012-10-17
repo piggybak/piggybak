@@ -4,6 +4,7 @@ module Piggybak
     attr_accessor :total
     attr_accessor :errors
     attr_accessor :extra_data
+    alias :subtotal :total
   
     def initialize(cookie='')
       self.items = []

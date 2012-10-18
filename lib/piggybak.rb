@@ -24,11 +24,14 @@ module Piggybak
   end
 
   class Engine < Rails::Engine
-      
     initializer "piggybak.add_helper" do |app|
       ApplicationController.class_eval do
         helper :piggybak
       end
+    end
+
+    initializer "piggybak.precompile_hook" do |app|
+      app.config.assets.precompile += ['piggybak/piggybak-application.js']
     end
 
     # Needed for development

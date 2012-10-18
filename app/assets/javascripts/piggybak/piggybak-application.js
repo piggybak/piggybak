@@ -4,6 +4,6 @@
 // It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
 // the compiled file.
 //
-//= require piggybak
-//= require jquery.ajaxq
-//= require piggybak.states
+//= require piggybak/piggybak
+//= require piggybak/jquery.ajaxq
+//= require piggybak/piggybak.states

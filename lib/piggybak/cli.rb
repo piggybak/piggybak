@@ -18,7 +18,6 @@ module Piggybak
       run('rake db:migrate')      
       mount_piggybak_route
       add_javascript_include_tag
-      config_assets_precompile
       welcome
     end
 
@@ -44,7 +43,7 @@ module Piggybak
     def add_javascript_include_tag
       jit_code_block = <<-eos
           \n  <% if "\#{params[:controller]}#\#\{params[:action]\}" == "piggybak/orders#submit" -%>
-      <%= javascript_include_tag "piggybak-application" %>\n  <% end -%>
+      <%= javascript_include_tag "piggybak/piggybak-application" %>\n  <% end -%>
       eos
     
       insert_into_file 'app/views/layouts/application.html.erb', jit_code_block, :after => "<%= javascript_include_tag \"application\" %>"
@@ -54,11 +53,6 @@ module Piggybak
     desc "create user class", "Create a user class"
     def create_user_class
       run('rails generate model User')      
-    end
-    
-    desc "config_assets-precompile", "amust add this to your production configuration, in order for this asset to be precompiled"
-    def config_assets_precompile
-      insert_into_file 'config/environments/production.rb', "\n  config.assets.precompile += %w( piggybak-application.js )", :after => 'Village::Application.configure do'
     end
     
     desc "welcome", "invite to piggybak"

@@ -1,43 +1,40 @@
-# encoding: utf-8
-
-require 'rubygems'
-require 'bundler'
+#!/usr/bin/env rake
 begin
-  Bundler.setup(:default, :development)
-rescue Bundler::BundlerError => e
-  $stderr.puts e.message
-  $stderr.puts "Run `bundle install` to install missing gems"
-  exit e.status_code
+  require 'bundler/setup'
+rescue LoadError
+  puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
 end
-require 'rake'
-
-require 'jeweler'
-Jeweler::Tasks.new do |gem|
-  # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "piggybak"
-  gem.homepage = "http://github.com/stephskardal/piggybak"
-  gem.license = "MIT"
-  gem.summary = %Q{Mountable ecommerce}
-  gem.description = %Q{Mountable ecommerce}
-  gem.email = "steph@endpoint.com"
-  gem.authors = ["Steph Skardal", "Brian Buchalter"]
-
-  gem.add_dependency "rails_admin"
-  gem.add_dependency "devise"
-  gem.add_dependency "activemerchant"
-  gem.add_dependency "countries"
-
-  gem.add_development_dependency 'rspec'
-  gem.add_development_dependency 'rspec-rails'
-  gem.add_development_dependency 'diff-lcs'
-  gem.add_development_dependency 'factory_girl'
-  gem.add_development_dependency 'shoulda'
-
-  gem.test_files = Dir['spec/**/*']
+begin
+  require 'rdoc/task'
+rescue LoadError
+  require 'rdoc/rdoc'
+  require 'rake/rdoctask'
+  RDoc::Task = Rake::RDocTask
 end
-Jeweler::RubygemsDotOrgTasks.new
 
-require 'rspec/core/rake_task'
-RSpec::Core::RakeTask.new(:spec)
+RDoc::Task.new(:rdoc) do |rdoc|
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title    = 'Piggybak'
+  rdoc.options << '--line-numbers'
+  rdoc.rdoc_files.include('README.rdoc')
+  rdoc.rdoc_files.include('lib/**/*.rb')
+end
 
-task :test => :spec
+APP_RAKEFILE = File.expand_path("../test/dummy/Rakefile", __FILE__)
+load 'rails/tasks/engine.rake'
+
+
+
+Bundler::GemHelper.install_tasks
+
+require 'rake/testtask'
+
+Rake::TestTask.new(:test) do |t|
+  t.libs << 'lib'
+  t.libs << 'test'
+  t.pattern = 'test/**/*_test.rb'
+  t.verbose = false
+end
+
+
+task :default => :test

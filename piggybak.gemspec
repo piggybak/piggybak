@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = "Mountable Ruby on Rails Ecommerce."
   s.description = "Mountable Ruby on Rails Ecommerce."
 
-  s.files = Dir["{app,bin,config,db,lib,spec}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md","VERSION","LICENSE","Gemfile","Gemfile.lock"]
+  s.files = Dir["{app,bin,config,db,lib,spec}/**/*"] + ["LICENSE", "Rakefile", "README.md","Gemfile","Gemfile.lock"]
   s.test_files = Dir["spec/*"]
 
   s.add_dependency "rails", "~> 3.2.8"

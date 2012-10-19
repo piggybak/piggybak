@@ -137,7 +137,7 @@ module Piggybak
     end
 
     def self.sorted_line_item_types
-      Piggybak::Config.line_item_types.sort { |a, b| a[1][:sort] <=> b[1][:sort] }.collect { |a| a[0] }
+      Piggybak::Config.line_item_types.sort { |a, b| (a[1][:sort] || 100) <=> (b[1][:sort] || 100) }.collect { |a| a[0] }
     end
   end
 end

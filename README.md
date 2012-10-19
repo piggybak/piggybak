@@ -71,6 +71,8 @@ TODO
 
 * Add copy from billing above shipping address section button in admin
 
+* Re-add order logging / masking payment parameters
+
 Copyright
 ========
 

@@ -160,7 +160,6 @@ module Piggybak
       else
         if self.to_be_cancelled
           self.status = "cancelled"
-        # TODO: line items scope doesn't work here, maybe on new items? Fix if possible.
         elsif line_items.select { |li| li.line_item_type == "shipment" }.any? && line_items.select { |li| li.line_item_type == "shipment" }.all? { |s| s.shipment.status == "shipped" }
           self.status = "shipped"
         elsif line_items.select { |li| li.line_item_type == "shipment" }.any? && line_items.select { |li| li.line_item_type == "shipment" }.all? { |s| s.shipment.status == "processing" }

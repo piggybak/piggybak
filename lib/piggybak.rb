@@ -51,8 +51,6 @@ module Piggybak
         end
         Piggybak::Order.class_eval do
           define_method "#{k}_charge" do
-            # Scope doesn't work here for lookup of unsaved elements
-            # TODO: Figure out if we can fix, or specify behavior
             charge = 0
             self.line_items.each do |li|
               next if li._destroy || li.line_item_type.to_sym != k

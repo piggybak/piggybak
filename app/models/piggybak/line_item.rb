@@ -7,6 +7,8 @@ module Piggybak
     validates_presence_of :price, :description, :quantity
     validates_numericality_of :quantity, :only_integer => true, :greater_than_or_equal_to => 0
 
+    default_scope :order => 'created_at ASC'
+
     after_create :decrease_inventory, :if => Proc.new { |line_item| line_item.line_item_type == 'sellable' && !line_item.sellable.unlimited_inventory }
     after_destroy :increase_inventory, :if => Proc.new { |line_item| line_item.line_item_type == 'sellable' && !line_item.sellable.unlimited_inventory }
     after_update :update_inventory, :if => Proc.new { |line_item| line_item.line_item_type == 'sellable' && !line_item.sellable.unlimited_inventory }
@@ -17,9 +19,13 @@ module Piggybak
     before_validation :preprocess
     before_destroy :destroy_associated_item
 
+    # TODO: Possibly replace all initializers below with database defaults
     def initialize_line_item
       self.quantity ||= 1
       self.price ||= 0
+
+      # TODO: Fix this, should default in database
+      self.created_at ||= Time.now 
     end
 
     def preprocess
@@ -128,6 +134,10 @@ module Piggybak
         quantity_diff = self.quantity_was - self.quantity
         self.sellable.update_inventory(quantity_diff)
       end
+    end
+
+    def self.sorted_line_item_types
+      Piggybak::Config.line_item_types.sort { |a, b| a[1][:sort] <=> b[1][:sort] }.collect { |a| a[0] }
     end
   end
 end

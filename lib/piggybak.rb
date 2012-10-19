@@ -40,7 +40,7 @@ module Piggybak
         plural_k = k.to_s.pluralize.to_sym
         if v[:nested_attrs]
           Piggybak::LineItem.class_eval do
-            # TODO: dependent destroy destroys all line items. Figure out why
+            # TODO: dependent destroy destroys all line items. Fix and remove after_destroy on line items
             has_one k, :class_name => v[:class_name] #, :dependent => :destroy
             accepts_nested_attributes_for k
             attr_accessible "#{k}_attributes".to_sym
@@ -51,9 +51,20 @@ module Piggybak
         end
         Piggybak::Order.class_eval do
           define_method "#{k}_charge" do
-            self.line_items.send(plural_k).inject(0) { |subtotal, li| subtotal + li.price }
+            # Scope doesn't work here for lookup of unsaved elements
+            # TODO: Figure out if we can fix, or specify behavior
+            charge = 0
+            self.line_items.each do |li|
+              next if li._destroy || li.line_item_type.to_sym != k
+              charge += li.price 
+            end
+            charge
           end
         end
+      end
+      # Define method subtotal on order, alias to sellable_charge
+      Piggybak::Order.class_eval do
+        alias :subtotal :sellable_charge 
       end
     end
 
@@ -62,8 +73,8 @@ module Piggybak
         plural_k = k.to_s.pluralize.to_sym
         if v[:nested_attrs]
           Piggybak::LineItem.class_eval do
-            # TODO: dependent destroy destroys all line items. Figure out why
-            has_one k, :class_name => v[:class_name] #, :dependent => :destroy
+            # TODO: See above
+            has_one k, :class_name => v[:class_name]
             accepts_nested_attributes_for k
             attr_accessible "#{k}_attributes".to_sym
           end

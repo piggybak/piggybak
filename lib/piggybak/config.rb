@@ -26,22 +26,27 @@ module Piggybak
 
         @line_item_types = { :sellable => { :visible => true,
                                             :fields => ["sellable_id", "quantity"],
-                                            :allow_destroy => true },
+                                            :allow_destroy => true,
+                                            :sort => 1 },
                              :payment => { :visible => true,
                                            :nested_attrs => true,
                                            :fields => ["payment"],
                                            :allow_destroy => false,
-                                           :class_name => "::Piggybak::Payment" },
+                                           :class_name => "::Piggybak::Payment",
+                                           :sort => 5 },
                              :shipment => { :visible => true, 
                                             :nested_attrs => true, 
                                             :fields => ["shipment"], 
                                             :allow_destroy => true,
-                                            :class_name => "::Piggybak::Shipment" },
+                                            :class_name => "::Piggybak::Shipment", 
+                                            :sort => 2 },
                              :adjustment => { :visible => true, 
                                               :fields => ["description", "price"],
-                                              :allow_destroy => true },
+                                              :allow_destroy => true,
+                                              :sort => 4 },
                              :tax => { :visible => false, 
-                                       :allow_destroy => false }
+                                       :allow_destroy => false,
+                                       :sort => 3 }
                            }
 
         @default_country = "US"

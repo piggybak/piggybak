@@ -2,29 +2,15 @@
 N/A
 <% else -%>
 <table cellpadding="5" cellspacing="0">
+        <% Piggybak::LineItem.sorted_line_item_types.each do |type| -%>
 	<tr>
-		<td width="150">Subtotal (Sellables)</td>
-		<td><%= number_to_currency form.object.subtotal %></td>
+		<td width="150"><%= type.to_s.pluralize.titleize %></td>
+		<td><%= number_to_currency form.object.send("#{type}_charge") %></td>
 	</tr>
-	<tr>
-		<td>Shipping</td>
-		<td><%= number_to_currency form.object.shipment_charge %></td>
-	</tr>
-	<tr>
-		<td>Tax</td>
-		<td><%= number_to_currency form.object.tax_charge %></td>
-	</tr>
-	<tr>
-		<td>Adjustments</td>
-		<td><%= number_to_currency form.object.adjustment_charge %></td>
-	</tr>
+	<% end -%>
 	<tr>
 		<td>Total</td>
 		<td><%= number_to_currency form.object.total %></td>
-	</tr>
-	<tr>
-		<td>Payments</td>
-		<td><%= number_to_currency form.object.payment_charge %></td>
 	</tr>
 	<tr>
 		<td>Balance Due</td>

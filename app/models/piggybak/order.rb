@@ -193,17 +193,5 @@ module Piggybak
     def admin_label
       "Order ##{self.id}"    
     end
-
-    def subtotal
-      v = 0
-
-      self.line_items.select { |li| li.line_item_type == "sellable" }.each do |line_item|
-        if !line_item._destroy
-          v += line_item.price
-        end
-      end
-
-      v
-    end
   end
 end

@@ -69,7 +69,7 @@ TODO
 
 * Add/check validation to ensure sufficient inventory
 
-* Add copy from billing above shipping address section button
+* Add copy from billing above shipping address section button in admin
 
 Copyright
 ========

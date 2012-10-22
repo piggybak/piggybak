@@ -51,7 +51,7 @@ module Piggybak
 
         @default_country = "US"
 
-        @activemerchant_mode = :production
+        @activemerchant_mode = :test
 
         @logging = false
         @logging_file = "/log/orders.log"

@@ -18,6 +18,7 @@ module Piggybak
     validates_presence_of :status, :email, :phone, :total, :total_due, :created_at, :ip_address, :user_agent
 
     after_initialize :initialize_defaults
+    validate :number_payments
     before_save :postprocess_order, :update_status, :set_new_record
     after_save :record_order_note
 
@@ -41,6 +42,16 @@ module Piggybak
       self.total ||= 0
       self.total_due ||= 0
       self.disable_order_notes = false
+    end
+
+    def number_payments
+      number_payments = self.line_items.select { |li| li.new_record? && li.line_item_type == "payment" }.size
+      if number_payments > 1
+        self.errors.add(:base, "Only one payment may be created at a time.")
+        self.line_items.select { |li| li.new_record? && li.line_item_type == "payment" }.each do |li|
+          li.errors.add(:line_item_type, "Only one payment may be created at a time.")
+        end
+      end
     end
 
     def initialize_user(user, on_post)

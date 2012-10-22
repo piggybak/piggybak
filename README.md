@@ -65,8 +65,6 @@ TODO
 
 * Ensure that changes in nested addresses are recorded on order notes.
 
-* Add admin side validation to limit 1 payment at a time
-
 * Add/check validation to ensure sufficient inventory
 
 * Add copy from billing above shipping address section button in admin

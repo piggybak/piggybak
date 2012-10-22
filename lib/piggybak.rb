@@ -110,7 +110,18 @@ module Piggybak
         end
 
         config.model Piggybak::Sellable do
+          label "Sellable"
+          object_label_method :admin_label
           visible false
+          edit do
+            field :sku
+            field :description 
+            field :price
+            field :active
+            field :unlimited_inventory do
+              help "If true, backorders on this variant will be allowed, regardless of quantity on hand."
+            end
+          end
         end
 
         config.model Piggybak::Order do

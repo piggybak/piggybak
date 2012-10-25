@@ -6,19 +6,31 @@ module Piggybak
   
     desc "install", "install and configure piggybak"
     def install
-      inject_devise
-      inject_rails_admin
-      run('bundle install')
+      if already_installed?
+        update
+      else        
+        inject_devise
+        inject_rails_admin
+        run('bundle install')
+        run('rake piggybak_engine:install:migrations')
+        run('rake db:migrate')   
+        run('rails generate devise:install')
+        run('rails generate devise User') 
+        run('rake db:migrate')      
+        run('rails g rails_admin:install')
+        run('rake db:migrate')      
+        mount_piggybak_route
+        add_javascript_include_tag
+        say_welcome
+      end
+    end
+    
+    desc "update", "update piggybak"
+    def update
+      say "Piggybak install detected"
+      say "Updating current Piggybak install"
       run('rake piggybak_engine:install:migrations')
-      run('rake db:migrate')   
-      run('rails generate devise:install')
-      run('rails generate devise User') 
-      run('rake db:migrate')      
-      run('rails g rails_admin:install')
-      run('rake db:migrate')      
-      mount_piggybak_route
-      add_javascript_include_tag
-      welcome
+      say_upgraded
     end
 
     desc "inject_devise", "add devise"
@@ -34,9 +46,9 @@ module Piggybak
       insert_into_file "Gemfile", "gem 'rails_admin'\n", :after => "gem 'devise'\n"
     end
   
-    desc "mount_piggybak_route", "mount piggbak route"
+    desc "mount_piggybak_route", "mount piggybak route"
     def mount_piggybak_route
-      insert_into_file "config/routes.rb", "\n  mount Piggybak::Engine => '/checkout', :as => 'piggybak'\n", :after => "Village::Application.routes.draw do\n"
+      insert_into_file "config/routes.rb", "\n  mount Piggybak::Engine => '/checkout', :as => 'piggybak'\n", :after => "Application.routes.draw do\n"
     end
   
     desc "add_javascript_include_tag", "add javascript include tag to application layout"
@@ -71,5 +83,24 @@ module Piggybak
       say "  acts_as_sellable"
       say "end"
     end
+    
+    desc "say_upgraded", "piggybak upgraded"
+    def say_upgraded
+      say ""
+      say ""
+      say ""
+      say "******************************************************************"
+      say "******************************************************************"
+      say "Piggybak Successfully Upgraded!"
+      say "******************************************************************"
+    end
+    
+    private
+    
+    def already_installed?
+      open('config/routes.rb') { |f| f.grep(/Piggybak\:\:Engine/) }.any?
+    end
+    
+    
   end
 end

@@ -7,7 +7,8 @@ module Piggybak
     validates_presence_of :klass
 
     accepts_nested_attributes_for :tax_method_values, :allow_destroy => true
-
+    attr_accessible :active, :tax_method_values_attributes, :description,
+                    :klass
     validates_each :tax_method_values do |record, attr, value|
       if record.klass
         calculator = record.klass.constantize

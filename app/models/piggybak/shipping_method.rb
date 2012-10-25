@@ -8,6 +8,9 @@ module Piggybak
 
     accepts_nested_attributes_for :shipping_method_values, :allow_destroy => true
 
+    attr_accessible :active, :shipment_method_values_attributes, :description,
+                    :klass
+
     validates_each :shipping_method_values do |record, attr, value|
       if record.klass.present?
         calculator = record.klass.constantize

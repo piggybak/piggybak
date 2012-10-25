@@ -14,8 +14,9 @@ Gem::Specification.new do |s|
   s.description = "Mountable Ruby on Rails Ecommerce."
 
   s.files = Dir["{app,bin,config,db,lib,spec}/**/*"] + ["LICENSE", "Rakefile", "README.md","Gemfile","Gemfile.lock"]
+  s.executables = s.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   s.test_files = Dir["spec/*"]
-
+  
   s.add_dependency "rails", "~> 3.2.8"
   s.add_dependency "countries"
   s.add_dependency "activemerchant"

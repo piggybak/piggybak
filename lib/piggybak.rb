@@ -266,6 +266,14 @@ module Piggybak
           visible false
 
           edit do
+            field :copy_from_billing do
+              visible do
+                bindings[:object].is_shipping
+              end 
+              partial "copy_from_billing"
+              label "Help"
+              help "Copies address from billing to shipping."
+            end
             field :firstname
             field :lastname
             field :address1

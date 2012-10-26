@@ -1,5 +1,5 @@
 :ruby
-  type = form.jquery_namespace(field).match("billing") ? "billing" : "shipping"
+  type = form.object.is_shipping ? "shipping" : "billing"
 
 = form.collection_select "country_id", Piggybak::Country.send(type), :id, :name, { :selected => form.object.country_id.to_s }
 

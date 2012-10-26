@@ -17,7 +17,9 @@ module Piggybak
     after_save :document_address_changes
     
     attr_accessible :firstname, :lastname, :address1, :location,
-                    :address2, :city, :state_id, :zip, :country_id
+                    :address2, :city, :state_id, :zip, :country_id,
+                    :copy_from_billing
+    attr_accessor :is_shipping
     
     def set_default_country
       self.country ||= Country.find_by_abbr(Piggybak.config.default_country)

@@ -1,0 +1,15 @@
+<a href="#" id="copy_from_billing">copy from billing</a>
+
+%script
+  $('#copy_from_billing').click(function() {
+  $.each($('#piggybak_order_billing_address_attributes_field input'), function(i, el) {
+  if($(el).attr('id') != 'piggybak_order_billing_address_attributes_id') {
+  var shipping_id = $(el).attr('id').replace('billing', 'shipping');
+  $('#' + shipping_id).val($(el).val());
+  }
+  });
+  $('#piggybak_order_shipping_address_attributes_country_id').val($('#piggybak_order_billing_address_attributes_country_id').val());
+  piggybak_states.update_state_option('shipping');
+  $('#piggybak_order_shipping_address_attributes_state_id').val($('#piggybak_order_billing_address_attributes_state_id').val());
+  return false;
+  });

@@ -33,6 +33,7 @@ module Piggybak
 
       self.billing_address ||= Piggybak::Address.new
       self.shipping_address ||= Piggybak::Address.new
+      self.shipping_address.is_shipping = true
 
       self.ip_address ||= 'admin'
       self.user_agent ||= 'admin'

@@ -50,6 +50,18 @@ module Piggybak
 
       return if sellable.nil?
 
+      # Inventory check
+      quantity_change = 0
+      if self.new_record?
+        quantity_change = self.quantity.to_i
+      elsif self.changes.keys.include?("quantity") && self.quantity > self.quantity_was
+        quantity_change = self.quantity - self.quantity_was 
+      end
+      if sellable.quantity < quantity_change
+        self.errors.add(:sellable_id, "Insufficient inventory by #{quantity_change - sellable.quantity} unit(s).")
+        return
+      end 
+
       self.description = sellable.description
       self.unit_price = sellable.price
       self.price = self.unit_price*self.quantity.to_i 

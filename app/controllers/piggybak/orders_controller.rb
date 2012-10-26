@@ -13,11 +13,18 @@ module Piggybak
             @order.create_payment_shipment
 
             if Piggybak.config.logging
-              # TODO: Reimplement on correctly filtered params
-              #clean_params = params[:piggybak_order].clone
-              #clean_params["payments_attributes"]["0"]["number"] = clean_params["payments_attributes"]["0"]["number"].mask_cc_number
-              #clean_params["payments_attributes"]["0"]["verification_value"] = clean_params["payments_attributes"]["0"]["verification_value"].mask_csv
-              #logger.info "#{request.remote_ip}:#{Time.now.strftime("%Y-%m-%d %H:%M")} Order received with params #{clean_params.inspect}" 
+              clean_params = params[:piggybak_order].clone
+              clean_params[:line_items_attributes].each do |k, li_attr|
+                if li_attr[:line_item_type] == "payment" && li_attr.has_key?(:payment_attributes)
+                  if li_attr[:payment_attributes].has_key?(:number)
+                    li_attr[:payment_attributes][:number] = li_attr[:payment_attributes][:number].mask_cc_number
+                  end
+                  if li_attr[:payment_attributes].has_key?(:verification_value)
+                    li_attr[:payment_attributes][:verification_value] = li_attr[:payment_attributes][:verification_value].mask_csv
+                  end
+                end
+              end
+              logger.info "#{request.remote_ip}:#{Time.now.strftime("%Y-%m-%d %H:%M")} Order received with params #{clean_params.inspect}" 
             end
             @order.initialize_user(current_user, true)
 

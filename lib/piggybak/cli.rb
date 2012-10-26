@@ -36,7 +36,7 @@ module Piggybak
     desc "inject_devise", "add devise"
     def inject_devise
       puts 'add reference to devise in GEMFILE'
-      insert_into_file "GEMFILE", "gem 'devise'\n", :after => "source 'https://rubygems.org'\n"
+      insert_into_file "Gemfile", "gem 'devise'\n", :after => "source 'https://rubygems.org'\n"
     end
 
     

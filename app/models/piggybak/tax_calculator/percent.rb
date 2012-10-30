@@ -19,15 +19,7 @@ module Piggybak
     end
 
     def self.rate(method, object)
-      taxable_total = 0
-
-      if object.is_a?(Cart)
-        taxable_total = object.total
-      else
-        taxable_total = object.subtotal
-      end
-
-      (method.metadata.detect { |m| m.key == "rate" }.value.to_f * taxable_total).to_c
+      (method.metadata.detect { |m| m.key == "rate" }.value.to_f * object.subtotal).to_c
     end
   end
 end

@@ -1,4 +1,4 @@
-<% if @cart.items.any? -%>
+<% if @cart.sellables.any? -%>
 <%= form_tag piggybak.cart_update_url do -%>
 <table cellpadding="5" cellspacing="0" width="100%">
 	<tr>
@@ -10,7 +10,7 @@
 		<th></th>
 		<% end -%>
 	</tr>
-	<% @cart.items.each do |item| %>
+	<% @cart.sellables.each do |item| %>
 	<tr>
 		<td><%= item[:sellable].description %></td>
 		<td><%= number_to_currency item[:sellable].price %></td>

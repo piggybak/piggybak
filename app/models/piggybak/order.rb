@@ -154,7 +154,7 @@ module Piggybak
     def add_line_items(cart)
       cart.update_quantities
 
-      cart.items.each do |item|
+      cart.sellables.each do |item|
         self.line_items << Piggybak::LineItem.new({ :sellable_id => item[:sellable].id,
           :unit_price => item[:sellable].price,
           :price => item[:sellable].price*item[:quantity],

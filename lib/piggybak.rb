@@ -46,22 +46,24 @@ module Piggybak
             attr_accessible "#{k}_attributes".to_sym
           end
         end
-        Piggybak::LineItem.class_eval do
-          scope plural_k, where(:line_item_type => "#{k}" )
-        end
         Piggybak::Order.class_eval do
           define_method "#{k}_charge" do
-            charge = 0
-            self.line_items.each do |li|
-              next if li._destroy || li.line_item_type.to_sym != k
-              charge += li.price 
-            end
-            charge
+            self.line_items.send(plural_k).map(&:price).reduce(:+) || 0
           end
         end
       end
-      # Define method subtotal on order, alias to sellable_charge
       Piggybak::Order.class_eval do
+        has_many :line_items, :inverse_of => :order do
+          Piggybak.config.line_item_types.each do |k, v|
+            # Define proxy association method for line items
+            # e.g. self.line_items.sellables
+            # e.g. self.line_items.taxes
+            define_method "#{k.to_s.pluralize}" do
+              proxy_association.proxy.select { |li| li.line_item_type == "#{k}" }
+            end
+          end
+        end
+        # Define method subtotal on order, alias to sellable_charge
         alias :subtotal :sellable_charge 
       end
     end

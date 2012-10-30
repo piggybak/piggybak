@@ -46,10 +46,10 @@ module Piggybak
     end
 
     def number_payments
-      number_payments = self.line_items.select { |li| li.new_record? && li.line_item_type == "payment" }.size
-      if number_payments > 1
+      new_payments = self.line_items.payments.select { |li| li.new_record? }
+      if new_payments.size > 1
         self.errors.add(:base, "Only one payment may be created at a time.")
-        self.line_items.select { |li| li.new_record? && li.line_item_type == "payment" }.each do |li|
+        new_payments.each do |li|
           li.errors.add(:line_item_type, "Only one payment may be created at a time.")
         end
       end
@@ -75,15 +75,15 @@ module Piggybak
       # If a tax line item doesn't, create
       # If tax is 0, destroy tax line item
       tax = TaxMethod.calculate_tax(self)
-      tax_line_item = self.line_items.detect { |line_item| line_item.line_item_type == "tax" }
+      tax_line_item = self.line_items.taxes
       if tax > 0
-        if tax_line_item
-          tax_line_item.price = tax
+        if tax_line_item.any?
+          tax_line_item.first.price = tax
         else
           self.line_items << LineItem.new({ :line_item_type => "tax", :description => "Tax Charge", :price => tax })
         end
-      elsif tax_line_item
-        tax_line_item.mark_for_destruction
+      elsif tax_line_item.any?
+        tax_line_item.first.mark_for_destruction
       end
 
       # Postprocess everything but payments first
@@ -107,11 +107,10 @@ module Piggybak
       self.total_due = self.total
 
       # Postprocess payment last
-      self.line_items.each do |line_item|
-        next if line_item.line_item_type != "payment"
-        method = "postprocess_#{line_item.line_item_type}"
-        if line_item.respond_to?(method)
-          if !line_item.send(method)
+      self.line_items.payments.each do |line_item|
+        method = "postprocess_payment"
+        if line_item.respond_to?("postprocess_payment")
+          if !line_item.postprocess_payment
             return false
           end
         end
@@ -172,9 +171,9 @@ module Piggybak
       else
         if self.to_be_cancelled
           self.status = "cancelled"
-        elsif line_items.select { |li| li.line_item_type == "shipment" }.any? && line_items.select { |li| li.line_item_type == "shipment" }.all? { |s| s.shipment.status == "shipped" }
+        elsif line_items.shipments.any? && line_items.shipments.all? { |li| li.shipment.status == "shipped" }
           self.status = "shipped"
-        elsif line_items.select { |li| li.line_item_type == "shipment" }.any? && line_items.select { |li| li.line_item_type == "shipment" }.all? { |s| s.shipment.status == "processing" }
+        elsif line_items.shipments.any? && line_items.shipments.all? { |li| li.shipment.status == "processing" }
           self.status = "processing"
         else
           self.status = "new"

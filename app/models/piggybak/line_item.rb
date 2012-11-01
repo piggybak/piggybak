@@ -57,7 +57,7 @@ module Piggybak
       elsif self.changes.keys.include?("quantity") && self.quantity > self.quantity_was
         quantity_change = self.quantity - self.quantity_was 
       end
-      if sellable.quantity < quantity_change
+      if sellable.quantity < quantity_change && !sellable.unlimited_inventory
         self.errors.add(:sellable_id, "Insufficient inventory by #{quantity_change - sellable.quantity} unit(s).")
         return
       end 

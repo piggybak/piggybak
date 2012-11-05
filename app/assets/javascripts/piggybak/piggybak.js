@@ -4,23 +4,21 @@ var page_load = 1;
 var shipping_field;
 
 $(function() {
-	piggybak.prevent_double_click();
 	shipping_field = $('#piggybak_order_line_items_attributes_0_shipment_attributes_shipping_method_id');
 	piggybak.initialize_listeners();
 	piggybak.update_shipping_options($('#piggybak_order_shipping_address_attributes_state_id'), function() {
 		$('#piggybak_order_shipments_attributes_0_shipping_method_id').val(previous_shipping);
 	});
 	piggybak.update_tax();
+	$('#new_piggybak_order').validate({
+		submitHandler: function(form) {
+			form.submit()
+		}
+	});
 });
 
 var piggybak = {
 	shipping_els: $('#piggybak_order_shipping_address_attributes_state_id,#piggybak_order_shipping_address_attributes_country_id,#piggybak_order_shipping_address_attributes_zip'),
-	prevent_double_click: function() {
-		$('#new_piggybak_order').find('input:submit').removeAttr('disabled');
-		$('#new_piggybak_order').submit(function() {
-			$(this).find('input:submit').attr('disabled', 'disabled');
-		});
-	},
 	initialize_listeners: function() {
 		piggybak.shipping_els.live('change', function() {
 			piggybak.update_shipping_options($(this));
@@ -49,6 +47,7 @@ var piggybak = {
 			var state = $('#piggybak_order_billing_address_attributes_state_id').val();
 			$('#piggybak_order_shipping_address_attributes_state_id').val(state);
 		});
+		$('#shipping_address input').valid();
 	},
 	valid_shipping_address: function() {
 		var empty = 0;
@@ -116,7 +115,7 @@ var piggybak = {
 		});
 	},
 	update_totals: function() {
-		var subtotal = $('#subtotal_total').data('total');
+		var subtotal = parseFloat($('#subtotal_total').data('total'));
 		$('#tax_total').html('$' + tax_total.toFixed(2));
 		var shipping_total = 0;
 		if($('#shipping select option:selected').length) {

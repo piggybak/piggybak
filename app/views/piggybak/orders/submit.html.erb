@@ -16,17 +16,17 @@
 	<div class="item">
 		<% if current_user -%>
 		<%= f.label :email %>
-		<%= f.text_field :email, { :readonly => true, :class => "readonly" } %><br />
+		<%= f.text_field :email, { :readonly => true, :class => "readonly required" } %>
 		<span>or <%= link_to 'LOGOUT', destroy_user_session_path, :method => :delete, :class => "last" %></span>
 		<% else -%>
 		<%= f.label :email %>
-		<%= f.text_field :email %><br />
+		<%= f.text_field :email, :class =-> "required" %><br />
 		<span>or <%= link_to 'LOG IN', new_user_session_path %></span>
 		<% end -%>
 	</div>
 	<div class="item">
 		<%= f.label :phone %>
-		<%= f.text_field :phone %>
+		<%= f.text_field :phone, :class => "required" %>
 	</div>
 </div>
 
@@ -78,10 +78,10 @@
 			<%= payment.label :number %>
 			<% if @order.errors.keys.include?("payments.number".to_sym) %>
 			<span class="field_with_errors">
-			<%= payment.text_field :number %>
+			<%= payment.text_field :number, :class => "required" %>
 			</span>
 			<% else -%>
-			<%= payment.text_field :number %>
+			<%= payment.text_field :number, :class => "required" %>
 			<% end -%>
 			</div>
 	
@@ -89,10 +89,10 @@
 			<%= payment.label :verification_value %>
 			<% if @order.errors.keys.include?("payments.verification_value".to_sym) %>
 			<span class="field_with_errors">
-			<%= payment.text_field :verification_value %>
+			<%= payment.text_field :verification_value, :class => "required" %>
 			</span>
 			<% else -%>
-			<%= payment.text_field :verification_value %>
+			<%= payment.text_field :verification_value, :class => "required" %>
 			<% end -%>
 			</div>
 	

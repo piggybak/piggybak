@@ -6,4 +6,5 @@
 //
 //= require piggybak/piggybak
 //= require piggybak/jquery.ajaxq
+//= require piggybak/jquery.validate
 //= require piggybak/piggybak.states

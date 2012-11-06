@@ -21,13 +21,18 @@ module Piggybak
     validate :number_payments
     before_save :postprocess_order, :update_status, :set_new_record
     after_save :record_order_note
+    after_save :deliver_order_confirmation, :if => Proc.new { |order| order.ip_address != "admin" }
 
     default_scope :order => 'created_at DESC'
 
     attr_accessible :user_id, :email, :phone, :billing_address_attributes, 
                     :shipping_address_attributes, :line_items_attributes,
                     :order_notes_attributes, :details, :recorded_changer, :ip_address
-                    
+                   
+    def deliver_order_confirmation
+      Piggybak::Notifier.order_notification(self).deliver
+    end
+ 
     def initialize_defaults
       self.recorded_changes ||= []
 

@@ -37,9 +37,6 @@ module Piggybak
             end
 
             if @order.save
-              # TODO: Imporant: figure out how to have notifications not trigger rollback here. Instead log failed order notification sent.
-              Piggybak::Notifier.order_notification(@order).deliver
-
               if Piggybak.config.logging
                 logger.info "#{request.remote_ip}:#{Time.now.strftime("%Y-%m-%d %H:%M")} Order saved: #{@order.inspect}"
               end

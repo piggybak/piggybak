@@ -17,3 +17,4 @@ gem "jquery-rails"
 # gem 'debugger'
 
 gem "countries"
+gem "rack-ssl-enforcer"

@@ -12,6 +12,7 @@ module Piggybak
       attr_accessor :logging_file
       attr_accessor :whois_url
       attr_accessor :line_item_types
+      attr_accessor :secure_checkout
 
       def reset
         @email_sender = "support@piggybak.org"
@@ -57,6 +58,8 @@ module Piggybak
         @logging_file = "/log/orders.log"
 
         @whois_url = nil
+
+        @secure_checkout = false
       end
     end
 

@@ -22,4 +22,5 @@ Gem::Specification.new do |s|
   s.add_dependency "activemerchant"
   s.add_dependency "devise"
   s.add_dependency "rails_admin"
+  s.add_dependency "rack-ssl-enforcer"
 end

@@ -6,6 +6,7 @@ require 'active_merchant'
 require 'formatted_changes'
 require 'currency'
 require 'mask_submissions'
+require 'rack-ssl-enforcer'
 
 module Piggybak
   def self.config(entity = nil, &block)
@@ -24,6 +25,14 @@ module Piggybak
   end
 
   class Engine < Rails::Engine
+    initializer "piggybak.ssl_enforcer" do |app|
+      if Piggybak.config.secure_checkout
+        app.config.middleware.use Rack::SslEnforcer,
+          :only => [/\/checkout\/$/, '/checkout/orders/tax', '/checkout/orders/shipping', '/checkout/orders/geodata'],
+          :strict => true
+      end
+    end
+    
     initializer "piggybak.add_helper" do |app|
       ApplicationController.class_eval do
         helper :piggybak

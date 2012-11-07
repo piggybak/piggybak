@@ -13,6 +13,8 @@ module Piggybak
       attr_accessor :whois_url
       attr_accessor :line_item_types
       attr_accessor :secure_checkout
+      attr_accessor :secure_prefix
+      attr_accessor :extra_secure_paths
 
       def reset
         @email_sender = "support@piggybak.org"
@@ -60,6 +62,8 @@ module Piggybak
         @whois_url = nil
 
         @secure_checkout = false
+        @secure_prefix = ''
+        @extra_secure_paths = []
       end
     end
 

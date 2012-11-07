@@ -8,8 +8,4 @@
 <% end -%>
 
 <%= render "items", :page => "cart" %>
-
-<% if @cart.sellables.any? -%>
-<%= link_to "Proceed to Checkout", piggybak.orders_url, :id => "checkout" %>
-<% end -%>
 </div>

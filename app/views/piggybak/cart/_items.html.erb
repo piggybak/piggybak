@@ -66,6 +66,7 @@
 </table>
 
 <% if page == "cart" %>
+<%= link_to "Proceed to Checkout", piggybak.orders_url, :id => "checkout" %>
 <%= submit_tag "Update", :id => "update" %>
 <% end -%>
 

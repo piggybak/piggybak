@@ -30,7 +30,10 @@ module Piggybak
       # append to Piggyak.config.extra_secure_paths
       # inside a before_initialize block
       if Piggybak.config.secure_checkout
-        paths = [/^#{Piggybak.config.secure_prefix}\/checkout/]
+        paths = [/^#{Piggybak.config.secure_prefix}\/checkout\/$/,
+                 "#{Piggybak.config.secure_prefix}/checkout/orders/tax",
+                 "#{Piggybak.config.secure_prefix}/checkout/orders/shipping",
+                 "#{Piggybak.config.secure_prefix}/checkout/orders/geodata"]
         Piggybak.config.extra_secure_paths.each do |extra_path|
           paths << [/^#{Piggybak.config.secure_prefix}#{extra_path}/]
         end

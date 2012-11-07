@@ -26,6 +26,9 @@ module Piggybak
 
   class Engine < Rails::Engine
     initializer "piggybak.ssl_enforcer" do |app|
+      # Note: If your main application also uses rack-ssl-enforcer,
+      # set secure_checkout to false, and copy this and integrate
+      # additional pages that need SSL into your config/application.rb
       if Piggybak.config.secure_checkout
         app.config.middleware.use Rack::SslEnforcer,
           :only => [/\/checkout\/$/, '/checkout/orders/tax', '/checkout/orders/shipping', '/checkout/orders/geodata'],

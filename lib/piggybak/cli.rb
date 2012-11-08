@@ -21,7 +21,7 @@ module Piggybak
         run('rake db:migrate')      
         mount_piggybak_route
         add_javascript_include_tag
-        say_welcome
+        welcome
       end
     end
     

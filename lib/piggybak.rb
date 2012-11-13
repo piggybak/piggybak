@@ -106,9 +106,10 @@ module Piggybak
       RailsAdmin::Config.reset_model(Piggybak::LineItem)
 
       RailsAdmin.config do |config|
+        config.label_methods << :admin_label
+
         config.model Piggybak::LineItem do
           label "Line Item"
-          object_label_method :admin_label
           visible false
 
           edit do
@@ -136,7 +137,6 @@ module Piggybak
 
         config.model Piggybak::Sellable do
           label "Sellable"
-          object_label_method :admin_label
           visible false
           edit do
             field :sku
@@ -254,7 +254,6 @@ module Piggybak
         end
      
         config.model Piggybak::OrderNote do
-          object_label_method :admin_label
           visible false
           list do
             field :user if defined?(User)
@@ -287,7 +286,6 @@ module Piggybak
  
         config.model Piggybak::Address do
           label "Address"
-          object_label_method :admin_label
           visible false
 
           edit do
@@ -381,7 +379,6 @@ module Piggybak
         config.model Piggybak::PaymentMethod do
           navigation_label "Configuration"
           weight 2
-          object_label_method :admin_label
           list do
             field :description
             field :active
@@ -401,7 +398,6 @@ module Piggybak
         end
 
         config.model Piggybak::PaymentMethodValue do
-          object_label_method :admin_label
           visible false
           edit do
             include_all_fields
@@ -413,7 +409,6 @@ module Piggybak
       
         config.model Piggybak::ShippingMethod do
           navigation_label "Configuration"
-          object_label_method :admin_label
           edit do
             field :description do
               help "This is the label the user sees."
@@ -433,7 +428,6 @@ module Piggybak
         end
       
         config.model Piggybak::ShippingMethodValue do
-          object_label_method :admin_label
           visible false
           edit do
             include_all_fields
@@ -445,7 +439,6 @@ module Piggybak
 
         config.model Piggybak::TaxMethod do
           navigation_label "Configuration"
-          object_label_method :admin_label
           edit do
             field :description
             field :klass do
@@ -463,7 +456,6 @@ module Piggybak
         end
       
         config.model Piggybak::TaxMethodValue do
-          object_label_method :admin_label
           visible false
           edit do
             include_all_fields

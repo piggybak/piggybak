@@ -13,7 +13,7 @@ class Piggybak::Sellable < ActiveRecord::Base
   has_many :line_items, :as => :reference, :inverse_of => :reference
 
   def admin_label
-    "Sellable: #{self.description}"
+    self.description
   end
 
   def update_inventory(purchased)

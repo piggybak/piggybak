@@ -1,0 +1,6 @@
+Version: 0.6.19
+Released: 11.15.2012
+* Added SSL support in config
+* Installation script fix
+* Admin label cleanup
+* Sellable admin label cleanup

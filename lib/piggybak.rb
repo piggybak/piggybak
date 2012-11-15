@@ -82,7 +82,7 @@ module Piggybak
             # e.g. self.line_items.sellables
             # e.g. self.line_items.taxes
             define_method "#{k.to_s.pluralize}" do
-              proxy_association.proxy.select { |li| li.line_item_type == "#{k}" }
+              proxy_association.proxy.select { |li| li.line_item_type == "#{k}" }.select { |li| !li.marked_for_destruction? }
             end
           end
         end

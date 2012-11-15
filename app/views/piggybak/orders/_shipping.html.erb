@@ -1,0 +1,21 @@
+<div id="shipping">
+	<h3>Shipping Option</h3>
+	<%= f.fields_for :line_items, @order.line_items.detect { |li| li.line_item_type == "shipment" } do |line_item_f| %>
+		<%= line_item_f.hidden_field :line_item_type, { :value => "shipment" } %>
+		<%= line_item_f.fields_for :shipment do |shipment| %>
+			<div class="item">
+			<%= shipment.label :shipping_method_id %>
+			<%= shipment.select :shipping_method_id, [] %>
+			<div id="shipping_spinner" style="display:none;">
+				<%= image_tag "ajax-loader.gif" %>
+			</div>
+			<div id="shipping_default" style="display:none;">
+				Please enter a shipping address.
+			</div>
+			<div id="shipping_empty" style="display:none;">
+				No shipping methods found.
+			</div>
+			</div>
+		<% end -%>
+	<% end -%>
+</div>

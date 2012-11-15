@@ -1,127 +1,31 @@
 <div id="checkout">
-
-<h1>Checkout</h1>
-<%= form_for @order, :url => piggybak.orders_url, :method => "POST" do |f| %>
-
-<% if @order.errors.any? -%>
-<div id="checkout_error">
-<b>You have errors with your submission:</b><br />
-<%= raw @order.errors.full_messages.collect { |b| b.gsub(/^Line items payment/, 'Payment').gsub(/^Line items shipment shipping/, 'Shipping') }.join("<br />") %>
-</div>
-<% end -%>
-<div class="clear"></div>
-	
-<div id="user_details">
-	<h3>User Details</h3>
-	<div class="item">
-		<% if current_user -%>
-		<%= f.label :email %>
-		<%= f.text_field :email, { :readonly => true, :class => "readonly required" } %>
-		<span>or <%= link_to 'LOGOUT', destroy_user_session_path, :method => :delete, :class => "last" %></span>
-		<% else -%>
-		<%= f.label :email %>
-		<%= f.text_field :email, :class =-> "required" %><br />
-		<span>or <%= link_to 'LOG IN', new_user_session_path %></span>
-		<% end -%>
+	<h1>Checkout</h1>
+	<%= form_for @order, :url => piggybak.orders_url, :method => "POST" do |f| %>
+	<% if @order.errors.any? -%>
+	<div id="checkout_error">
+	<b>You have errors with your submission:</b><br />
+	<%= raw @order.errors.full_messages.collect { |b| b.gsub(/^Line items payment/, 'Payment').gsub(/^Line items shipment shipping/, 'Shipping') }.join("<br />") %>
 	</div>
-	<div class="item">
-		<%= f.label :phone %>
-		<%= f.text_field :phone, :class => "required" %>
-	</div>
-</div>
-
-<div id="billing_address">
-	<h3>Billing Address</h3>
-	<%= f.fields_for :billing_address do |billing_address| %>
-	<%= render "address_form", :address => billing_address, :type => "billing" %>
 	<% end -%>
-</div>
-<div id="shipping_address">
-	<h3>
-		Shipping Address
-		<a href="#" id="copy">copy from billing</a>
-	</h3>
+	<div class="clear"></div>
 
-	<%= f.fields_for :shipping_address do |shipping_address| %>
-	<%= render "address_form", :address => shipping_address, :type => "shipping" %>
-	<% end -%>
-</div>
+	<%= render "user_details", :f => f %>	
+	<%= render "billing_address", :f => f %>
+	<%= render "shipping_address", :f => f %>
 
-<div id="add_details">
-	<div id="shipping">
-	<h3>Shipping Option</h3>
-	<%= f.fields_for :line_items, @order.line_items.detect { |li| li.line_item_type == "shipment" } do |line_item_f| %>
-		<%= line_item_f.hidden_field :line_item_type, { :value => "shipment" } %>
-		<%= line_item_f.fields_for :shipment do |shipment| %>
-			<div class="item">
-			<%= shipment.label :shipping_method_id %>
-			<%= shipment.select :shipping_method_id, [] %>
-			<div id="shipping_spinner" style="display:none;">
-				<%= image_tag "ajax-loader.gif" %>
-			</div>
-			<div id="shipping_default" style="display:none;">
-				Please enter a shipping address.
-			</div>
-			<div id="shipping_empty" style="display:none;">
-				No shipping methods found.
-			</div>
-			</div>
-		<% end -%>
-	<% end -%>
+	<div id="add_details">
+		<%= render "shipping", :f => f %>
+		<%= render "payment", :f => f %>
+		<div id="submit">
+		<%= f.submit %>
+		</div>
 	</div>
-	<div id="payment">
-	<h3>Payment</h3>
-	<%= f.fields_for :line_items, @order.line_items.detect { |li| li.line_item_type == "payment" } do |line_item_f| %>
-		<%= line_item_f.hidden_field :line_item_type, { :value => "payment" } %>
-		<%= line_item_f.fields_for :payment do |payment| %>
-			<div class="item">
-			<%= payment.label :number %>
-			<% if @order.errors.keys.include?("payments.number".to_sym) %>
-			<span class="field_with_errors">
-			<%= payment.text_field :number, :class => "required" %>
-			</span>
-			<% else -%>
-			<%= payment.text_field :number, :class => "required" %>
-			<% end -%>
-			</div>
-	
-			<div class="item">
-			<%= payment.label :verification_value %>
-			<% if @order.errors.keys.include?("payments.verification_value".to_sym) %>
-			<span class="field_with_errors">
-			<%= payment.text_field :verification_value, :class => "required" %>
-			</span>
-			<% else -%>
-			<%= payment.text_field :verification_value, :class => "required" %>
-			<% end -%>
-			</div>
-	
-			<div class="item">
-			<%= payment.label :month %>
-			<% if @order.errors.keys.include?("payments.verification_value".to_sym) %>
-			<span class="field_with_errors">
-			<%= payment.select :month, 1.upto(12).to_a %> /
-			<%= payment.select :year, Time.now.year.upto(Time.now.year + 10).to_a %>
-			</span>
-			<% else -%>
-			<%= payment.select :month, 1.upto(12).to_a %> /
-			<%= payment.select :year, Time.now.year.upto(Time.now.year + 10).to_a %>
-			<% end -%>
-			</div>
-		<% end -%>
 	<% end -%>
-	</div>
-	<div id="submit">
-	<%= f.submit %>
-	</div>
-</div>
-<% end -%>
 
-<div id="totals_section">
-	<h3>Totals</h3>
-	<%= render "piggybak/cart/items", :page => "checkout" %>
-</div>
-
+	<div id="totals_section">
+		<h3>Totals</h3>
+		<%= render "piggybak/cart/items", :page => "checkout" %>
+	</div>
 </div>
 
 <script type="text/javascript">

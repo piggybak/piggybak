@@ -1,0 +1,10 @@
+<div id="shipping_address">
+	<h3>
+		Shipping Address
+		<a href="#" id="copy">copy from billing</a>
+	</h3>
+
+	<%= f.fields_for :shipping_address do |shipping_address| %>
+	<%= render "address_form", :address => shipping_address, :type => "shipping" %>
+	<% end -%>
+</div>

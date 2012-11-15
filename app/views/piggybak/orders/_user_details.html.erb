@@ -1,0 +1,18 @@
+<div id="user_details">
+	<h3>User Details</h3>
+	<div class="item">
+		<% if current_user -%>
+		<%= f.label :email %>
+		<%= f.text_field :email, { :readonly => true, :class => "readonly required" } %>
+		<span>or <%= link_to 'LOGOUT', destroy_user_session_path, :method => :delete, :class => "last" %></span>
+		<% else -%>
+		<%= f.label :email %>
+		<%= f.text_field :email, :class => "required" %><br />
+		<span>or <%= link_to 'LOG IN', new_user_session_path %></span>
+		<% end -%>
+	</div>
+	<div class="item">
+		<%= f.label :phone %>
+		<%= f.text_field :phone, :class => "required" %>
+	</div>
+</div>

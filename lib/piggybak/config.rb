@@ -15,8 +15,19 @@ module Piggybak
       attr_accessor :secure_checkout
       attr_accessor :secure_prefix
       attr_accessor :extra_secure_paths
+      attr_accessor :manage_classes
+      attr_accessor :extra_abilities
 
       def reset
+        @manage_classes = ["::Piggybak::Sellable",
+                           "::Piggybak::ShippingMethod",
+                           "::Piggybak::PaymentMethod",
+                           "::Piggybak::TaxMethod",
+                           "::Piggybak::State",
+                           "::Piggybak::Country",
+                           "::Piggybak::Order"]
+        @extra_abilities = []
+
         @email_sender = "support@piggybak.org"
         @order_cc = nil
 

@@ -1,3 +1,13 @@
+Version: 0.6.20
+Released: 11.16.2012
+* Broke piggybak/orders/submit.html.erb to include several partials: user_details, billing_address, shipping_address, shipping, payment. To make more easily overridable checkout. No HTML changes were made here.
+* Introduced Piggybak configuration for managing abilities. Instead of adding individual classes to app/models/ability, please add:
+  can :manage, Piggybak.config.manage_classes(&:constantize)
+  Piggybak.config.extra_abilities.each do |extra_ability|
+    can extra_ability[:abilities], extra_ability[:class_name].constantize
+  end
+  Extensions will append to the manage_classes and extra_abilities to register classes to be managed via RailsAdmin. 
+
 Version: 0.6.19
 Released: 11.15.2012
 * Added SSL support in config

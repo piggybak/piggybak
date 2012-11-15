@@ -1,3 +1,7 @@
+Version: 0.6.22
+Released: 11.16.2012
+* Important proxy association fix to ignore line items that are marked for destruction
+
 Version: 0.6.20
 Released: 11.16.2012
 * Broke piggybak/orders/submit.html.erb to include several partials: user_details, billing_address, shipping_address, shipping, payment. To make more easily overridable checkout. No HTML changes were made here.

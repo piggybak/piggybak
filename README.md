@@ -63,13 +63,9 @@ Visit the project website [here][project-website] to see more documentation and 
 TODO
 ========
 
+* Fix tax calculation when coupon / discounts applied.
+
 * Ensure that changes in nested addresses are recorded on order notes.
-
-* Add/check validation to ensure sufficient inventory
-
-* Add copy from billing above shipping address section button in admin
-
-* Re-add order logging / masking payment parameters
 
 Copyright
 ========

@@ -98,6 +98,10 @@ var piggybak = {
 	},
 	update_tax: function(field) {
 		var billing_data = {};
+		billing_data['reduce_tax_subtotal'] = 0;
+		$('.reduce_tax_subtotal:visible').each(function(i, j) {
+			billing_data['reduce_tax_subtotal'] += parseFloat($(j).html().replace('$', ''));
+		});
 		$('#billing_address input, #billing_address select').each(function(i, j) {
 			var id = $(j).attr('id');
 			id = id.replace("piggybak_order_billing_address_attributes_", '');

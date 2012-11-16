@@ -40,7 +40,7 @@
 	<% if page != "cart" -%>
 	<tr>
 		<td colspan="<%= page == "cart" ? "3" : "2" %>"></td>
-		<td>Tax</td>
+		<td>Estimated Tax</td>
 		<td id="tax_total"></td>
 	</tr>
 	<tr>
@@ -53,7 +53,7 @@
 	<tr id="<%= "#{k}_row" %>" style="display:none;">
 		<td colspan="<%= page == "cart" ? "3" : "2" %>"></td>
 		<td><%= v[:display_in_cart] %></td>
-		<td class="extra_totals" id="<%= k %>_total">$0.00</td>
+		<td class="extra_totals <%= 'reduce_tax_subtotal' if v.has_key?(:reduce_tax_subtotal) && v[:reduce_tax_subtotal] %>" id="<%= k %>_total">$0.00</td>
 	</tr>
 	<% end -%> 
 	<% end -%>

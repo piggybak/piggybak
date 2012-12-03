@@ -1,13 +1,13 @@
 PATH
   remote: .
   specs:
-    piggybak (0.6.23)
+    piggybak (0.6.24)
       activemerchant
       countries
       devise
       rack-ssl-enforcer
       rails (~> 3.2.8)
-      rails_admin
+      rails_admin (~> 0.3.0)
 
 GEM
   remote: http://rubygems.org/
@@ -28,9 +28,9 @@ GEM
     active_utils (1.0.5)
       activesupport (>= 2.3.11)
       i18n
-    activemerchant (1.28.0)
+    activemerchant (1.29.0)
       active_utils (>= 1.0.2)
-      activesupport (>= 2.3.11)
+      activesupport (>= 2.3.14)
       builder (>= 2.0.0)
       i18n
       json (>= 1.5.1)
@@ -52,7 +52,8 @@ GEM
       multi_json (~> 1.0)
     arel (3.0.2)
     bcrypt-ruby (3.0.1)
-    bootstrap-sass (2.1.0.1)
+    bootstrap-sass (2.2.1.1)
+      sass (~> 3.2)
     builder (3.0.4)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -95,11 +96,10 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.19)
-    money (5.0.0)
-      i18n (~> 0.4)
-      json
+    money (5.1.0)
+      i18n (~> 0.6.0)
     multi_json (1.3.6)
-    nested_form (0.2.3)
+    nested_form (0.3.1)
     nokogiri (1.5.5)
     orm_adapter (0.4.0)
     polyglot (0.3.3)
@@ -122,17 +122,17 @@ GEM
       activesupport (= 3.2.8)
       bundler (~> 1.0)
       railties (= 3.2.8)
-    rails_admin (0.1.2)
-      bootstrap-sass (~> 2.0)
+    rails_admin (0.3.0)
+      bootstrap-sass (~> 2.1)
       builder (~> 3.0)
       coffee-rails (~> 3.1)
       font-awesome-sass-rails (~> 2.0)
       haml (~> 3.1)
-      jquery-rails (~> 2.0)
+      jquery-rails (~> 2.1)
       jquery-ui-rails (~> 2.0)
-      kaminari (~> 0.12)
-      nested_form (~> 0.2.3)
-      rack-pjax (~> 0.5)
+      kaminari (~> 0.14)
+      nested_form (> 0.2.3, < 0.4.0)
+      rack-pjax (~> 0.6)
       rails (~> 3.1)
       remotipart (~> 1.0)
       sass-rails (~> 3.1)
@@ -147,7 +147,7 @@ GEM
     rdoc (3.12)
       json (~> 1.4)
     remotipart (1.0.2)
-    sass (3.2.1)
+    sass (3.2.3)
     sass-rails (3.2.5)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
@@ -158,10 +158,10 @@ GEM
       tilt (~> 1.1, != 1.3.0)
     thor (0.16.0)
     tilt (1.3.3)
-    treetop (1.4.11)
+    treetop (1.4.12)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.33)
+    tzinfo (0.3.35)
     warden (1.2.1)
       rack (>= 1.0)
 

@@ -1,3 +1,7 @@
+Version: 0.6.4
+Released: 12.03.2012
+* Bundle updates and upgrade to RailsAdmin 0.3.0, which appears to resolve admin issues.
+
 Version: 0.6.23
 Released: 11.17.2012
 * Download text fix to include all line items.

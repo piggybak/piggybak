@@ -26,7 +26,7 @@ module Piggybak
               end
               logger.info "#{request.remote_ip}:#{Time.now.strftime("%Y-%m-%d %H:%M")} Order received with params #{clean_params.inspect}" 
             end
-            @order.initialize_user(current_user, true)
+            @order.initialize_user(current_user)
 
             @order.ip_address = request.remote_ip 
             @order.user_agent = request.user_agent  
@@ -62,7 +62,7 @@ module Piggybak
       else
         @order = Piggybak::Order.new
         @order.create_payment_shipment
-        @order.initialize_user(current_user, false)
+        @order.initialize_user(current_user)
       end
     end
   

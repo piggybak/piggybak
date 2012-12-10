@@ -60,7 +60,7 @@ module Piggybak
       end
     end
 
-    def initialize_user(user, on_post)
+    def initialize_user(user)
       if user
         self.user = user
         self.email = user.email 

@@ -1,9 +1,9 @@
 module PiggybakHelper
-  def cart_form(object)
-    render "piggybak/cart/form", :object => object
+  def cart_form(object, options = {})
+    render "piggybak/cart/form", :object => object, :locals => { :options => options }
   end
   def cart_link
-    cart = Piggybak::Cart.new(request.cookies["cart"]) 
+    cart = Piggybak::Cart.new(request.cookies["cart"])
     nitems = cart.sellables.inject(0) { |nitems, item| nitems + item[:quantity] }
     if nitems > 0 && !["piggybak/orders", "piggybak/cart"].include?(params[:controller])
       link_to "#{pluralize(nitems, 'item')}: #{number_to_currency(cart.total)}", piggybak.cart_url

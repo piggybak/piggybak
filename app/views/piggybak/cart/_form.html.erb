@@ -1,7 +1,7 @@
 <% if object.reflections.keys.include?(:piggybak_sellable) -%>
 	<% if object.piggybak_sellable && object.piggybak_sellable.active -%>
 		<% if object.piggybak_sellable.quantity > 0 || object.piggybak_sellable.unlimited_inventory -%>
-			<%= form_tag piggybak.cart_add_url do -%>
+			<%= form_tag piggybak.cart_add_url, locals[:options] do -%>
 			<div id="sellable_details">
 			<span id="title"><%= object.piggybak_sellable.description %></span>
 			<span id="price"><%= number_to_currency object.piggybak_sellable.price %></span>

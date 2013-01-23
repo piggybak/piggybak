@@ -44,14 +44,9 @@ Installation
 
 (NOTE: If you run into an error saying that piggybak gem is missing, use bundle exec piggybak install)
 
-* Piggybak is now installed and ready to be added to whatever model class will be sold.
+* Follow the instructions [here][documentation] to read more about the integration points and product configuration in Piggybak.
 
-        class Product < ActiveRecord::Base
-          acts_as_sellable
-        end
-
-* Piggybak checkout is located at /checkout
-
+[documentation]: http://www.piggybak.org/documentation.html#integration
 
 More Details
 ========
@@ -63,11 +58,9 @@ Visit the project website [here][project-website] to see more documentation and 
 TODO
 ========
 
-* Fix tax calculation when coupon / discounts applied.
-
 * Ensure that changes in nested addresses are recorded on order notes.
 
 Copyright
 ========
 
-Copyright (c) 2011 End Point & Steph Skardal. See LICENSE.txt for further details.
+Copyright (c) 2013 End Point & Steph Skardal. See LICENSE.txt for further details.

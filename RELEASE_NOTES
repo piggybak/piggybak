@@ -1,3 +1,8 @@
+0.6.5
+Released:
+* Minor order#initialize_user cleanup.
+* Change datatype of user_agent from string to text. Migration needed.
+
 Version: 0.6.4
 Released: 12.03.2012
 * Bundle updates and upgrade to RailsAdmin 0.3.0, which appears to resolve admin issues.

@@ -1,9 +1,10 @@
-0.6.5
-Released:
+0.6.25
+Released: 1.28.2013
 * Minor order#initialize_user cleanup.
 * Change datatype of user_agent from string to text. Migration needed.
+* Allow options to be passed in cart form.
 
-Version: 0.6.4
+Version: 0.6.24
 Released: 12.03.2012
 * Bundle updates and upgrade to RailsAdmin 0.3.0, which appears to resolve admin issues.
 

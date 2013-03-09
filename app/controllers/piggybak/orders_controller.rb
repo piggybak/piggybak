@@ -53,11 +53,11 @@ module Piggybak
           end
         rescue Exception => e
           if Piggybak.config.logging
-            logger.warn "#{request.remote_ip}:#{Time.now.strftime("%Y-%m-%d %H:%M")} Order exception: #{e.inspect}"
+            logger.warn "#{request.remote_ip}:#{Time.now.strftime("%Y-%m-%d %H:%M")} Order exception: #{e.backtrace.join("\n\t")}"
           end
           if @order.errors.empty?
-            Rails.logger.warn "Order Exception #{e.inspect}"
-            @order.errors[:base] << "Your order could not go through. Please try again. #{e.inspect}"
+            Rails.logger.warn "Order Exception #{e.backtrace.join("\n\t")}"
+            @order.errors[:base] << "Your order could not go through. Please try again. #{e.backtrace.join("\n\t")}"
           end
         end
       else

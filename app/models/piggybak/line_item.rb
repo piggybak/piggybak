@@ -25,14 +25,14 @@ module Piggybak
       self.price ||= 0
 
       # TODO: Fix this, should default in database
-      self.created_at ||= Time.now 
+      self.created_at ||= Time.now
     end
 
     def preprocess
       # TODO: Investigate if this is unnecessary if you use reject_if on accepts_nested_attributes_for
       Piggybak.config.line_item_types.each do |k, v|
         if v.has_key?(:nested_attrs) && k != self.line_item_type.to_sym
-          self.send("#{k}=", nil) 
+          self.send("#{k}=", nil)
         end
       end
 
@@ -55,16 +55,16 @@ module Piggybak
       if self.new_record?
         quantity_change = self.quantity.to_i
       elsif self.changes.keys.include?("quantity") && self.quantity > self.quantity_was
-        quantity_change = self.quantity - self.quantity_was 
+        quantity_change = self.quantity - self.quantity_was
       end
       if sellable.quantity < quantity_change && !sellable.unlimited_inventory
         self.errors.add(:sellable_id, "Insufficient inventory by #{quantity_change - sellable.quantity} unit(s).")
         return
-      end 
+      end
 
       self.description = sellable.description
       self.unit_price = sellable.price
-      self.price = self.unit_price*self.quantity.to_i 
+      self.price = self.unit_price*self.quantity.to_i
     end
 
     def preprocess_shipment
@@ -84,7 +84,8 @@ module Piggybak
 
     def preprocess_payment
       if self.new_record?
-        self.payment.payment_method_id ||= Piggybak::PaymentMethod.find_by_active(true).id if self.payment
+        self.build_payment if self.payment.nil?
+        self.payment.payment_method_id ||= Piggybak::PaymentMethod.find_by_active(true).id
         self.description = "Payment"
         self.price = 0
       end

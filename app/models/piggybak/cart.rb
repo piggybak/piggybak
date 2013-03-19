@@ -90,5 +90,9 @@ module Piggybak
         self.extra_data[k.to_sym] = v if ![:controller, :action].include?(k)
       end
     end
+    
+    def empty?
+      self.sellables.inject(0) { |nitems, item| nitems + item[:quantity] } == 0      
+    end
   end
 end

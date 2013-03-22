@@ -10,7 +10,7 @@ module Piggybak
     attr_accessible :active, :tax_method_values_attributes, :description,
                     :klass
     validates_each :tax_method_values do |record, attr, value|
-      if record.klass
+      if record.klass.present?
         calculator = record.klass.constantize
         metadata_keys = value.collect { |v| v.key }.sort
         if calculator::KEYS.sort != metadata_keys

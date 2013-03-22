@@ -15,7 +15,7 @@ module Piggybak
     end
 
     validates_each :payment_method_values do |record, attr, value|
-      if record.klass
+      if record.klass.present?
         payment_method = record.klass.constantize
         metadata_keys = value.collect { |v| v.key }.sort
         if payment_method::KEYS.sort != metadata_keys

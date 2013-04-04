@@ -20,10 +20,10 @@ $(function() {
 var piggybak = {
 	shipping_els: $('#piggybak_order_shipping_address_attributes_state_id,#piggybak_order_shipping_address_attributes_country_id,#piggybak_order_shipping_address_attributes_zip'),
 	initialize_listeners: function() {
-		piggybak.shipping_els.live('change', function() {
+		piggybak.shipping_els.on('change', function() {
 			piggybak.update_shipping_options($(this));
 		});
-		$('#piggybak_order_billing_address_attributes_state_id').live('change', function() {
+		$('#piggybak_order_billing_address_attributes_state_id').on('change', function() {
 			piggybak.update_tax();
 		});
 		$('#shipping select').change(function() {

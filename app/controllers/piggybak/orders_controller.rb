@@ -8,7 +8,7 @@ module Piggybak
         logger = Logger.new("#{Rails.root}/#{Piggybak.config.logging_file}")
 
         begin
-          #ActiveRecord::Base.transaction do
+          ActiveRecord::Base.transaction do
             @order = Piggybak::Order.new(params[:piggybak_order])
             @order.create_payment_shipment
 
@@ -50,14 +50,13 @@ module Piggybak
               end
               raise Exception, @order.errors.full_messages
             end
-          #end
+          end
         rescue Exception => e
           if Piggybak.config.logging
-            logger.warn "#{request.remote_ip}:#{Time.now.strftime("%Y-%m-%d %H:%M")} Order exception: #{e.backtrace.join("\n\t")}"
+            logger.warn "#{request.remote_ip}:#{Time.now.strftime("%Y-%m-%d %H:%M")} Order exception: #{e.inspect}"
           end
           if @order.errors.empty?
-            Rails.logger.warn "Order Exception #{e.backtrace.join("\n\t")}"
-            @order.errors[:base] << "Your order could not go through. Please try again. #{e.backtrace.join("\n\t")}"
+            @order.errors[:base] << "Your order could not go through. Please try again."
           end
         end
       else

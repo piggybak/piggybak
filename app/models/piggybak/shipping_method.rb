@@ -44,9 +44,9 @@ module Piggybak
           rate = klass.rate(method, cart)
           arr << {
             :label => "#{method.description} $#{"%.2f" % rate}",
-			:id => method.id,
+            :id => method.id,
             :rate => rate }
-		end
+          end
         arr
       end
 

@@ -71,7 +71,7 @@ module Piggybak
       if !self._destroy
         if (self.new_record? || self.shipment.status != 'shipped') && self.shipment && self.shipment.shipping_method
           calculator = self.shipment.shipping_method.klass.constantize
-          self.price = calculator.rate(self.shipment.shipping_method, self)
+          self.price = calculator.rate(self.shipment.shipping_method, self.order)
           self.price = ((self.price*100).to_i).to_f/100
           self.description = self.shipment.shipping_method.description
         end

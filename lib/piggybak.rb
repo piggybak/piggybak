@@ -53,7 +53,7 @@ module Piggybak
       end
     end
 
-    initializer "piggybak.precompile_hook" do |app|
+    initializer "piggybak.precompile_hook", :group => :all do |app|
       app.config.assets.precompile += ['piggybak/piggybak-application.js']
     end
 

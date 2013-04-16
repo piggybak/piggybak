@@ -1,4 +1,4 @@
-<div id="billing_address">
+<div id="billing_address" data-no-turbolink>
 	<h3>Billing Address</h3>
 	<%= f.fields_for :billing_address do |billing_address| %>
 	<%= render "address_form", :address => billing_address, :type => "billing" %>

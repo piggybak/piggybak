@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    piggybak (0.6.28)
+    piggybak (0.6.30)
       activemerchant
       countries
       devise

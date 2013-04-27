@@ -16,7 +16,7 @@
 		<td><%= number_to_currency item[:sellable].price %></td>
 		<td>
 			<% if page == "cart" -%>
-			<%= text_field_tag "quantity[#{item[:sellable].id}]", item[:quantity] %>
+			<%= number_field_tag "quantity[#{item[:sellable].id}]", item[:quantity] %>
             <% else -%>
 			<%= item[:quantity] %>
 			<% end -%>

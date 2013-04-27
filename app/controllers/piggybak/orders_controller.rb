@@ -92,7 +92,7 @@ module Piggybak
     end
 
     def email
-      order = Order.find(params[:id])
+      order = Piggybak::Order.find(params[:id])
 
       if can?(:email, order)
         Piggybak::Notifier.order_notification(order).deliver
@@ -104,7 +104,7 @@ module Piggybak
     end
 
     def cancel
-      order = Order.find(params[:id])
+      order = Piggybak::Order.find(params[:id])
 
       if can?(:cancel, order)
         order.recorded_changer = current_user.id

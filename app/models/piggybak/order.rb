@@ -31,7 +31,7 @@ module Piggybak
                    
     def deliver_order_confirmation
       Piggybak::Notifier.order_notification(self).deliver
-      self.update_column!('confirmation_sent',true)
+      self.update_column('confirmation_sent',true)
     end
  
     def initialize_defaults

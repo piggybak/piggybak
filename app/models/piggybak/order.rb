@@ -21,7 +21,7 @@ module Piggybak
     validate :number_payments
     before_save :postprocess_order, :update_status, :set_new_record
     after_save :record_order_note
-    after_save :deliver_order_confirmation, :if => Proc.new { |order| order.ip_address != "admin" }
+    after_save :deliver_order_confirmation, :if => Proc.new { |order| !order.confirmation_sent? }
 
     default_scope :order => 'created_at DESC'
 
@@ -31,6 +31,7 @@ module Piggybak
                    
     def deliver_order_confirmation
       Piggybak::Notifier.order_notification(self).deliver
+      self.update_column!('confirmation_sent',true)
     end
  
     def initialize_defaults

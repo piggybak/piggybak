@@ -291,7 +291,7 @@ module Piggybak
           edit do
             field :copy_from_billing do
               visible do
-                bindings[:object].is_shipping
+                bindings[:object].respond_to?(:is_shipping) && bindings[:object].is_shipping
               end 
               partial "copy_from_billing"
               label "Help"

@@ -25,7 +25,7 @@ N/A
 		<td valign="top">Actions</td>
 		<td>
 			<ul>
-				<li><%= link_to "Send or Resend Email Confirmation", piggybak.email_order_url(form.object.id) %></li>
+				<li><%= link_to "Resend Email Confirmation", piggybak.email_order_url(form.object.id) %></li>
 				<li><%= link_to "View as Text", piggybak.download_order_url(form.object.id) %></li>
 				<% if form.object.total_due == 0.00 -%>
 				<li><%= link_to "Cancel Order", piggybak.cancel_order_url(form.object.id) %> (This does not refund payments.)</li>

@@ -1,3 +1,7 @@
+0.6.33
+Released: 01.22.2014
+* Order total calculation update to be more clear in admin.
+
 0.6.32
 Released: 5.16.2013
 * New confirmation_sent field to prevent duplicate order confirmations from being sent.

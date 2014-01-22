@@ -63,4 +63,4 @@ TODO
 Copyright
 ========
 
-Copyright (c) 2013 End Point & Steph Skardal. See LICENSE.txt for further details.
+Copyright (c) 2014 End Point & Steph Skardal. See LICENSE for further details.

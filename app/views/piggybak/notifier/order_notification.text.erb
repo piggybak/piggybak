@@ -11,7 +11,7 @@ Items
 <% end -%>
 
 <% @order.line_items.payments.each do |line_item| %>
-<%= line_item.description %> = <%= number_to_currency line_item.price %>
+<%= line_item.description %> = <%= number_to_currency -1*line_item.price %>
 <% end -%>
 
 Total

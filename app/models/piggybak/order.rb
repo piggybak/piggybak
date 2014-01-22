@@ -104,13 +104,16 @@ module Piggybak
       end
       
       # Recalculating total and total due, in case post process changed totals
+      self.total_due = 0
       self.total = 0
       self.line_items.each do |line_item|
         if !line_item._destroy
-          self.total += line_item.price
+          self.total_due += line_item.price
+          if line_item.line_item_type != "payment" 
+            self.total += line_item.price
+          end 
         end
       end
-      self.total_due = self.total
 
       # Postprocess payment last
       self.line_items.payments.each do |line_item|

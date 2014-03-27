@@ -3,13 +3,10 @@ module Piggybak
     has_many :shipping_method_values, :dependent => :destroy
     alias :metadata :shipping_method_values
 
-    validates_presence_of :description
-    validates_presence_of :klass
+    validates :description, presence: true
+    validates :klass, presence: true
 
     accepts_nested_attributes_for :shipping_method_values, :allow_destroy => true
-
-    attr_accessible :active, :shipping_method_values_attributes, :description,
-                    :klass
 
     validates_each :shipping_method_values do |record, attr, value|
       if record.klass.present?
@@ -45,7 +42,7 @@ module Piggybak
           arr << {
             :label => "#{method.description} $#{"%.2f" % rate}",
             :id => method.id,
-            :rate => rate }
+            :rate => rate.to_f }
           end
         arr
       end

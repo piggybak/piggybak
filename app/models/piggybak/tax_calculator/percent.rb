@@ -5,15 +5,11 @@ module Piggybak
     def self.available?(method, object)
       id = method.metadata.detect { |t| t.key == "state_id" }.value
 
-      if object.is_a?(Cart)
-        if object.extra_data[:state_id] != ""
-          state = State.find(object.extra_data[:state_id])
-          return state.id == id.to_i if state
-        end
-      else
-        if object.billing_address && object.billing_address.state 
-          return object.billing_address.state.id == id.to_i
-        end
+      if object.is_a?(Cart) && object.extra_data.has_key?(:state_id) && object.extra_data[:state_id] != ''
+        state = State.find(object.extra_data[:state_id])
+        return state.id == id.to_i if state
+      elsif object.is_a?(Order) && object.billing_address && object.billing_address.state 
+        return object.billing_address.state.id == id.to_i
       end
       return false
     end
@@ -29,7 +25,7 @@ module Piggybak
       else
         taxable_total += object.extra_data[:reduce_tax_subtotal].to_f
       end
-      (method.metadata.detect { |m| m.key == "rate" }.value.to_f * taxable_total).to_c
+      method.metadata.detect { |m| m.key == "rate" }.value.to_f * taxable_total
     end
   end
 end

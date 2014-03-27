@@ -14,7 +14,7 @@ module Piggybak
     end
 
     def self.rate(method, object)
-      method.metadata.detect { |m| m.key == "cost" }.value.to_f.to_c
+      method.metadata.detect { |m| m.key == "cost" }.value.to_f
     end
   end
 end

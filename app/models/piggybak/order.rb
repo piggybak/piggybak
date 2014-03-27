@@ -15,7 +15,14 @@ module Piggybak
     attr_accessor :recorded_changes, :recorded_changer,
                   :was_new_record, :disable_order_notes 
 
-    validates_presence_of :status, :email, :phone, :total, :total_due, :created_at, :ip_address, :user_agent
+    validates :status, presence: true
+    validates :email, presence: true
+    validates :phone, presence: true
+    validates :total, presence: true
+    validates :total_due, presence: true
+    validates :created_at, presence: true
+    validates :ip_address, presence: true
+    validates :user_agent, presence: true
 
     after_initialize :initialize_defaults
     validate :number_payments
@@ -25,10 +32,6 @@ module Piggybak
 
     default_scope :order => 'created_at DESC'
 
-    attr_accessible :user_id, :email, :phone, :billing_address_attributes, 
-                    :shipping_address_attributes, :line_items_attributes,
-                    :order_notes_attributes, :details, :recorded_changer, :ip_address
-                   
     def deliver_order_confirmation
       Piggybak::Notifier.order_notification(self).deliver
       self.update_column(:confirmation_sent,true)
@@ -69,6 +72,8 @@ module Piggybak
     end
 
     def postprocess_order
+
+Rails.logger.warn "stephie inside postprocess"
       # Mark line items for destruction if quantity == 0
       self.line_items.each do |line_item|
         if line_item.quantity == 0
@@ -102,7 +107,7 @@ module Piggybak
           end
         end
       end
-      
+     
       # Recalculating total and total due, in case post process changed totals
       self.total_due = 0
       self.total = 0
@@ -124,6 +129,8 @@ module Piggybak
           end
         end
       end
+Rails.logger.warn "stephie end of postprocess"
+ 
 
       true
     end

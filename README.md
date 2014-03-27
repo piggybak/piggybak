@@ -42,6 +42,10 @@ Installation
 
         piggybak install
 
+* Add piggybak/piggybak-application to your main application.js:
+
+       //= require piggybak/piggybak-application
+
 (NOTE: If you run into an error saying that piggybak gem is missing, use bundle exec piggybak install)
 
 * Follow the instructions [here][documentation] to read more about the integration points and product configuration in Piggybak.

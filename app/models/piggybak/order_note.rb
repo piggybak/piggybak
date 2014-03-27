@@ -1,11 +1,10 @@
 module Piggybak
   class OrderNote < ActiveRecord::Base
-    attr_accessible :user_id, :order_id, :note, :created_at
-    validates_presence_of :user_id, :order_id
+    validates :user_id, presence: true
+    validates :order_id, presence: true
 
     belongs_to :order
     belongs_to :user
-    validates_presence_of :user_id
     default_scope :order => 'created_at ASC'
 
     def details

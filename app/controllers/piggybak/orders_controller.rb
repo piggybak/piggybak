@@ -9,11 +9,12 @@ module Piggybak
 
         begin
           ActiveRecord::Base.transaction do
-            @order = Piggybak::Order.new(params[:piggybak_order])
+            @order = Piggybak::Order.new(orders_params)
             @order.create_payment_shipment
 
+Rails.logger.warn "stephie here: #{@order.inspect}"
             if Piggybak.config.logging
-              clean_params = params[:piggybak_order].clone
+              clean_params = params[:order].clone
               clean_params[:line_items_attributes].each do |k, li_attr|
                 if li_attr[:line_item_type] == "payment" && li_attr.has_key?(:payment_attributes)
                   if li_attr[:payment_attributes].has_key?(:number)
@@ -32,11 +33,13 @@ module Piggybak
             @order.user_agent = request.user_agent  
             @order.add_line_items(@cart)
 
+Rails.logger.warn "stephie here 2: #{@order.inspect}"
             if Piggybak.config.logging
               logger.info "#{request.remote_ip}:#{Time.now.strftime("%Y-%m-%d %H:%M")} Order contains: #{cookies["cart"]} for user #{current_user ? current_user.email : 'guest'}"
             end
 
             if @order.save
+Rails.logger.warn "stephie here 3: #{@order.inspect}"
               if Piggybak.config.logging
                 logger.info "#{request.remote_ip}:#{Time.now.strftime("%Y-%m-%d %H:%M")} Order saved: #{@order.inspect}"
               end
@@ -52,6 +55,8 @@ module Piggybak
             end
           end
         rescue Exception => e
+Rails.logger.warn "stephie here failed: #{e.inspect}"
+Rails.logger.warn "stephie here failed: #{@order.errors.inspect}"
           if Piggybak.config.logging
             logger.warn "#{request.remote_ip}:#{Time.now.strftime("%Y-%m-%d %H:%M")} Order exception: #{e.inspect}"
           end
@@ -144,12 +149,24 @@ module Piggybak
     end
 
     def geodata
-      countries = ::Piggybak::Country.find(:all, :include => :states)
+      countries = ::Piggybak::Country.all.includes(:states)
       data = countries.inject({}) do |h, country|
         h["country_#{country.id}"] = country.states
         h
       end
       render :json => { :countries => data }
+    end
+
+    private
+    def orders_params
+      nested_attributes = [shipment_attributes: [:shipping_method_id], 
+                           payment_attributes: [:number, :verification_value, :month, :year]].first.merge(Piggybak.config.additional_line_item_attributes)
+      line_item_attributes = [:sellable_id, :price, :unit_price, :description, :quantity, :line_item_type, nested_attributes]
+      params.require(:order).permit(:user_id, :email, :phone, :ip_address,
+                                    billing_address_attributes: [:firstname, :lastname, :address1, :location, :address2, :city, :state_id, :zip, :country_id],
+                                    shipping_address_attributes: [:firstname, :lastname, :address1, :location, :address2, :city, :state_id, :zip, :country_id, :copy_from_billing],
+                                    line_items_attributes: line_item_attributes)
+
     end
   end
 end

@@ -5,11 +5,9 @@ module Piggybak
 
     accepts_nested_attributes_for :payment_method_values, :allow_destroy => true
 
-    validates_presence_of :klass
-    validates_presence_of :description
+    validates :klass, presence: true
+    validates :description, presence: true
     
-    attr_accessible :active, :payment_method_values_attributes, :description,
-                    :klass
     def klass_enum 
       Piggybak.config.payment_calculators
     end

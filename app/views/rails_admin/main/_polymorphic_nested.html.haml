@@ -1,29 +1,5 @@
 - if form.object.new_record?
-  = form.select "line_item_type", Piggybak::LineItem.line_item_type_select, {}, :onchange => "toggle_line_item($(this));"
+  = form.select "line_item_type", Piggybak::LineItem.line_item_type_select, {}, :onchange => "piggybak_rails_admin.toggle_line_item($(this));"
 - else
   = form.hidden_field "line_item_type"
   = form.object.line_item_type
-
-%script
-  var line_item_types=#{raw Piggybak.config.line_item_types.to_json};
-  var toggle_line_item = function(el) {
-  el.parent().parent().siblings('div').hide();
-  if(line_item_types[el.val()].fields === undefined) {
-  line_item_types[el.val()].fields = new Array();
-  }
-  $.each(line_item_types[el.val()].fields, function(a, b) {
-  el.parent().parent().siblings('.' + b + '_field').show();
-  if(line_item_types[el.val()].nested_attrs !== undefined) {
-  el.parent().parent().siblings('.' + b + '_field').find('> .controls,> .control-label').hide();
-  }
-  });
-  };
-  $.each($('.line_item_type_field select,.line_item_type_field input'), function(i, el) {
-  toggle_line_item($(el));
-  });
-  //Removing delete-ability of line_item_types that can't be destroyed
-  $.each($('.line_item_type_field input'), function(i, el) {
-  if(!line_item_types[$(el).val()].allow_destroy) {
-  $(el).parentsUntil('fieldset').parent().parent().find('.remove_nested_fields').remove();
-  }
-  });

@@ -38,8 +38,8 @@ module Piggybak
       self.state ? self.state.name : self.state_id
     end
 
+    # TODO: Fix this. It isn't working.
     def document_address_changes
-      # TODO: Fix this. It isn't working.
       if self.order_billing.present? && self.changed?
         self.order_billing.recorded_changes << self.formatted_changes
       end

@@ -12,7 +12,6 @@ module Piggybak
             @order = Piggybak::Order.new(orders_params)
             @order.create_payment_shipment
 
-Rails.logger.warn "stephie here: #{@order.inspect}"
             if Piggybak.config.logging
               clean_params = params[:order].clone
               clean_params[:line_items_attributes].each do |k, li_attr|
@@ -33,13 +32,11 @@ Rails.logger.warn "stephie here: #{@order.inspect}"
             @order.user_agent = request.user_agent  
             @order.add_line_items(@cart)
 
-Rails.logger.warn "stephie here 2: #{@order.inspect}"
             if Piggybak.config.logging
               logger.info "#{request.remote_ip}:#{Time.now.strftime("%Y-%m-%d %H:%M")} Order contains: #{cookies["cart"]} for user #{current_user ? current_user.email : 'guest'}"
             end
 
             if @order.save
-Rails.logger.warn "stephie here 3: #{@order.inspect}"
               if Piggybak.config.logging
                 logger.info "#{request.remote_ip}:#{Time.now.strftime("%Y-%m-%d %H:%M")} Order saved: #{@order.inspect}"
               end
@@ -55,8 +52,6 @@ Rails.logger.warn "stephie here 3: #{@order.inspect}"
             end
           end
         rescue Exception => e
-Rails.logger.warn "stephie here failed: #{e.inspect}"
-Rails.logger.warn "stephie here failed: #{@order.errors.inspect}"
           if Piggybak.config.logging
             logger.warn "#{request.remote_ip}:#{Time.now.strftime("%Y-%m-%d %H:%M")} Order exception: #{e.inspect}"
           end

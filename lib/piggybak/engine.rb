@@ -278,10 +278,14 @@ module Piggybak
             field :address2
             field :city
             field :zip
+            field :country
+            field :state_id, :hidden do
+				help ""
+            end
             field :location do
               partial "location_select"
               help "Required"
-              label "Country & State"
+              label "State"
             end
           end
         end

@@ -35,8 +35,8 @@ module Piggybak
           total_tax += calculator.rate(tax_method, object)
         end 
       end
-  
-      ((100*total_tax).to_i).to_f/(100.to_f)
+
+      ((100*total_tax.to_f).to_i).to_f/(100.to_f)
     end
 
     def admin_label

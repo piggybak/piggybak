@@ -55,6 +55,7 @@ module Piggybak
     end
 
     def number_payments
+
       new_payments = self.line_items.payments.select { |li| li.new_record? }
       if new_payments.size > 1
         self.errors.add(:base, "Only one payment may be created at a time.")
@@ -73,7 +74,6 @@ module Piggybak
 
     def postprocess_order
 
-Rails.logger.warn "stephie inside postprocess"
       # Mark line items for destruction if quantity == 0
       self.line_items.each do |line_item|
         if line_item.quantity == 0
@@ -129,8 +129,6 @@ Rails.logger.warn "stephie inside postprocess"
           end
         end
       end
-Rails.logger.warn "stephie end of postprocess"
- 
 
       true
     end

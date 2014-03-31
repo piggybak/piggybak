@@ -73,6 +73,10 @@ var piggybak_rails_admin = {
 };
 
 $(function() {
+	if($('#edit_piggybak_order,#new_piggybak_order').size() == 0) {
+		return;
+	}
+
 	piggybak_rails_admin.populate_geodata();
 	piggybak_rails_admin.initialize_listeners();
 

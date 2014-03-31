@@ -5,20 +5,17 @@ module Piggybak
     has_one :order_shipping, :foreign_key => "shipping_address_id", :class_name => "Piggybak::Order"
     has_one :order_billing, :foreign_key => "billing_address_id", :class_name => "Piggybak::Order"
 
-    validates_presence_of :firstname
-    validates_presence_of :lastname
-    validates_presence_of :address1
-    validates_presence_of :city
-    validates_presence_of :state_id
-    validates_presence_of :country_id
-    validates_presence_of :zip
+    validates :firstname, presence: true
+    validates :lastname, presence: true
+    validates :address1, presence: true
+    validates :city, presence: true
+    validates :state_id, presence: true
+    validates :country_id, presence: true
+    validates :zip, presence: true
 
     after_initialize :set_default_country
     after_save :document_address_changes
     
-    attr_accessible :firstname, :lastname, :address1, :location,
-                    :address2, :city, :state_id, :zip, :country_id,
-                    :copy_from_billing
     attr_accessor :is_shipping
     
     def set_default_country
@@ -41,8 +38,8 @@ module Piggybak
       self.state ? self.state.name : self.state_id
     end
 
+    # TODO: Fix this. It isn't working.
     def document_address_changes
-      # TODO: Fix this. It isn't working.
       if self.order_billing.present? && self.changed?
         self.order_billing.recorded_changes << self.formatted_changes
       end

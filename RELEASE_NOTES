@@ -1,3 +1,7 @@
+0.7.0
+Released: 03.31.2014
+* Initial release for Rails 4 upgrade
+
 0.6.33
 Released: 01.22.2014
 * Order total calculation update to be more clear in admin.

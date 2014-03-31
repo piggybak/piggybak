@@ -4,16 +4,13 @@ module Piggybak
     belongs_to :payment_method
     belongs_to :line_item
 
-    validates_presence_of :status
-    validates_presence_of :payment_method_id
-    validates_presence_of :month
-    validates_presence_of :year
+    validates :status, presence: true
+    validates :payment_method_id, presence: true
+    validates :month, presence: true
+    validates :year, presence: true
 
     attr_accessor :number
     attr_accessor :verification_value
-
-    attr_accessible :number, :verification_value, :month, :year,
-                    :transaction_id, :masked_number, :payment_method_id
     
     def status_enum
       ["paid"]

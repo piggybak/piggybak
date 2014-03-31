@@ -1,0 +1,114 @@
+var geodata;
+
+var piggybak_rails_admin = {
+	line_item_types: <%= Piggybak.config.line_item_types.to_json %>,
+	initialize_listeners: function() {
+		$('#piggybak_order_shipping_address_attributes_country_id').change(function() {
+			piggybak_rails_admin.update_state_option('shipping');
+		});
+		$('#piggybak_order_billing_address_attributes_country_id').change(function() {
+			piggybak_rails_admin.update_state_option('billing');
+		});
+		$.each(['billing', 'shipping'], function(i, type) {
+			$(document).on('change', '#' + type + '_state_id', function() {
+				$('#piggybak_order_' + type + '_address_attributes_state_id').val($('#' + type + '_state_id').val());
+			});
+		});
+		return;
+	},
+	populate_geodata: function() {
+		$.ajax({
+			url: geodata_lookup,
+			cached: false,
+			dataType: "JSON",
+			success: function(data) {
+				geodata = data;
+				piggybak_rails_admin.update_state_option('shipping');
+				piggybak_rails_admin.update_state_option('billing');
+				$.each(['billing', 'shipping'], function(i, type) {
+					$('#' + type + '_state_id').val($('#piggybak_order_' + type + '_address_attributes_state_id').val());
+				});
+			}
+		});
+	},
+	update_state_option: function(type, block) {
+		var country_field = $('#piggybak_order_' + type + '_address_attributes_country_id');
+		var country_id = country_field.val();
+		var new_field;
+
+		if(country_id == '') {
+			country_id = "<%= ::Piggybak::Country.where(abbr: Piggybak.config.default_country).first.id %>";
+		} 
+		if(geodata.countries["country_" + country_id].length > 0) {
+			new_field = $('<select>');
+			$.each(geodata.countries["country_" + country_id], function(i, j) {
+				new_field.append($('<option>').val(j.id).html(j.name));
+			});	
+		} else {
+			new_field = $('<input>');
+		}
+
+		var old_field = $('#' + type + '_state_id');
+		new_field.attr('name', old_field.attr('name')).attr('id', old_field.attr('id'));
+		if(old_field.prop('tagName') == new_field.prop('tagName')) {
+			new_field.val(old_field.val());
+		}
+		old_field.replaceWith(new_field);
+
+		if(block) {
+			block();
+		}
+
+		return;
+	},
+	toggle_line_item: function(el) {
+		var line_item = el.parent().parent().parent();
+		line_item.find('> div.control-group').not('.line_item_type_field').hide();
+  		if(piggybak_rails_admin.line_item_types[el.val()].fields !== undefined) {
+  			$.each(piggybak_rails_admin.line_item_types[el.val()].fields, function(a, b) {
+  				line_item.find('> div.' + b + '_field').show();
+  			});
+		}
+  	}
+};
+
+$(function() {
+	if($('#edit_piggybak_order,#new_piggybak_order').size() == 0) {
+		return;
+	}
+
+	piggybak_rails_admin.populate_geodata();
+	piggybak_rails_admin.initialize_listeners();
+
+  	$('#copy_from_billing').click(function(e) {
+		e.preventDefault();
+
+  		$.each($('#piggybak_order_billing_address_attributes_field input'), function(i, el) {
+  			if($(el).attr('id') !== undefined) {
+  				var shipping_id = $(el).attr('id').replace('billing', 'shipping');
+  				$('#' + shipping_id).val($(el).val());
+  			}
+  		});
+		$('#piggybak_order_shipping_address_attributes_country_id option:last').remove();
+		$('<option>').val($('#piggybak_order_billing_address_attributes_country_id').val()).html($('#piggybak_order_billing_address_attributes_country_id_field input').val()).appendTo($('#piggybak_order_shipping_address_attributes_country_id'));
+  		$('#piggybak_order_shipping_address_attributes_country_id').val($('#piggybak_order_billing_address_attributes_country_id').val());
+  		$('#piggybak_order_shipping_address_attributes_country_id_field input').val($('#piggybak_order_billing_address_attributes_country_id_field input').val());
+  		piggybak_rails_admin.update_state_option('shipping', function() {
+			$('#shipping_state_id').val($('#billing_state_id').val());
+			$('#piggybak_order_shipping_address_attributes_state_id').val($('#shipping_state_id').val());
+		});
+  		return false;
+  	});
+
+	//From polymorphic
+  	$.each($('.line_item_type_field select,.line_item_type_field input'), function(i, el) {
+  		piggybak_rails_admin.toggle_line_item($(el));
+  	});
+  	//Removing delete-ability of line_item_types that can't be destroyed
+  	$.each($('.line_item_type_field input'), function(i, el) {
+  		if(!piggybak_rails_admin.line_item_types[$(el).val()].allow_destroy) {
+  			$(el).parentsUntil('fieldset').parent().parent().find('.remove_nested_fields').remove();
+  		}
+  	});
+});
+

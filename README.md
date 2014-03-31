@@ -11,6 +11,8 @@ Modular / mountable ecommerce gem. Features:
 
 * Fully defined backend RailsAdmin interface for adding orders on the backend
 
+* Piggybak 0.7.0 is compatible with Rails 4, and earlier versions compatible with Rails 3.
+
 
 Announcements
 ========
@@ -41,6 +43,10 @@ Installation
 * Next, run the piggybak install command:
 
         piggybak install
+
+* Add piggybak/piggybak-application to your main application.js:
+
+       //= require piggybak/piggybak-application
 
 (NOTE: If you run into an error saying that piggybak gem is missing, use bundle exec piggybak install)
 

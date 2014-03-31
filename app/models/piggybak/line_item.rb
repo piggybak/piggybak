@@ -4,7 +4,9 @@ module Piggybak
     acts_as_changer
     belongs_to :sellable
 
-    validates_presence_of :price, :description, :quantity
+    validates :price, presence: true
+    validates :description, presence: true
+    validates :quantity, presence: true
     validates_numericality_of :quantity, :only_integer => true, :greater_than_or_equal_to => 0
 
     default_scope :order => 'created_at ASC'
@@ -12,8 +14,6 @@ module Piggybak
     after_create :decrease_inventory, :if => Proc.new { |line_item| line_item.line_item_type == 'sellable' && !line_item.sellable.unlimited_inventory }
     after_destroy :increase_inventory, :if => Proc.new { |line_item| line_item.line_item_type == 'sellable' && !line_item.sellable.unlimited_inventory }
     after_update :update_inventory, :if => Proc.new { |line_item| line_item.line_item_type == 'sellable' && !line_item.sellable.unlimited_inventory }
-
-    attr_accessible :sellable_id, :price, :unit_price, :description, :quantity, :line_item_type
 
     after_initialize :initialize_line_item
     before_validation :preprocess

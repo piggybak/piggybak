@@ -2,10 +2,10 @@ var geodata;
 
 var piggybak_states = {
 	initialize_listeners: function() {
-		$('#piggybak_order_shipping_address_attributes_country_id').change(function() {
+		$('#order_shipping_address_attributes_country_id').change(function() {
 			piggybak_states.update_state_option('shipping');
 		});
-		$('#piggybak_order_billing_address_attributes_country_id').change(function() {
+		$('#order_billing_address_attributes_country_id').change(function() {
 			piggybak_states.update_state_option('billing');
 		});
 		return;
@@ -23,7 +23,7 @@ var piggybak_states = {
 		});
 	},
 	update_state_option: function(type, block) {
-		var country_field = $('#piggybak_order_' + type + '_address_attributes_country_id');
+		var country_field = $('#order_' + type + '_address_attributes_country_id');
 		var country_id = country_field.val();
 		var new_field;
 
@@ -35,7 +35,7 @@ var piggybak_states = {
 		} else {
 			new_field = $('<input>');
 		}
-		var old_field = $('#piggybak_order_' + type + '_address_attributes_state_id');
+		var old_field = $('#order_' + type + '_address_attributes_state_id');
 		new_field.attr('name', old_field.attr('name')).attr('id', old_field.attr('id'));
 		if(old_field.prop('tagName') == new_field.prop('tagName')) {
 			new_field.val(old_field.val());
@@ -50,6 +50,9 @@ var piggybak_states = {
 };
 
 $(function() {
+	if($('form#new_order').size() == 0) {
+		return;
+	}
 	piggybak_states.populate_geodata();
 	piggybak_states.initialize_listeners();
 });

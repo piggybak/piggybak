@@ -4,11 +4,11 @@
 		<% if current_user -%>
 		<%= f.label :email %>
 		<%= f.text_field :email, { :readonly => true, :class => "readonly required" } %>
-		<span>or <%= link_to 'LOGOUT', destroy_user_session_path, :method => :delete, :class => "last" %></span>
+		<span>or <%= link_to 'LOGOUT', main_app.destroy_user_session_path, :method => :delete, :class => "last" %></span>
 		<% else -%>
 		<%= f.label :email %>
 		<%= f.text_field :email, :class => "required" %><br />
-		<span>or <%= link_to 'LOG IN', new_user_session_path %></span>
+		<span>or <%= link_to 'LOG IN', main_app.new_user_session_path %></span>
 		<% end -%>
 	</div>
 	<div class="item">

@@ -9,11 +9,11 @@ module Piggybak
 
         begin
           ActiveRecord::Base.transaction do
-            @order = Piggybak::Order.new(params[:piggybak_order])
+            @order = Piggybak::Order.new(orders_params)
             @order.create_payment_shipment
 
             if Piggybak.config.logging
-              clean_params = params[:piggybak_order].clone
+              clean_params = params[:order].clone
               clean_params[:line_items_attributes].each do |k, li_attr|
                 if li_attr[:line_item_type] == "payment" && li_attr.has_key?(:payment_attributes)
                   if li_attr[:payment_attributes].has_key?(:number)
@@ -144,12 +144,24 @@ module Piggybak
     end
 
     def geodata
-      countries = ::Piggybak::Country.find(:all, :include => :states)
+      countries = ::Piggybak::Country.all.includes(:states)
       data = countries.inject({}) do |h, country|
         h["country_#{country.id}"] = country.states
         h
       end
       render :json => { :countries => data }
+    end
+
+    private
+    def orders_params
+      nested_attributes = [shipment_attributes: [:shipping_method_id], 
+                           payment_attributes: [:number, :verification_value, :month, :year]].first.merge(Piggybak.config.additional_line_item_attributes)
+      line_item_attributes = [:sellable_id, :price, :unit_price, :description, :quantity, :line_item_type, nested_attributes]
+      params.require(:order).permit(:user_id, :email, :phone, :ip_address,
+                                    billing_address_attributes: [:firstname, :lastname, :address1, :location, :address2, :city, :state_id, :zip, :country_id],
+                                    shipping_address_attributes: [:firstname, :lastname, :address1, :location, :address2, :city, :state_id, :zip, :country_id, :copy_from_billing],
+                                    line_items_attributes: line_item_attributes)
+
     end
   end
 end

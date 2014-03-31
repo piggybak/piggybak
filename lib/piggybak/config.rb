@@ -17,6 +17,7 @@ module Piggybak
       attr_accessor :extra_secure_paths
       attr_accessor :manage_classes
       attr_accessor :extra_abilities
+      attr_accessor :additional_line_item_attributes
 
       def reset
         @manage_classes = ["::Piggybak::Sellable",
@@ -75,6 +76,7 @@ module Piggybak
         @secure_checkout = false
         @secure_prefix = ''
         @extra_secure_paths = []
+        @additional_line_item_attributes = {}
       end
     end
 

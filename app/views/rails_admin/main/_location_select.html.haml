@@ -1,15 +1,10 @@
 :ruby
   type = form.object.is_shipping ? "shipping" : "billing"
 
-= form.collection_select "country_id", Piggybak::Country.send(type), :id, :name, { :selected => form.object.country_id.to_s }
-
 - if form.object.country.states.any?
-  = form.collection_select "state_id", form.object.country.states, :id, :name, { :selected => form.object.state_id.to_s }
+  = select_tag "#{type}_state_id", options_from_collection_for_select(form.object.country.states, "id", "name") #.collect { |s| [s.name, s.id] } #, :id, :name, { :selected => form.object.state_id.to_s }
 - else
-  = form.text_field "state_id"
+  = text_field "#{type}_state_id"
 
 :javascript
   var geodata_lookup = "#{piggybak.orders_geodata_url}";
-
-- if type == "billing"
-  = javascript_include_tag "piggybak/piggybak.states"

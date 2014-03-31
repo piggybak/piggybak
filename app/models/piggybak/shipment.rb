@@ -4,10 +4,8 @@ module Piggybak
     belongs_to :shipping_method
     belongs_to :line_item
 
-    validates_presence_of :status
-    validates_presence_of :shipping_method_id
-    
-    attr_accessible :shipping_method_id, :status
+    validates :status, presence: true
+    validates :shipping_method_id, presence: true
     
     def status_enum
       ["new", "processing", "shipped"]

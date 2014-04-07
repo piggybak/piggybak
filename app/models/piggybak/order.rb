@@ -30,7 +30,7 @@ module Piggybak
     after_save :record_order_note
     after_save :deliver_order_confirmation, :if => Proc.new { |order| !order.confirmation_sent }
 
-    default_scope :order => 'created_at DESC'
+    default_scope { order('created_at ASC') }
 
     def deliver_order_confirmation
       Piggybak::Notifier.order_notification(self).deliver

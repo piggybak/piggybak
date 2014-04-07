@@ -26,7 +26,7 @@ module Piggybak
       end
     end
     validates_each :active do |record, attr, value|
-      if value && PaymentMethod.find_all_by_active(true).select { |p| p != record }.size > 0
+      if value && PaymentMethod.where(active: true).select { |p| p != record }.size > 0
         record.errors.add attr, "You may only have one active payment method."
       end
     end

@@ -6,7 +6,7 @@ module Piggybak
       id = method.metadata.detect { |t| t.key == "state_id" }.value
 
       if object.is_a?(Cart) && object.extra_data.has_key?(:state_id) && object.extra_data[:state_id] != ''
-        state = State.find(object.extra_data[:state_id])
+        state = State.where(id: object.extra_data[:state_id]).first
         return state.id == id.to_i if state
       elsif object.is_a?(Order) && object.billing_address && object.billing_address.state 
         return object.billing_address.state.id == id.to_i

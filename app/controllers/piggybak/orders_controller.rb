@@ -74,7 +74,7 @@ module Piggybak
         return
       end
 
-      @order = Piggybak::Order.find(session[:last_order])
+      @order = Piggybak::Order.where(id: session[:last_order]).first
     end
 
     def list
@@ -82,7 +82,7 @@ module Piggybak
     end
 
     def download
-      @order = Piggybak::Order.find(params[:id])
+      @order = Piggybak::Order.where(id: params[:id]).first
 
       if can?(:download, @order)
         render :layout => false
@@ -92,7 +92,7 @@ module Piggybak
     end
 
     def email
-      order = Piggybak::Order.find(params[:id])
+      order = Piggybak::Order.where(id: params[:id]).first
 
       if can?(:email, order)
         Piggybak::Notifier.order_notification(order).deliver
@@ -104,7 +104,7 @@ module Piggybak
     end
 
     def cancel
-      order = Piggybak::Order.find(params[:id])
+      order = Piggybak::Order.where(id: params[:id]).first
 
       if can?(:cancel, order)
         order.recorded_changer = current_user.id

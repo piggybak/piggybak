@@ -9,7 +9,7 @@ module Piggybak
     validates :quantity, presence: true
     validates_numericality_of :quantity, :only_integer => true, :greater_than_or_equal_to => 0
 
-    default_scope :order => 'created_at ASC'
+    default_scope { order('created_at ASC') }
 
     after_create :decrease_inventory, :if => Proc.new { |line_item| line_item.line_item_type == 'sellable' && !line_item.sellable.unlimited_inventory }
     after_destroy :increase_inventory, :if => Proc.new { |line_item| line_item.line_item_type == 'sellable' && !line_item.sellable.unlimited_inventory }
@@ -46,7 +46,7 @@ module Piggybak
         return
       end
 
-      sellable = Piggybak::Sellable.find(self.sellable_id)
+      sellable = Piggybak::Sellable.where(id: self.sellable_id).first
 
       return if sellable.nil?
 
@@ -85,7 +85,7 @@ module Piggybak
     def preprocess_payment
       if self.new_record?
         self.build_payment if self.payment.nil?
-        self.payment.payment_method_id ||= Piggybak::PaymentMethod.find_by_active(true).id
+        self.payment.payment_method_id ||= Piggybak::PaymentMethod.where(active: true).first.id
         self.description = "Payment"
         self.price = 0
       end
@@ -140,7 +140,7 @@ module Piggybak
 
     def update_inventory
       if self.sellable_id != self.sellable_id_was
-        old_sellable = Sellable.find(self.sellable_id_was)
+        old_sellable = Sellable.where(id: self.sellable_id_was).first
         old_sellable.update_inventory(self.quantity_was)
         self.sellable.update_inventory(-1*self.quantity)
       else

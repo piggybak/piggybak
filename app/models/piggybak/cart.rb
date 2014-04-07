@@ -12,7 +12,7 @@ module Piggybak
       self.errors = []
       cookie ||= ''
       cookie.split(';').each do |item|
-        item_sellable = Piggybak::Sellable.find_by_id(item.split(':')[0])
+        item_sellable = Piggybak::Sellable.where(id: item.split(':')[0]).first
         if item_sellable.present?
           self.sellables << { :sellable => item_sellable, :quantity => (item.split(':')[1]).to_i }
         end

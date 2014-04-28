@@ -13,7 +13,7 @@ Released: 01.22.2014
 0.6.32
 Released: 5.16.2013
 * New confirmation_sent field to prevent duplicate order confirmations from being sent.
-  ** Note: rake piggybak_engine:install:migrations, rake db:migrate needed to add column to orders table
+  ** Note: rake piggybak:install:migrations, rake db:migrate needed to add column to orders table
 
 0.6.30
 Released: 4.23.2013

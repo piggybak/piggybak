@@ -1,7 +1,1 @@
-require 'test_helper'
-
-class PiggybakTest < ActiveSupport::TestCase
-  test "truth" do
-    assert_kind_of Module, Piggybak
-  end
-end
+puts "Please refer to the Piggybak demo at https://github.com/piggybak/demo for the full testing sweet."

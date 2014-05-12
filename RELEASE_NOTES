@@ -1,3 +1,7 @@
+0.7.2
+Released: 5.12.2014
+* Minor fix in migrations to fix namespace migration issue.
+
 0.7.1
 Released: 4.07.2014
 * Upgrade to Rails 4.1

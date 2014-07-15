@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    piggybak (0.7.2)
+    piggybak (0.7.3)
       activemerchant
       countries
       rack-ssl-enforcer

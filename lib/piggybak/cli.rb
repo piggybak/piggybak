@@ -12,7 +12,7 @@ module Piggybak
         inject_devise
         inject_rails_admin
         run('bundle install')
-        run('rake piggybak_engine:install:migrations')
+        run('rake piggybak:install:migrations')
         run('rake db:migrate')   
         run('rails generate devise:install')
         run('rails generate devise User') 
@@ -29,7 +29,7 @@ module Piggybak
     def update
       say "Piggybak install detected"
       say "Updating current Piggybak install"
-      run('rake piggybak_engine:install:migrations')
+      run('rake piggybak:install:migrations')
       say_upgraded
     end
 

@@ -1,3 +1,3 @@
 module Piggybak
-  VERSION = "0.6.33"
+  VERSION = "0.6.34"
 end

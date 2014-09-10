@@ -1,3 +1,7 @@
+0.7.5
+Released: 9.10.2014
+* Fixed installation migration issues.
+
 0.7.4
 Released: 7.15.2014
 * Fixed removed reflections method in cart/form.

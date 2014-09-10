@@ -18,9 +18,6 @@ class LineItemRearchitecture < ActiveRecord::Migration
     rename_column :line_items, :total, :price
     change_column :line_items, :sellable_id, :integer, :null => true
     add_column :line_items, :sort, :integer, :null => false, :default => 0
-    change_table(:line_items) do |t|
-      t.timestamps
-    end
 
     add_column :shipments, :line_item_id, :integer
     add_column :payments, :line_item_id, :integer

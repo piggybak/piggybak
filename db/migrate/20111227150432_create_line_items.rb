@@ -5,6 +5,7 @@ class CreateLineItems < ActiveRecord::Migration
       t.integer :quantity, :null => false
       t.references :variant, :null => false
       t.decimal :total
+      t.timestamps
     end
   end
 end

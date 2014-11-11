@@ -70,7 +70,7 @@ module Piggybak
       response.headers['Cache-Control'] = 'no-cache'
 
       if !session.has_key?(:last_order)
-        redirect_to root_url 
+        redirect_to main_app.root_url 
         return
       end
 
@@ -78,7 +78,7 @@ module Piggybak
     end
 
     def list
-      redirect_to root_url if current_user.nil?
+      redirect_to main_app.root_url if current_user.nil?
     end
 
     def download

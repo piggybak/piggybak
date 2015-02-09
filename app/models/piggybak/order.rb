@@ -81,6 +81,17 @@ module Piggybak
         end
       end
 
+      # Postprocess everything but payments first
+      self.line_items.each do |line_item|
+        next if line_item.line_item_type == "payment"
+        method = "postprocess_#{line_item.line_item_type}"
+        if line_item.respond_to?(method)
+          if !line_item.send(method)
+            return false
+          end
+        end
+      end
+      
       # Recalculate and create line item for tax
       # If a tax line item already exists, reset price
       # If a tax line item doesn't, create
@@ -95,17 +106,6 @@ module Piggybak
         end
       elsif tax_line_item.any?
         tax_line_item.first.mark_for_destruction
-      end
-
-      # Postprocess everything but payments first
-      self.line_items.each do |line_item|
-        next if line_item.line_item_type == "payment"
-        method = "postprocess_#{line_item.line_item_type}"
-        if line_item.respond_to?(method)
-          if !line_item.send(method)
-            return false
-          end
-        end
       end
      
       # Recalculating total and total due, in case post process changed totals

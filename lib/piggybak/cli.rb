@@ -53,13 +53,21 @@ module Piggybak
   
     desc "add_javascript_include_tag", "add javascript include tag to application layout"
     def add_javascript_include_tag
-      jit_code_block = <<-eos
-          \n  <% if "\#{params[:controller]}#\#\{params[:action]\}" == "piggybak/orders#submit" -%>
-      <%= javascript_include_tag "piggybak/piggybak-application" %>\n  <% end -%>
-      eos
-    
-      insert_into_file 'app/views/layouts/application.html.erb', jit_code_block, :after => "<%= javascript_include_tag \"application\" %>"
-    
+      if File.exist?('app/views/layouts/application.html.haml')
+        jit_code_block = <<-eos
+            \n    - if "\#{params[:controller]}#\#\{params[:action]\}" == "piggybak/orders#submit"
+        = javascript_include_tag "piggybak/piggybak-application"
+        eos
+
+        insert_into_file 'app/views/layouts/application.html.haml', jit_code_block, :after => '= javascript_include_tag "application"'
+      else
+        jit_code_block = <<-eos
+            \n  <% if "\#{params[:controller]}#\#\{params[:action]\}" == "piggybak/orders#submit" -%>
+        <%= javascript_include_tag "piggybak/piggybak-application" %>\n  <% end -%>
+        eos
+      
+        insert_into_file 'app/views/layouts/application.html.erb', jit_code_block, :after => "<%= javascript_include_tag \"application\" %>"
+      end
     end
     
     desc "create user class", "Create a user class"

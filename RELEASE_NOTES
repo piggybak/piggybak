@@ -1,3 +1,9 @@
+0.7.6
+Released: 2015.03.30
+* Update several dependencies (verify upgrade to Rails 4.2).
+* Include changes on tax calculation 
+* Haml layout support
+
 0.7.5
 Released: 9.10.2014
 * Fixed installation migration issues.

@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://www.piggybak.org/'
   s.summary     = 'Mountable Ruby on Rails Ecommerce.'
   s.description = 'Mountable Ruby on Rails Ecommerce.'
+  s.license     = 'GPL-2'
 
   s.files = Dir['{app,bin,config,db,lib,spec}/**/*'] + ['LICENSE', 'Rakefile', 'README.md', 'Gemfile', 'Gemfile.lock']
   s.executables = s.files.grep(%r{^bin/}).map { |f| File.basename(f) }

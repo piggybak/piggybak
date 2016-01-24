@@ -7,7 +7,7 @@ require 'piggybak/version'
 Gem::Specification.new do |s|
   s.name        = 'piggybak'
   s.version     = Piggybak::VERSION
-  s.authors     = ['Steph Skardal', 'Tim Case', 'Brian Buchalter']
+  s.authors     = ['Steph Skardal', 'Tim Case', 'Brian Buchalter', 'Patrick Lewis']
   s.email       = ['piggybak@endpoint.com']
   s.homepage    = 'http://www.piggybak.org/'
   s.summary     = 'Mountable Ruby on Rails Ecommerce.'

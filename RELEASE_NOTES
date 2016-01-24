@@ -1,7 +1,13 @@
+0.7.7
+Released: 2016-01-24
+* Update countries gem dependency to v1.2.2
+* Fix installation migration issues related to countries gem
+* Update method for installing Devise/RailsAdmin dependencies
+
 0.7.6
 Released: 2015.03.30
 * Update several dependencies (verify upgrade to Rails 4.2).
-* Include changes on tax calculation 
+* Include changes on tax calculation
 * Haml layout support
 
 0.7.5
@@ -84,7 +90,7 @@ Released: 11.16.2012
   Piggybak.config.extra_abilities.each do |extra_ability|
     can extra_ability[:abilities], extra_ability[:class_name].constantize
   end
-  Extensions will append to the manage_classes and extra_abilities to register classes to be managed via RailsAdmin. 
+  Extensions will append to the manage_classes and extra_abilities to register classes to be managed via RailsAdmin.
 
 Version: 0.6.19
 Released: 11.15.2012

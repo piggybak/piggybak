@@ -1,41 +1,32 @@
-Piggybak Gem (Engine)
-========
+# Piggybak
 
-Modular / mountable ecommerce gem. Features:
+Piggybak is a mountable Ecommerce engine for Rails.
+
+## Features
 
 * Configurable tax methods, shipping methods, payment methods
-
 * One page checkout, with AJAX for shipping and tax calculations
-
 * Order processing completed in transaction, minimizing orphan data created 
-
 * Fully defined backend RailsAdmin interface for adding orders on the backend
-
 * Piggybak 0.7.1 is compatible with Rails 4.1, 0.7.0 is compatible with Rails 4, and earlier version compatible with Rails 3.
 
-
-Announcements
-========
+## Announcements
 
 * Variants were recently changed to sellables, to provide the opportunity for advanced variant support via an extension.
-
 * Significant recent rearchitecture has been applied to the order line items. Stay tuned for the documentation.
-
 * Review the new installation process below.
- 
 
-Installation
-========
+## Installation
 
 * First create a new rails project:
         rails new webstore
 
 * Config your database.yml and create the databases
-		
+
 * Add to Gemfile:
-    
-        gem "piggybak"
- 
+
+        gem 'piggybak'
+
 * Next, run bundle install:
 
         bundle install
@@ -46,25 +37,22 @@ Installation
 
 * Add piggybak/piggybak-application to your main application.js:
 
-       //= require piggybak/piggybak-application
+        //= require piggybak/piggybak-application
 
 * Follow the instructions [here][documentation] to read more about the integration points and product configuration in Piggybak.
 
 [documentation]: http://www.piggybak.org/documentation.html#integration
 
-More Details
-========
+## More Details
 
 Visit the project website [here][project-website] to see more documentation and view a demo.
 
 [project-website]: http://www.piggybak.org/
 
-TODO
-========
+## TODO
 
 * Ensure that changes in nested addresses are recorded on order notes.
 
-Copyright
-========
+## Copyright
 
-Copyright (c) 2014 End Point & Steph Skardal. See LICENSE for further details.
+Copyright (c) 2016 End Point & Steph Skardal. See LICENSE for further details.

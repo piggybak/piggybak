@@ -1,5 +1,7 @@
 # Piggybak
 
+[![security](https://hakiri.io/github/piggybak/piggybak/master.svg)](https://hakiri.io/github/piggybak/piggybak/master)
+
 Piggybak is a mountable Ecommerce engine for Rails.
 
 ## Features

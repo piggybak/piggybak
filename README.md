@@ -3,7 +3,6 @@
 [![Gem Version](https://badge.fury.io/rb/piggybak.svg)](https://badge.fury.io/rb/piggybak)
 [![Build Status](https://travis-ci.org/piggybak/piggybak.svg?branch=master)](https://travis-ci.org/piggybak/piggybak)
 [![Code Climate](https://codeclimate.com/github/piggybak/piggybak/badges/gpa.svg)](https://codeclimate.com/github/piggybak/piggybak)
-[![Test Coverage](https://codeclimate.com/github/piggybak/piggybak/badges/coverage.svg)](https://codeclimate.com/github/piggybak/piggybak/coverage)
 [![security](https://hakiri.io/github/piggybak/piggybak/master.svg)](https://hakiri.io/github/piggybak/piggybak/master)
 [![Dependency Status](https://gemnasium.com/piggybak/piggybak.svg)](https://gemnasium.com/piggybak/piggybak)
 [![Inline docs](http://inch-ci.org/github/piggybak/piggybak.svg?branch=master)](http://inch-ci.org/github/piggybak/piggybak)

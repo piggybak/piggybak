@@ -1,5 +1,6 @@
 # Piggybak
 
+[![Code Climate](https://codeclimate.com/github/piggybak/piggybak/badges/gpa.svg)](https://codeclimate.com/github/piggybak/piggybak)
 [![security](https://hakiri.io/github/piggybak/piggybak/master.svg)](https://hakiri.io/github/piggybak/piggybak/master)
 
 Piggybak is a mountable Ecommerce engine for Rails.

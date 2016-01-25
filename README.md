@@ -6,9 +6,9 @@ Piggybak is a mountable Ecommerce engine for Rails.
 
 * Configurable tax methods, shipping methods, payment methods
 * One page checkout, with AJAX for shipping and tax calculations
-* Order processing completed in transaction, minimizing orphan data created 
+* Order processing completed in transaction, minimizing orphan data created
 * Fully defined backend RailsAdmin interface for adding orders on the backend
-* Piggybak 0.7.1 is compatible with Rails 4.1, 0.7.0 is compatible with Rails 4, and earlier version compatible with Rails 3.
+* Piggybak 0.7.1 is compatible with Rails 4.1, 0.7.0 is compatible with Rails 4.0, and earlier versions are compatible with Rails 3.
 
 ## Announcements
 

@@ -34,6 +34,10 @@ Piggybak is a mountable Ecommerce engine for Rails.
 
         gem 'piggybak'
 
+* Rails 5 fix for a remotipart (Rails Admin dependency) middleware bug:
+
+        gem 'remotipart', github: 'mshibuya/remotipart'
+
 * Next, run bundle install:
 
         bundle install

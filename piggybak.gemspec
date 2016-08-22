@@ -23,4 +23,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'rack-ssl-enforcer', '~> 0.2'
   s.add_dependency 'devise', '~> 4.1'
   s.add_dependency 'rails_admin', '~> 1.0.0rc'
+
+  s.add_development_dependency 'rspec-rails', '~> 3.5'
 end

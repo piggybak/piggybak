@@ -48,16 +48,7 @@ Installation
 
        //= require piggybak/piggybak-application
 
-* Follow the instructions [here][documentation] to read more about the integration points and product configuration in Piggybak.
-
-[documentation]: http://www.piggybak.org/documentation.html#integration
-
-More Details
-========
-
-Visit the project website [here][project-website] to see more documentation and view a demo.
-
-[project-website]: http://www.piggybak.org/
+See the raw [documentation](https://github.com/piggybak/demo/blob/master/public/documentation.html) to read more about the integration points and product configuration in Piggybak.
 
 TODO
 ========
